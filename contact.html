@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Contact — Quire</title>
-<meta name="description" content="Book a demo, scope a pilot, ask a security question, or just say hello. Real humans, one business day.">
+<title>Community — Quire</title>
+<meta name="description" content="Discussions, Discord, the monthly call, where to file what, and how to ask a question that gets answered.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='5' width='21' height='22' rx='6' fill='%23cce7ff' transform='rotate(-12 13 16)'/><rect x='8' y='5' width='21' height='22' rx='6' fill='%230069e0'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,17 +17,19 @@
   <div class="wrap nav-in">
     <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
     <nav class="nav-links" aria-label="Primary">
-      <a href="product.html">Product</a>
-      <a href="solutions.html">Solutions</a>
-      <a href="pricing.html">Pricing</a>
       <a href="docs.html">Docs</a>
-      <a href="customers.html">Customers</a>
+      <a href="product.html">How it works</a>
+      <a href="solutions.html">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html" aria-current="page">Community</a>
       <a href="blog.html">Blog</a>
-      <a href="about.html">About</a>
     </nav>
     <div class="nav-cta">
-      <a class="btn btn-ghost btn-sm" href="contact.html">Sign in</a>
-      <a class="btn btn-sm" href="contact.html">Get a demo</a>
+      <a class="btn btn-ghost btn-sm" href="careers.html">Contribute</a>
+      <a class="btn btn-sm btn-repo" href="https://github.com/tomerdamari/ai-startup">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <b>12.4k</b>
+      </a>
     </div>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
@@ -39,79 +41,117 @@
 
 <section class="section">
   <div class="wrap center stack-lg">
-    <span class="pill">Contact</span>
-    <h1>Tell us what you're<br>drowning in.</h1>
-    <p class="lede measure">Demos run on your documents, not ours. Bring the folder nobody has cleaned since 2023 — that one is the most useful test.</p>
+    <span class="pill">Community</span>
+    <h1>Ask anywhere.<br>Someone will answer.</h1>
+    <p class="lede measure">2,100 people in Discord, most of whom aren't maintainers and most of whom answer faster than we do. That's the healthiest signal this project has.</p>
+    <div class="row row-center"><a class="btn" href="#discord">Join Discord</a><a class="btn btn-ghost" href="https://github.com/tomerdamari/ai-startup">GitHub Discussions</a></div>
   </div>
 </section>
 
 <section class="section-tight">
-  <div class="wrap split" style="align-items:start">
+  <div class="wrap grid g4">
+    <div class="stat"><b>2100</b><p>People in Discord</p></div>
+    <div class="stat"><b>73%</b><p>Of questions answered by non-maintainers</p></div>
+    <div class="stat"><b>4h</b><p>Median time to a first reply</p></div>
+    <div class="stat"><b>41</b><p>Countries represented among contributors</p></div>
+  </div>
+</section>
 
-    <form class="card" data-demo>
-      <h3>Book a demo</h3>
-      <p class="small muted">Thirty minutes. A solutions architect, not an SDR.</p>
-      <div class="grid g2" style="gap:16px">
-        <div class="field"><label for="fn">First name</label><input id="fn" name="fn" required placeholder="Rita"></div>
-        <div class="field"><label for="ln">Last name</label><input id="ln" name="ln" required placeholder="Ben-Ari"></div>
-      </div>
-      <div class="field"><label for="em">Work email</label><input id="em" name="em" type="email" required placeholder="you@company.com"></div>
-      <div class="field"><label for="co">Company</label><input id="co" name="co" required placeholder="Northbeam"></div>
-      <div class="grid g2" style="gap:16px">
-        <div class="field">
-          <label for="sz">Team size</label>
-          <select id="sz" name="sz"><option>1–10</option><option>11–50</option><option selected>51–250</option><option>251–1,000</option><option>1,000+</option></select>
-        </div>
-        <div class="field">
-          <label for="tm">Which team</label>
-          <select id="tm" name="tm"><option>Research / strategy</option><option>Legal / compliance</option><option>Support / success</option><option>Product / engineering</option><option>Finance / ops</option><option>Other</option></select>
-        </div>
-      </div>
-      <div class="field"><label for="ms">What are you trying to answer faster?</label><textarea id="ms" name="ms" placeholder="We have six years of research decks and no way to ask them anything."></textarea></div>
-      <button class="btn" type="submit">Request a demo</button>
-      <p class="small muted" data-note>We reply within one business day. No sequence, no drip campaign.</p>
-    </form>
+<section class="section">
+  <div class="wrap stack-lg">
+    <div class="measure stack">
+      <span class="pill pill-accent">Where to put things</span>
+      <h2>Four places, and the difference matters.</h2>
+      <p class="lede">Putting a bug in Discord means it gets solved for you and forgotten by everyone else. This is the whole reason the split exists.</p>
+    </div>
+    <div class="grid g2 reveal">
+      <a class="card card-link" href="https://github.com/tomerdamari/ai-startup" id="discussions">
+        <div class="row" style="justify-content:space-between"><h4>GitHub Discussions</h4><span class="badge">searchable</span></div>
+        <p>"How do I…", "is this the right tool for…", "why does it do this?" Answers here get found by the next person with the same question, which is the point.</p>
+      </a>
+      <a class="card card-link" href="https://github.com/tomerdamari/ai-startup">
+        <div class="row" style="justify-content:space-between"><h4>GitHub Issues</h4><span class="badge">bugs &amp; features</span></div>
+        <p>Something is broken, or something should exist. A minimal corpus that reproduces the problem is worth more than a long description of it.</p>
+      </a>
+      <a class="card card-link" href="#discord" id="discord">
+        <div class="row" style="justify-content:space-between"><h4>Discord</h4><span class="badge">fast &amp; informal</span></div>
+        <p>Debugging out loud, showing what you built, arguing about chunking strategies. Fast, friendly and completely un-searchable — so anything worth keeping gets moved to Discussions.</p>
+      </a>
+      <a class="card card-link" href="mailto:security@quire.dev">
+        <div class="row" style="justify-content:space-between"><h4>security@quire.dev</h4><span class="badge">private</span></div>
+        <p>Vulnerabilities only, and never in a public issue. Acknowledged within 24 hours. Details and the PGP key are on the <a class="ink-link" href="security.html">security page</a>.</p>
+      </a>
+    </div>
+  </div>
+</section>
 
+<section class="section">
+  <div class="wrap split">
     <div class="stack">
-      <div class="card">
-        <h4>Go straight to a person</h4>
+      <span class="pill pill-accent">The monthly call</span>
+      <h2>First Thursday, 16:00 UTC, forty minutes.</h2>
+      <p class="lede">Open to anyone. Roughly fifteen people show up, half of whom have never contributed code. No slides.</p>
+      <ul class="checks">
+        <li>What shipped, what's stuck, what nobody wants to work on</li>
+        <li>Any RFC that's been open long enough to need a decision</li>
+        <li>An open floor that regularly turns into the most useful part</li>
+        <li>Recorded and posted, with notes in Discussions for people in bad time zones</li>
+      </ul>
+      <p class="small muted">The calendar link is pinned in Discord. If the time doesn't work for you, say so — it's moved twice for exactly that reason.</p>
+    </div>
+    <div class="stack">
+      <div class="tile tile-aqua">
+        <h4>How to ask a question that gets answered</h4>
         <ul class="checks">
-          <li><b>Sales &amp; pilots</b> — <a class="ink-link" href="mailto:sales@quire.ai">sales@quire.ai</a></li>
-          <li><b>Support</b> — <a class="ink-link" href="mailto:support@quire.ai">support@quire.ai</a>, 4-hour response on Business</li>
-          <li><b>Security &amp; questionnaires</b> — <a class="ink-link" href="mailto:security@quire.ai">security@quire.ai</a></li>
-          <li><b>Vulnerability reports</b> — <a class="ink-link" href="mailto:security@quire.ai">security@quire.ai</a>, PGP key on the <a class="ink-link" href="security.html">security page</a></li>
-          <li><b>Press</b> — <a class="ink-link" href="mailto:press@quire.ai">press@quire.ai</a></li>
-          <li><b>Jobs</b> — <a class="ink-link" href="mailto:jobs@quire.ai">jobs@quire.ai</a></li>
+          <li>Say what you ran and what happened, verbatim</li>
+          <li>Include the output of <code>quire config --explain</code></li>
+          <li>Say what you expected — half of all issues dissolve at this line</li>
+          <li>Ask in public even if it feels basic; someone else has it too</li>
         </ul>
       </div>
-
-      <div class="grid g2">
-        <div class="tile tile-powder">
-          <h4>Tel Aviv</h4>
-          <p class="small">Rothschild Blvd 45<br>Tel Aviv-Yafo 6578403<br>Israel</p>
-        </div>
-        <div class="tile tile-lavender">
-          <h4>Lisbon</h4>
-          <p class="small">Rua da Prata 80<br>1100-420 Lisboa<br>Portugal</p>
-        </div>
-      </div>
-
-      <div class="tile tile-mint">
-        <h4>Already a customer?</h4>
-        <p>Use the in-app help — it routes to the same people but arrives with your workspace context attached, which saves a round trip.</p>
-      </div>
-
-      <div class="card">
-        <h4>What happens on the call</h4>
-        <ul class="checks">
-          <li>Five minutes on what you're trying to answer</li>
-          <li>We connect one real source, live</li>
-          <li>You ask it the question your team argues about</li>
-          <li>We tell you if it's a bad fit — this happens roughly one call in five</li>
-        </ul>
+      <div class="tile tile-solar">
+        <h4>You don't need permission</h4>
+        <p>You don't need to be assigned an issue, introduce yourself first, or ask whether a PR would be welcome. Open it. The worst case is a maintainer explaining why not, which is more useful than the question was.</p>
       </div>
     </div>
+  </div>
+</section>
 
+<section class="section">
+  <div class="wrap stack-lg">
+    <div class="measure stack"><span class="pill">Elsewhere</span><h2>The rest of it.</h2></div>
+    <div class="grid g3 reveal">
+      <div class="card card-sm"><h4>Mailing list</h4><p class="small">Low traffic. Releases and anything about the licence or governance. Six emails last year.</p></div>
+      <div class="card card-sm"><h4>Fediverse</h4><p class="small"><code>@quire@fosstodon.org</code> — release notes and the occasional benchmark that made us look bad.</p></div>
+      <div class="card card-sm"><h4>Local meetups</h4><p class="small">Informal groups in Lisbon, Berlin and Tel Aviv. Started by users, not by us; we just link to them.</p></div>
+      <div class="card card-sm"><h4>Office hours</h4><p class="small">A maintainer sits in Discord voice for an hour every other Tuesday. Turn up with a broken config.</p></div>
+      <div class="card card-sm"><h4>Translations</h4><p class="small">Four languages, all community-maintained. Coordination happens in <code>#i18n</code>.</p></div>
+      <div class="card card-sm"><h4>Press &amp; talks</h4><p class="small"><a class="ink-link" href="mailto:hello@quire.dev">hello@quire.dev</a>. Happy to send someone to a conference if travel is covered.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="card" style="max-width:840px;margin-inline:auto">
+      <span class="pill">One rule</span>
+      <h3>Be decent, and assume the other person is too.</h3>
+      <p>Contributor Covenant 2.1 applies everywhere with our name on it — Discord, Issues, Discussions, the call. Reports go to <a class="ink-link" href="mailto:conduct@quire.dev">conduct@quire.dev</a>, which reaches two maintainers and one person outside the project.</p>
+      <p class="small muted">Full text and enforcement process on the <a class="ink-link" href="careers.html#conduct">contribute page</a>. Maintainers are not exempt.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="tile tile-ink center stack" style="padding:clamp(40px,7vw,88px)">
+      <h2>Lurking counts.</h2>
+      <p class="lede" style="color:rgba(255,255,255,.7);max-width:48ch;margin-inline:auto">Plenty of people read for months before saying anything, and several of them are maintainers now.</p>
+      <div class="row row-center">
+        <a class="btn btn-light" href="#discord">Join Discord</a>
+        <a class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.25)" href="careers.html">Find a first issue</a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -122,17 +162,18 @@
     <div class="footer-cols">
       <div class="stack" style="gap:16px">
         <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
-        <p class="small" style="max-width:34ch">The AI workspace that reads everything you don't have time to. Built in Tel Aviv and Lisbon.</p>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
       </div>
-      <div><h5>Product</h5><ul><li><a href="product.html">Overview</a></li><li><a href="product.html#library">Library</a></li><li><a href="product.html#notebook">Notebook</a></li><li><a href="product.html#agents">Agents</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
-      <div><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="careers.html">Careers</a></li><li><a href="customers.html">Customers</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
-      <div><h5>Resources</h5><ul><li><a href="docs.html">Docs &amp; API</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="security.html">Security</a></li><li><a href="docs.html#status">Status</a></li><li><a href="https://github.com/tomerdamari/ai-startup">Source on GitHub</a></li></ul></div>
-      <div><h5>Legal</h5><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="security.html#dpa">DPA</a></li><li><a href="privacy.html#subprocessors">Subprocessors</a></li></ul></div>
+      <div><h5>Project</h5><ul><li><a href="index.html">Overview</a></li><li><a href="product.html">How it works</a></li><li><a href="docs.html">Docs</a></li><li><a href="solutions.html">Recipes</a></li><li><a href="changelog.html">Releases</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="careers.html">Contribute</a></li><li><a href="customers.html">Showcase</a></li><li><a href="contact.html">Discussions</a></li><li><a href="contact.html#discord">Discord</a></li><li><a href="careers.html#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="pricing.html">Why it's free</a></li><li><a href="about.html">Governance</a></li><li><a href="security.html">Security</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="terms.html">License</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html#trademark">Trademark</a></li><li><a href="https://github.com/tomerdamari/ai-startup">Source on GitHub</a></li></ul></div>
     </div>
     <hr class="divider">
     <div class="footer-base">
-      <span>© 2026 Quire Labs Ltd. A fictional company, for design purposes.</span>
-      <span>hello@quire.ai</span>
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>maintainers@quire.dev</span>
     </div>
   </div>
 </footer>

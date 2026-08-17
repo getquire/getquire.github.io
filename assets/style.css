@@ -39,6 +39,14 @@
   /* type */
   --display: "Aeonik", "Inter Tight", "Sohne", Inter, "General Sans", system-ui, sans-serif;
   --body: "Geist", Inter, "Sohne", system-ui, -apple-system, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Geist Mono", Menlo, Consolas, monospace;
+
+  /* terminal syntax */
+  --term-prompt: #7fd7a8;
+  --term-cite: #7cc4ff;
+  --term-warn: #ffd98a;
+  --term-out: rgba(255, 255, 255, 0.74);
+  --term-dim: rgba(255, 255, 255, 0.42);
 
   /* shape */
   --r-pill: 9999px;
@@ -323,13 +331,77 @@ input::placeholder, textarea::placeholder { color: var(--fog); }
   font-family: var(--display); font-size: 24px; line-height: 1.3; letter-spacing: -0.02em; color: var(--ink);
 }
 .article figure { margin: var(--s5) 0; }
-code, .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 14px; }
+code, .mono { font-family: var(--mono); font-size: 14px; }
 pre {
   background: var(--charcoal); color: #e6ecf5; border-radius: var(--r-img);
   padding: var(--s3); overflow-x: auto; line-height: 1.6; margin: var(--s3) 0;
 }
 pre code { color: inherit; }
 :not(pre) > code { background: var(--mist); border-radius: 6px; padding: 2px 6px; color: var(--ink); }
+
+/* ---------- dev-tool components ---------- */
+.terminal { background: var(--charcoal); border-radius: var(--r-img); overflow: hidden; text-align: left; }
+.terminal-bar {
+  display: flex; align-items: center; gap: 7px;
+  padding: 14px 18px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.terminal-bar i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, 0.16); }
+.terminal-bar span { margin-left: 8px; font-family: var(--mono); font-size: 12px; color: var(--term-dim); }
+.terminal pre { margin: 0; border-radius: 0; padding: var(--s3); font-size: 13.5px; }
+.terminal pre + pre { padding-top: 0; }
+.t-prompt { color: var(--term-prompt); }
+.t-cite { color: var(--term-cite); }
+.t-warn { color: var(--term-warn); }
+.t-out { color: var(--term-out); }
+.t-dim { color: var(--term-dim); }
+
+/* Install bar — the primary call to action on an open-source site */
+.install {
+  display: inline-flex; align-items: center; gap: var(--s2);
+  background: var(--charcoal); border-radius: var(--r-pill);
+  padding: 8px 8px 8px 24px; max-width: 100%;
+}
+.install code { color: #fff; background: none; padding: 0; font-size: 15px; white-space: nowrap; overflow-x: auto; }
+.install code::before { content: "$ "; color: var(--term-prompt); }
+.install button {
+  flex: none; display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255, 255, 255, 0.1); color: #fff; border: 0;
+  font-family: var(--body); font-size: 13px; font-weight: 500;
+  padding: 8px 16px; border-radius: var(--r-pill);
+  transition: background-color .25s var(--ease-out);
+}
+.install button:hover { background: rgba(255, 255, 255, 0.2); }
+.install button[data-copied="true"] { background: var(--term-prompt); color: var(--charcoal); }
+
+/* Mono chips for versions, licenses, languages */
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 12px; color: var(--graphite);
+  background: var(--bone); border: 1px solid var(--hairline);
+  border-radius: var(--r-pill); padding: 4px 10px;
+}
+.badge-accent { color: var(--iris); background: var(--powder); border-color: transparent; }
+
+/* GitHub star button */
+.btn-repo { gap: 8px; }
+.btn-repo b { font-weight: 500; font-variant-numeric: tabular-nums; }
+.btn-repo svg { flex: none; }
+
+/* Contributor grid — initials stand in for avatars on a static site */
+.avatars { display: flex; flex-wrap: wrap; gap: 8px; }
+.avatars span {
+  width: 38px; height: 38px; border-radius: var(--r-pill);
+  display: grid; place-items: center;
+  font-size: 12px; font-weight: 600; color: var(--iris); background: var(--powder);
+  transition: transform .3s var(--ease-out);
+}
+.avatars span:nth-child(3n) { background: var(--mint); color: #1a7a4d; }
+.avatars span:nth-child(5n) { background: var(--lavender); color: #6b3fa0; }
+.avatars span:hover { transform: translateY(-3px); }
+
+/* File tree / config listings */
+.tree { font-family: var(--mono); font-size: 13px; color: var(--graphite); line-height: 1.9; }
+.tree b { color: var(--ink); font-weight: 500; }
 
 /* ---------- misc bits ---------- */
 .stat { display: grid; gap: 4px; }

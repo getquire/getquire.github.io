@@ -9,6 +9,20 @@ document.addEventListener('click', (e) => {
     return;
   }
 
+  const copy = e.target.closest('[data-copy]');
+  if (copy) {
+    navigator.clipboard.writeText(copy.dataset.copy).then(() => {
+      const label = copy.textContent;
+      copy.dataset.copied = 'true';
+      copy.textContent = 'Copied';
+      setTimeout(() => {
+        copy.dataset.copied = 'false';
+        copy.textContent = label;
+      }, 1600);
+    });
+    return;
+  }
+
   const q = e.target.closest('.faq-q');
   if (q) {
     const panel = q.nextElementSibling;

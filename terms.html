@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Terms — Quire</title>
-<meta name="description" content="Terms of service: what you get, what we owe you, what happens when it goes wrong.">
+<title>License — Quire</title>
+<meta name="description" content="Apache-2.0, what it lets you do, why we picked it, the contribution terms, and the trademark policy.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='5' width='21' height='22' rx='6' fill='%23cce7ff' transform='rotate(-12 13 16)'/><rect x='8' y='5' width='21' height='22' rx='6' fill='%230069e0'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,17 +17,19 @@
   <div class="wrap nav-in">
     <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
     <nav class="nav-links" aria-label="Primary">
-      <a href="product.html">Product</a>
-      <a href="solutions.html">Solutions</a>
-      <a href="pricing.html">Pricing</a>
       <a href="docs.html">Docs</a>
-      <a href="customers.html">Customers</a>
+      <a href="product.html">How it works</a>
+      <a href="solutions.html">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html">Community</a>
       <a href="blog.html">Blog</a>
-      <a href="about.html">About</a>
     </nav>
     <div class="nav-cta">
-      <a class="btn btn-ghost btn-sm" href="contact.html">Sign in</a>
-      <a class="btn btn-sm" href="contact.html">Get a demo</a>
+      <a class="btn btn-ghost btn-sm" href="careers.html">Contribute</a>
+      <a class="btn btn-sm btn-repo" href="https://github.com/tomerdamari/ai-startup">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <b>12.4k</b>
+      </a>
     </div>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
@@ -39,76 +41,59 @@
 
 <section class="section">
   <div class="wrap center stack">
-    <span class="pill">Terms</span>
-    <h1>Terms of service</h1>
-    <p class="lede measure">Plain language, because a term you can't understand isn't one you agreed to.</p>
-    <p class="small muted">Last updated 12 August 2026 · Quire Labs Ltd.</p>
+    <span class="pill">License</span>
+    <h1>Apache-2.0</h1>
+    <p class="lede measure">Use it commercially, modify it, ship it inside your product, keep your changes private. No copyleft obligation, and an explicit patent grant.</p>
+    <div class="row row-center"><span class="badge badge-accent">Apache-2.0</span><span class="badge">no CLA</span><span class="badge">OSI approved</span><span class="badge">patent grant</span></div>
   </div>
 </section>
 
 <section class="section-tight">
   <div class="wrap article">
 
-    <div class="tile tile-aqua" style="margin-bottom:40px">
+    <div class="tile tile-mint" style="margin-bottom:40px">
       <h4>The short version</h4>
       <ul class="checks">
-        <li>You own your content. We own the software. Neither of us takes the other's.</li>
-        <li>Pay monthly or annually; cancel any time and it stops at the end of the period.</li>
-        <li>The output is a draft, not advice. A human is accountable for what gets sent.</li>
-        <li>If we go down badly, you get credits; if we breach the contract, you can leave.</li>
+        <li><b>You can</b> use it for anything, including commercially; modify it; distribute it; sublicense it; and keep your modifications to yourself.</li>
+        <li><b>You must</b> include the licence and copyright notice, and state what you changed in files you modified.</li>
+        <li><b>You get</b> a patent licence from every contributor, which terminates if you sue anyone over patents in this software.</li>
+        <li><b>You don't get</b> a warranty, any liability cover, or the right to use the name to imply endorsement.</li>
       </ul>
     </div>
 
-    <h2>1. The agreement</h2>
-    <p>These terms apply between Quire Labs Ltd. and the organization on the account. If you're signing on behalf of a company, you're confirming you can. Enterprise customers usually sign a negotiated order form, which takes precedence over anything here that conflicts with it.</p>
+    <h2>1. Why Apache-2.0 and not MIT</h2>
+    <p>Versions 0.1 through 0.3 were MIT and remain MIT — that grant can't be withdrawn. From 0.4 onward we moved to Apache-2.0, for one reason: the explicit patent grant. Three organisations told us their legal review couldn't clear MIT for a tool doing inference, because MIT is silent on patents. Apache-2.0 says out loud that contributors licence their patents to users, and it says what happens if someone starts patent litigation.</p>
+    <p>We considered AGPL and rejected it. Copyleft on a tool people embed in internal workflows mostly produces legal review, not contributions — and the thing we want back is patches, which people send when it's easy rather than when they're compelled.</p>
 
-    <h2>2. Your account</h2>
-    <p>You're responsible for who you let in and what they do. Keep credentials secure, use SSO if you have it, and tell us at <a class="ink-link" href="mailto:security@quire.ai">security@quire.ai</a> if you think an account is compromised. Workspace admins can see usage metadata for their members — including who asked how many questions, but not the question text unless your own settings expose it.</p>
+    <h2>2. Contributions</h2>
+    <p>There is no contributor licence agreement. You keep your copyright. By opening a pull request you licence that contribution under Apache-2.0, exactly as section 5 of the licence describes.</p>
+    <p>This is deliberate and it's the strongest guarantee on this site. Without a CLA we don't hold the rights that would let us relicense the project. About 40% of the code is contributed, so making Quire proprietary would require finding and getting agreement from hundreds of people. That's not a promise about our intentions — it's a structural fact about what we're able to do.</p>
 
-    <h2>3. Your content stays yours</h2>
-    <p>You keep all rights to everything you connect or upload. You grant us a limited licence to process it solely to run the service for your workspace: index it, retrieve from it, and generate answers from it. That licence ends when you delete the content or close the workspace. We don't train on it, don't use it for other customers, and don't keep a copy after deletion beyond the backup window in the <a class="ink-link" href="privacy.html">privacy policy</a>.</p>
+    <h2>3. What "no warranty" actually means</h2>
+    <p>Section 7 of the licence disclaims warranties, and we mean it literally rather than as boilerplate. Quire produces answers from a language model. It can be wrong. Verification reduces how often, and it will never reduce it to zero.</p>
+    <p>Do not use output as legal, medical, financial or safety advice. A citation is evidence that a source says something, not proof the source is correct. If an answer is going to be relied on, a person reads the cited span first. This is the same standard we hold ourselves to.</p>
 
-    <h2>4. Our software stays ours</h2>
-    <p>Quire, its interfaces, models, prompts, retrieval systems and documentation are ours. You get a non-exclusive, non-transferable right to use them during your subscription. You may not resell the service, reverse-engineer it, use it to build a competing product, or run automated extraction outside the documented API.</p>
+    <h2>4. Third-party components</h2>
+    <p>31 runtime dependencies, all permissively licensed — MIT, BSD, Apache-2.0. No GPL or AGPL anywhere in the default dependency tree, which is checked in CI and fails the build if it changes. The full list with licences ships in the SBOM with every release, or run <code>quire --sbom</code>.</p>
+    <p>Model weights are not ours and are not covered by this licence. If you use Llama, Qwen, or any hosted model, that model's terms apply to your use of it and you should read them.</p>
 
-    <h2>5. Acceptable use</h2>
-    <p>Don't use Quire to process content you have no right to, to build profiles of individuals without a lawful basis, to generate material that is unlawful in your jurisdiction or ours, or to attempt to bypass another workspace's access controls. We may suspend an account for a serious violation, and we'll tell you why in writing before or immediately after.</p>
-
-    <h2>6. What the output is, and isn't</h2>
-    <p>Quire produces cited drafts from your own material. It is not legal, medical, financial or tax advice, and a citation is evidence that a source says something — not proof that the source is correct. You are responsible for review before anything is relied on, sent externally, or filed. Agents that act outside your workspace do so under configuration you control, and you're accountable for those actions the same way you'd be for a person you delegated to.</p>
-
-    <h2>7. Payment</h2>
+    <h2 id="trademark">5. Trademark</h2>
+    <p>The name Quire and the logo are not covered by the Apache licence — section 6 excludes trademarks specifically. The policy is short:</p>
     <ul>
-      <li>Fees are per seat, billed monthly or annually in advance, in USD or EUR</li>
-      <li>Seat counts are trued up monthly; removed seats prorate as a credit</li>
-      <li>Prices are exclusive of VAT and similar taxes</li>
-      <li>Overdue invoices past 30 days may lead to suspension, after two written notices</li>
-      <li>We won't raise your price mid-term. Renewal increases get 60 days notice</li>
+      <li><b>Fine, no permission needed:</b> saying your project uses Quire, writing tutorials, giving talks, naming a plugin <code>quire-something</code>, forking and keeping the name in the fork's history and attribution.</li>
+      <li><b>Ask first:</b> naming a product or company Quire-something, using the logo as your own branding, or anything that suggests we built or endorsed your thing.</li>
+      <li><b>Not fine:</b> distributing a modified build under the name Quire. Rename it — that's what the licence lets you do, and it keeps "Quire" meaning one specific thing.</li>
     </ul>
+    <p>If you're unsure, mail <a class="ink-link" href="mailto:hello@quire.dev">hello@quire.dev</a>. We have never said no to anyone acting in good faith.</p>
 
-    <h2>8. Uptime and support</h2>
-    <p>Business and Enterprise plans carry a 99.9% monthly uptime commitment. Below that, you get service credits: 10% of the monthly fee under 99.9%, 25% under 99.0%, 50% under 95.0%. Free and Team plans are provided as-is with commercially reasonable effort and no credits. Scheduled maintenance is announced 72 hours ahead and doesn't count against the number.</p>
+    <h2>6. If we disappear</h2>
+    <p>The licence survives us. Every release published is licensed permanently, forks are permitted without asking, and publishing keys are held by three parties including one outside the project so a security release is still possible. See <a class="ink-link" href="about.html">governance</a>.</p>
 
-    <h2>9. Cancellation and export</h2>
-    <p>Cancel any time from billing settings. Service continues to the end of the paid period; we don't refund partial months, and we don't make you call anyone. Before or within 30 days after cancellation you can export every notebook, agent definition and trace as Markdown and JSON. After that we delete on the schedule in the privacy policy and send written confirmation.</p>
-
-    <h2>10. Liability</h2>
-    <p>Neither side is liable for indirect, incidental or consequential damages. Our aggregate liability is capped at the fees you paid in the 12 months before the claim. These caps don't apply to our breach of confidentiality obligations, our indemnity for third-party IP claims against you, or anything that can't be limited by law.</p>
-
-    <h2>11. Confidentiality</h2>
-    <p>Each side protects the other's confidential information with at least reasonable care and uses it only for this agreement. Obligations survive for three years after termination, and indefinitely for your customer content.</p>
-
-    <h2>12. Changes</h2>
-    <p>We may update these terms. Material changes get 30 days notice to workspace admins, and if you don't accept them you may terminate and receive a prorated refund of prepaid fees. We won't apply changes retroactively.</p>
-
-    <h2>13. Governing law</h2>
-    <p>Israeli law, courts of Tel Aviv, for customers contracting with the Israeli entity. Portuguese law and the courts of Lisbon for customers contracting with the EU entity. Enterprise order forms may specify otherwise.</p>
-
-    <h2>14. Contact</h2>
-    <p>Legal questions: <a class="ink-link" href="mailto:legal@quire.ai">legal@quire.ai</a>. Everything else: <a class="ink-link" href="contact.html">the contact page</a>.</p>
+    <h2>7. Full text</h2>
+    <p>The complete Apache License 2.0 is in <code>LICENSE</code> at the repository root and at <a class="ink-link" href="https://www.apache.org/licenses/LICENSE-2.0">apache.org/licenses/LICENSE-2.0</a>. Where anything on this page differs from that text, that text governs — this page is a plain-language summary, not the licence.</p>
 
     <hr class="divider" style="margin-block:40px">
-    <p class="small muted">This is a demonstration site for a fictional company. The text above is illustrative and is not legal advice or an enforceable agreement — have counsel draft the real one.</p>
+    <p class="small muted">This is a demonstration site for a fictional project. The summary above is illustrative and is not legal advice. Apache-2.0 itself is a real licence; how it applies to your situation is a question for your own counsel.</p>
   </div>
 </section>
 
@@ -119,17 +104,18 @@
     <div class="footer-cols">
       <div class="stack" style="gap:16px">
         <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
-        <p class="small" style="max-width:34ch">The AI workspace that reads everything you don't have time to. Built in Tel Aviv and Lisbon.</p>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
       </div>
-      <div><h5>Product</h5><ul><li><a href="product.html">Overview</a></li><li><a href="product.html#library">Library</a></li><li><a href="product.html#notebook">Notebook</a></li><li><a href="product.html#agents">Agents</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
-      <div><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="careers.html">Careers</a></li><li><a href="customers.html">Customers</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
-      <div><h5>Resources</h5><ul><li><a href="docs.html">Docs &amp; API</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="security.html">Security</a></li><li><a href="docs.html#status">Status</a></li><li><a href="https://github.com/tomerdamari/ai-startup">Source on GitHub</a></li></ul></div>
-      <div><h5>Legal</h5><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="security.html#dpa">DPA</a></li><li><a href="privacy.html#subprocessors">Subprocessors</a></li></ul></div>
+      <div><h5>Project</h5><ul><li><a href="index.html">Overview</a></li><li><a href="product.html">How it works</a></li><li><a href="docs.html">Docs</a></li><li><a href="solutions.html">Recipes</a></li><li><a href="changelog.html">Releases</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="careers.html">Contribute</a></li><li><a href="customers.html">Showcase</a></li><li><a href="contact.html">Discussions</a></li><li><a href="contact.html#discord">Discord</a></li><li><a href="careers.html#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="pricing.html">Why it's free</a></li><li><a href="about.html">Governance</a></li><li><a href="security.html">Security</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="terms.html">License</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html#trademark">Trademark</a></li><li><a href="https://github.com/tomerdamari/ai-startup">Source on GitHub</a></li></ul></div>
     </div>
     <hr class="divider">
     <div class="footer-base">
-      <span>© 2026 Quire Labs Ltd. A fictional company, for design purposes.</span>
-      <span>hello@quire.ai</span>
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>maintainers@quire.dev</span>
     </div>
   </div>
 </footer>

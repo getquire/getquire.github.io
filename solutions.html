@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Solutions — Quire</title>
-<meta name="description" content="How research, legal, support, product and finance teams use Quire — with the specific workflows that pay for it.">
+<title>Recipes — Quire</title>
+<meta name="description" content="Copy-paste configurations for common jobs: docs QA in CI, a research archive, contract review, an offline knowledge base, a Slack answerer.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='5' width='21' height='22' rx='6' fill='%23cce7ff' transform='rotate(-12 13 16)'/><rect x='8' y='5' width='21' height='22' rx='6' fill='%230069e0'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,17 +17,19 @@
   <div class="wrap nav-in">
     <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
     <nav class="nav-links" aria-label="Primary">
-      <a href="product.html">Product</a>
-      <a href="solutions.html" aria-current="page">Solutions</a>
-      <a href="pricing.html">Pricing</a>
       <a href="docs.html">Docs</a>
-      <a href="customers.html">Customers</a>
+      <a href="product.html">How it works</a>
+      <a href="solutions.html" aria-current="page">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html">Community</a>
       <a href="blog.html">Blog</a>
-      <a href="about.html">About</a>
     </nav>
     <div class="nav-cta">
-      <a class="btn btn-ghost btn-sm" href="contact.html">Sign in</a>
-      <a class="btn btn-sm" href="contact.html">Get a demo</a>
+      <a class="btn btn-ghost btn-sm" href="careers.html">Contribute</a>
+      <a class="btn btn-sm btn-repo" href="https://github.com/tomerdamari/ai-startup">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <b>12.4k</b>
+      </a>
     </div>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
@@ -39,128 +41,171 @@
 
 <section class="section">
   <div class="wrap center stack-lg">
-    <span class="pill">Solutions</span>
-    <h1>Same library.<br>Five different jobs.</h1>
-    <p class="lede measure">Quire is horizontal, which usually means vague. So here is the specific thing each team does with it in week one, and the thing they do by month three.</p>
+    <span class="pill">Recipes</span>
+    <h1>Copy the config.<br>Change two lines.</h1>
+    <p class="lede measure">Working setups for the jobs people actually run Quire for. Each one is a real config plus the command, contributed by whoever built it first. All of them live in <code>examples/</code> in the repo.</p>
     <div class="row row-center">
-      <a class="pill" href="#research">Research</a><a class="pill" href="#legal">Legal</a><a class="pill" href="#support">Support</a><a class="pill" href="#product">Product</a><a class="pill" href="#finance">Finance</a>
+      <a class="pill" href="#ci">Docs QA in CI</a><a class="pill" href="#research">Research archive</a><a class="pill" href="#legal">Contract review</a><a class="pill" href="#airgap">Air-gapped</a><a class="pill" href="#slack">Slack answerer</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="ci">
+  <div class="wrap split">
+    <div class="stack">
+      <span class="pill pill-accent">Recipe 01 · contributed by @halden-ops</span>
+      <h2>Fail the build when the docs go stale.</h2>
+      <p class="lede">A GitHub Action that asks a set of questions your documentation is supposed to answer. <code>--strict</code> means an ungrounded answer exits non-zero, so a doc that quietly stopped being true breaks CI instead of a customer.</p>
+      <ul class="checks">
+        <li>Runs on a local model, so no API key in your Actions secrets</li>
+        <li>About 40 seconds for a 1,200-file docs tree, cached index</li>
+        <li>The question list is a plain text file reviewers can add to</li>
+      </ul>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar"><i></i><i></i><i></i><span>.github/workflows/docs-qa.yml</span></div>
+<pre><code><span class="t-dim">- name:</span> Index docs
+  <span class="t-dim">run:</span> quire index ./docs --quiet
+
+<span class="t-dim">- name:</span> Answerability check
+  <span class="t-dim">run:</span> <span class="t-out">|</span>
+    <span class="t-out">while read -r q; do</span>
+      <span class="t-out">quire ask "$q" --strict --quiet \</span>
+        <span class="t-out">|| { echo "::error::unanswerable: $q"; fail=1; }</span>
+    <span class="t-out">done &lt; docs/must-answer.txt</span>
+    <span class="t-out">exit ${fail:-0}</span></code></pre>
     </div>
   </div>
 </section>
 
 <section class="section" id="research">
   <div class="wrap split">
-    <div class="stack">
-      <span class="pill pill-accent">Research &amp; strategy</span>
-      <h2>Stop rebuilding the same landscape every quarter.</h2>
-      <p class="lede">Your last three market reviews already contain most of the answer. Quire treats them as the corpus and only goes looking for what changed.</p>
-      <ul class="checks">
-        <li><b>Week one:</b> ask across every past deck, call transcript and interview note at once</li>
-        <li><b>Month three:</b> a Monday agent that posts a diff — what moved since the last brief, with sources</li>
-        <li>Interview synthesis: 40 transcripts to a themed summary with quote-level attribution</li>
-        <li>Automatic contradiction flags when two analysts wrote incompatible things</li>
-      </ul>
+    <div class="terminal">
+      <div class="terminal-bar"><i></i><i></i><i></i><span>weekly-brief.yml</span></div>
+<pre><code><span class="t-dim">name:</span> monday-brief
+<span class="t-dim">schedule:</span> <span class="t-out">"0 7 * * 1"</span>
+<span class="t-dim">ask:</span> <span class="t-out">|</span>
+  <span class="t-out">What changed across these notes in 7 days?</span>
+  <span class="t-out">Lead with anything that contradicts an</span>
+  <span class="t-out">earlier note. Cite everything. Max 400 words.</span>
+<span class="t-dim">sources:</span> [<span class="t-out">"interviews/**"</span>, <span class="t-out">"calls/**"</span>, <span class="t-out">"decks/**"</span>]
+<span class="t-dim">output:</span> { <span class="t-dim">to:</span> <span class="t-out">"file"</span>, <span class="t-dim">path:</span> <span class="t-out">"briefs/{date}.md"</span> }
+<span class="t-dim">conflicts:</span> <span class="t-out">show</span></code></pre>
     </div>
-    <div class="tile tile-violet">
-      <p class="caption">Typical result</p>
-      <h3>Two-hour synthesis meeting → a 7am brief</h3>
-      <p>Northbeam's research team replaced their weekly readout with a generated brief and kept the meeting only for disagreements. Twelve hours a week back across the team.</p>
-      <a class="ink-link small" href="customers.html">Read the case study →</a>
+    <div class="stack">
+      <span class="pill pill-accent">Recipe 02 · contributed by @rume-o</span>
+      <h2>A Monday brief from six years of notes.</h2>
+      <p class="lede">Point it at interview transcripts, call notes and old decks. The agent writes a diff — what moved, and what contradicts something written earlier.</p>
+      <p><b>The tuning that mattered:</b> the first version had no word cap and nobody read it. <code>max_words: 400</code> and "lead with contradictions" were the two changes that made it stick.</p>
+      <div class="badge-row"><span class="badge">agents</span><span class="badge">conflicts: show</span><span class="badge">local model</span></div>
     </div>
   </div>
 </section>
 
 <section class="section" id="legal">
   <div class="wrap split">
-    <div class="tile tile-aqua">
-      <p class="caption">Typical result</p>
-      <h3>First-pass redline in 90 seconds</h3>
-      <p>Halden's legal team routes inbound contracts through an agent that marks deviations from their playbook by clause and ranks them by risk. Counsel reviews the exceptions, not the whole document.</p>
-      <a class="ink-link small" href="customers.html">Read the case study →</a>
-    </div>
     <div class="stack">
-      <span class="pill pill-accent">Legal &amp; compliance</span>
-      <h2>Review the exceptions, not the boilerplate.</h2>
-      <p class="lede">Quire compares an incoming document against your own executed agreements and your playbook — not against a generic notion of what a contract should say.</p>
+      <span class="pill pill-accent">Recipe 03 · contributed by @dleib</span>
+      <h2>Compare a contract to your own precedent.</h2>
+      <p class="lede">Index your executed agreements and your playbook, then ask about a new one clause by clause. Quire compares against what you have actually signed, not a generic idea of what a contract should say.</p>
       <ul class="checks">
-        <li>Clause-level extraction across your whole executed-contract archive</li>
-        <li>"Show me every MSA with uncapped liability" answered in one query</li>
-        <li>Obligation calendars pulled out of signed agreements automatically</li>
-        <li>Reviewer trail that survives an audit: who asked, what was retrieved, what was produced</li>
+        <li>Runs fully local — this is content you don't send anywhere</li>
+        <li>Conflicts shown rather than resolved: two precedents, both quoted</li>
+        <li>Output is Markdown a human reads, not an automated redline</li>
       </ul>
+      <div class="tile tile-peach" style="margin-top:8px">
+        <p class="small"><b>Read this part.</b> This recipe finds and quotes; it does not advise. Every published version of it has a human reviewing the exceptions, and you should keep that.</p>
+      </div>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar"><i></i><i></i><i></i><span>clause check</span></div>
+<pre><code><span class="t-prompt">$</span> quire index ./executed ./playbook.md
+<span class="t-prompt">$</span> quire ask <span class="t-out">"Does inbound/acme.pdf deviate from our</span>
+<span class="t-out">     position on liability caps? Quote both."</span> \
+     --strict
+
+<span class="t-out">Yes. Acme §9.2 leaves liability uncapped for</span>
+<span class="t-out">data claims</span><span class="t-cite">[1]</span><span class="t-out">. Our playbook requires a 12-month</span>
+<span class="t-out">fees cap</span><span class="t-cite">[2]</span><span class="t-out">, and 31 of 34 executed MSAs have one</span><span class="t-cite">[3]</span><span class="t-out">.</span>
+
+<span class="t-cite">  [1]</span> <span class="t-dim">inbound/acme.pdf p.11</span>
+<span class="t-cite">  [2]</span> <span class="t-dim">playbook.md:212</span>
+<span class="t-cite">  [3]</span> <span class="t-dim">executed/ — 31 matches</span></code></pre>
     </div>
   </div>
 </section>
 
-<section class="section" id="support">
+<section class="section" id="airgap">
   <div class="wrap split">
-    <div class="stack">
-      <span class="pill pill-accent">Support &amp; success</span>
-      <h2>Answers that age with your product.</h2>
-      <p class="lede">Macros go stale the day after they're written. Quire drafts from the current docs, the current changelog and the last thirty resolved tickets on the same topic.</p>
-      <ul class="checks">
-        <li>Draft replies with the source doc attached, so the agent can verify before sending</li>
-        <li>Deflection candidates: questions asked 40 times that have no doc page yet</li>
-        <li>Escalation summaries that include what was already tried</li>
-        <li>A weekly "what broke" digest built from tickets, not from vibes</li>
-      </ul>
+    <div class="terminal">
+      <div class="terminal-bar"><i></i><i></i><i></i><span>airgapped.toml</span></div>
+<pre><code><span class="t-dim">[model]</span>
+answer  = <span class="t-out">"ollama/llama3.1:70b"</span>
+verify  = <span class="t-out">"ollama/qwen2.5:3b"</span>
+embed   = <span class="t-out">"bge-small-en-v1.5"</span>
+
+<span class="t-dim">[network]</span>
+offline = <span class="t-out">true</span>    <span class="t-dim"># hard fail on any outbound call</span>
+
+<span class="t-dim">[index]</span>
+store   = <span class="t-out">"sqlite://./archive.db"</span>
+ocr     = <span class="t-out">"always"</span>
+
+<span class="t-prompt">$</span> quire index ./scans --workers 8
+<span class="t-dim">  4,112,880 spans · 61h · resumable</span></code></pre>
     </div>
-    <div class="tile tile-mint">
-      <p class="caption">Typical result</p>
-      <h3>First-response time down 61%</h3>
-      <p>Pact's support team keeps a human on every reply but stopped writing them from scratch. The measurable win was consistency, not speed — new hires answer like veterans in week one.</p>
-      <a class="ink-link small" href="customers.html">Read the case study →</a>
+    <div class="stack">
+      <span class="pill pill-accent">Recipe 04 · contributed by @archive-collective</span>
+      <h2>Four million scanned pages, no network.</h2>
+      <p class="lede">A public records archive running entirely offline. <code>offline = true</code> makes any outbound call a hard error rather than a silent fallback, which is the setting you want when the guarantee has to be provable.</p>
+      <ul class="checks">
+        <li>OCR forced on — everything is a scan</li>
+        <li>Indexing is resumable; it ran over three weekends</li>
+        <li>Postgres would be the usual advice at this size; SQLite held</li>
+      </ul>
+      <a class="ink-link small" href="customers.html">See it in the showcase →</a>
     </div>
   </div>
 </section>
 
-<section class="section" id="product">
+<section class="section" id="slack">
   <div class="wrap split">
-    <div class="tile tile-peach">
-      <p class="caption">Typical result</p>
-      <h3>A decision log nobody had to write</h3>
-      <p>Orrery's product org asked Quire to reconstruct why six architectural decisions were made. It found the threads, the RFCs and the two meetings where the call was actually made.</p>
-      <a class="ink-link small" href="customers.html">Read the case study →</a>
-    </div>
     <div class="stack">
-      <span class="pill pill-accent">Product &amp; engineering</span>
-      <h2>Recover the reasoning, not just the outcome.</h2>
-      <p class="lede">The code tells you what was built. Quire tells you what was rejected and why — which is the part that stops a team relitigating a decision every eight months.</p>
+      <span class="pill pill-accent">Recipe 05 · contributed by @sam-p</span>
+      <h2>Answer in Slack, with the source attached.</h2>
+      <p class="lede">A small bot that calls <code>quire serve</code> and posts the answer with its citations as a thread reply. It never posts when the answer is ungrounded — it says it doesn't know and tags the channel owner.</p>
       <ul class="checks">
-        <li>Feedback synthesis across tickets, calls, reviews and sales notes</li>
-        <li>RFC context on demand: "what did we decide about multi-region and when?"</li>
-        <li>Onboarding paths that answer a new engineer's questions from real history</li>
-        <li>Release notes drafted from merged PRs and the tickets they closed</li>
+        <li>Roughly 60 lines against the HTTP API</li>
+        <li>Silence is the designed behavior for low confidence</li>
+        <li>Runs on the same machine as the index; nothing is exposed</li>
       </ul>
     </div>
-  </div>
-</section>
+    <div class="terminal">
+      <div class="terminal-bar"><i></i><i></i><i></i><span>bot.py</span></div>
+<pre><code>r = httpx.post(<span class="t-out">"http://localhost:7777/v1/ask"</span>,
+               json={<span class="t-out">"question"</span>: text, <span class="t-out">"strict"</span>: <span class="t-out">True</span>})
 
-<section class="section" id="finance">
-  <div class="wrap split">
-    <div class="stack">
-      <span class="pill pill-accent">Finance &amp; ops</span>
-      <h2>Where did that number come from?</h2>
-      <p class="lede">Board decks are assembled from a dozen exports and someone's memory. Quire keeps the provenance attached so the follow-up question has an answer.</p>
-      <ul class="checks">
-        <li>Trace any figure in a deck back to the export and the query that produced it</li>
-        <li>Variance narratives drafted from the actuals plus last quarter's commentary</li>
-        <li>Vendor spend questions answered across invoices, contracts and approvals</li>
-        <li>Close checklists that flag the documents that didn't arrive</li>
-      </ul>
-    </div>
-    <div class="tile tile-lavender">
-      <p class="caption">Typical result</p>
-      <h3>Board prep from three days to four hours</h3>
-      <p>Not because the deck writes itself, but because the fact-checking pass stops being a scavenger hunt.</p>
+<span class="t-prompt">if</span> r.status_code == <span class="t-out">422</span>:
+    say(<span class="t-out">"Not in the index. cc @docs-owner"</span>)
+<span class="t-prompt">else</span>:
+    a = r.json()
+    say(a[<span class="t-out">"answer"</span>] + <span class="t-out">"\n"</span> + <span class="t-out">"\n"</span>.join(
+        <span class="t-out">f"[{c['n']}] {c['locator']}"</span>
+        <span class="t-prompt">for</span> c <span class="t-prompt">in</span> a[<span class="t-out">"citations"</span>]))</code></pre>
     </div>
   </div>
 </section>
 
 <section class="section">
-  <div class="wrap stack-lg">
-    <div class="center stack measure"><h2>Not sure which one you are?</h2><p class="lede">Most teams start in one place and spread sideways within a month. Pick the loudest pain and we'll scope a two-week pilot around it.</p></div>
-    <div class="center"><a class="btn" href="contact.html">Scope a pilot</a></div>
+  <div class="wrap">
+    <div class="tile tile-ink center stack" style="padding:clamp(40px,7vw,88px)">
+      <h2>Built something? Add a recipe.</h2>
+      <p class="lede" style="color:rgba(255,255,255,.7);max-width:52ch;margin-inline:auto">Drop a folder in <code>examples/</code> with a config, a command and a paragraph on what broke first. That last part is the one people actually need.</p>
+      <div class="row row-center">
+        <a class="btn btn-light" href="careers.html">How to contribute</a>
+        <a class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.25)" href="customers.html">See the showcase</a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -171,17 +216,18 @@
     <div class="footer-cols">
       <div class="stack" style="gap:16px">
         <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
-        <p class="small" style="max-width:34ch">The AI workspace that reads everything you don't have time to. Built in Tel Aviv and Lisbon.</p>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
       </div>
-      <div><h5>Product</h5><ul><li><a href="product.html">Overview</a></li><li><a href="product.html#library">Library</a></li><li><a href="product.html#notebook">Notebook</a></li><li><a href="product.html#agents">Agents</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
-      <div><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="careers.html">Careers</a></li><li><a href="customers.html">Customers</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
-      <div><h5>Resources</h5><ul><li><a href="docs.html">Docs &amp; API</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="security.html">Security</a></li><li><a href="docs.html#status">Status</a></li><li><a href="https://github.com/tomerdamari/ai-startup">Source on GitHub</a></li></ul></div>
-      <div><h5>Legal</h5><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="security.html#dpa">DPA</a></li><li><a href="privacy.html#subprocessors">Subprocessors</a></li></ul></div>
+      <div><h5>Project</h5><ul><li><a href="index.html">Overview</a></li><li><a href="product.html">How it works</a></li><li><a href="docs.html">Docs</a></li><li><a href="solutions.html">Recipes</a></li><li><a href="changelog.html">Releases</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="careers.html">Contribute</a></li><li><a href="customers.html">Showcase</a></li><li><a href="contact.html">Discussions</a></li><li><a href="contact.html#discord">Discord</a></li><li><a href="careers.html#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="pricing.html">Why it's free</a></li><li><a href="about.html">Governance</a></li><li><a href="security.html">Security</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="terms.html">License</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html#trademark">Trademark</a></li><li><a href="https://github.com/tomerdamari/ai-startup">Source on GitHub</a></li></ul></div>
     </div>
     <hr class="divider">
     <div class="footer-base">
-      <span>© 2026 Quire Labs Ltd. A fictional company, for design purposes.</span>
-      <span>hello@quire.ai</span>
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>maintainers@quire.dev</span>
     </div>
   </div>
 </footer>

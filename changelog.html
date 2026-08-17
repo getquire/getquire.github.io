@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Changelog — Quire</title>
-<meta name="description" content="What shipped, what broke, what we removed. Updated every release.">
+<title>Releases — Quire</title>
+<meta name="description" content="Every release, including the removals, the regressions and the security fixes. Semantic versioning, no surprise breakage.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='5' width='21' height='22' rx='6' fill='%23cce7ff' transform='rotate(-12 13 16)'/><rect x='8' y='5' width='21' height='22' rx='6' fill='%230069e0'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,17 +17,19 @@
   <div class="wrap nav-in">
     <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
     <nav class="nav-links" aria-label="Primary">
-      <a href="product.html">Product</a>
-      <a href="solutions.html">Solutions</a>
-      <a href="pricing.html">Pricing</a>
       <a href="docs.html">Docs</a>
-      <a href="customers.html">Customers</a>
+      <a href="product.html">How it works</a>
+      <a href="solutions.html">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html">Community</a>
       <a href="blog.html">Blog</a>
-      <a href="about.html">About</a>
     </nav>
     <div class="nav-cta">
-      <a class="btn btn-ghost btn-sm" href="contact.html">Sign in</a>
-      <a class="btn btn-sm" href="contact.html">Get a demo</a>
+      <a class="btn btn-ghost btn-sm" href="careers.html">Contribute</a>
+      <a class="btn btn-sm btn-repo" href="https://github.com/tomerdamari/ai-startup">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <b>12.4k</b>
+      </a>
     </div>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
@@ -39,9 +41,20 @@
 
 <section class="section">
   <div class="wrap center stack-lg">
-    <span class="pill">Changelog</span>
-    <h1>Everything that changed.</h1>
-    <p class="lede measure">Including the removals and the regressions. A changelog that only lists additions is marketing with dates on it.</p>
+    <span class="pill">Releases</span>
+    <h1>89 releases.<br>Including the bad ones.</h1>
+    <p class="lede measure">A changelog that only lists additions is marketing with dates on it. Removals, regressions and security fixes are here too, with what we got wrong.</p>
+    <div class="row row-center">
+      <div class="install"><code>pipx upgrade quire</code><button data-copy="pipx upgrade quire">Copy</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="wrap grid g3 reveal">
+    <div class="card card-sm"><h4>Semantic versioning</h4><p class="small">Breaking changes only in majors, announced at least 90 days ahead in a pinned issue.</p></div>
+    <div class="card card-sm"><h4>Index compatibility</h4><p class="small">Minors never require a reindex. Majors migrate automatically or tell you exactly what to run.</p></div>
+    <div class="card card-sm"><h4>Support window</h4><p class="small">Security fixes backported to the previous major for twelve months after it's superseded.</p></div>
   </div>
 </section>
 
@@ -49,71 +62,73 @@
   <div class="wrap stack-lg" style="max-width:840px">
 
     <article class="card">
-      <div class="row" style="justify-content:space-between"><span class="pill pill-accent">3.0.0 · Major</span><span class="small muted">12 August 2026</span></div>
-      <h3>Quire 3.0 — disagreement detection</h3>
-      <p>The big one. Answers now flag when two sources support incompatible claims instead of silently picking the higher-ranked span.</p>
+      <div class="row" style="justify-content:space-between"><span class="badge badge-accent">v3.0.1 · patch</span><span class="small muted mono">2026-08-14</span></div>
+      <h3>Windows glob fix</h3>
       <ul class="checks">
-        <li><b>Added</b> — conflict objects in every answer and API response, with both sources shown</li>
-        <li><b>Added</b> — 8 connectors: Airtable, Linear, Miro, Figma, Intercom, Front, Coda, Dropbox Paper</li>
-        <li><b>Added</b> — sub-second first token on warm indexes (median 890ms, from 1.4s)</li>
-        <li><b>Changed</b> — confidence is now calibrated against held-out human labels rather than model self-report</li>
-        <li><b>Removed</b> — the "creative" answer mode. It was used by 0.4% of sessions and produced 60% of our complaints</li>
+        <li><b>Fixed</b> — <code>exclude</code> patterns with backslash separators never matched on Windows, silently indexing <code>node_modules</code>. Contributed by <span class="mono">@kfrost</span>, who also added the platform test that would have caught it.</li>
+        <li><b>Fixed</b> — <code>quire index --resume</code> reported progress from zero</li>
       </ul>
     </article>
 
     <article class="card">
-      <div class="row" style="justify-content:space-between"><span class="pill">2.8.0 · Minor</span><span class="small muted">29 July 2026</span></div>
-      <h3>Agent approval workflows</h3>
+      <div class="row" style="justify-content:space-between"><span class="badge badge-accent">v3.0.0 · major</span><span class="small muted mono">2026-08-04</span></div>
+      <h3>Conflict detection</h3>
+      <p>Answers now flag when two sources support incompatible claims instead of silently taking the higher-ranked span.</p>
       <ul class="checks">
-        <li><b>Added</b> — agents that act outside the workspace now require approval for their first ten runs by default</li>
-        <li><b>Added</b> — per-agent cost ceilings with a hard stop, not a warning email</li>
-        <li><b>Fixed</b> — scheduled agents in UTC+13 ran a day early. Affected two workspaces, both notified before we shipped the fix</li>
+        <li><b>Added</b> — <code>conflicts</code> in every answer and API response, with both sources quoted</li>
+        <li><b>Added</b> — 8 community parsers: org-mode, RST, LaTeX, mbox, epub, vtt, srt, ods</li>
+        <li><b>Added</b> — sub-second first token on a warm index with a local 8B model</li>
+        <li><b>Changed</b> — confidence is calibrated against held-out human labels rather than model self-report</li>
+        <li><b>Removed</b> — the <code>--creative</code> flag. Used in 0.4% of invocations and responsible for most of the "it made something up" reports</li>
+        <li><b>Breaking</b> — <code>ask()</code> returns an <code>Answer</code> object rather than a string. <code>.text</code> for the old behaviour; announced in March</li>
       </ul>
     </article>
 
     <article class="card">
-      <div class="row" style="justify-content:space-between"><span class="pill">2.7.2 · Patch</span><span class="small muted">15 July 2026</span></div>
-      <h3>SharePoint permission edge case</h3>
-      <p><b>This was a security-relevant fix.</b> Documents inheriting permissions from a deleted parent site could be retrieved by users who had lost access. No customer was affected — we found it in our own red-team suite — but the write-up is in the security portal.</p>
+      <div class="row" style="justify-content:space-between"><span class="badge">v2.9.4 · patch</span><span class="small muted mono">2026-07-15</span></div>
+      <h3>Security: path traversal in the archive parser</h3>
+      <p><b>GHSA-2026-0004.</b> A crafted zip could write outside the extraction directory during indexing. Reported by an external researcher, fixed in nine hours, credited in the advisory.</p>
       <ul class="checks">
-        <li><b>Fixed</b> — orphaned-inheritance documents are now excluded until re-resolved</li>
-        <li><b>Added</b> — a nightly permission reconciliation job across all sources</li>
+        <li><b>Fixed</b> — archive entries are now validated against the destination root before extraction</li>
+        <li><b>Added</b> — a fuzzing job over the archive parser in CI</li>
+        <li><b>Backported</b> — to 1.x as 1.14.9</li>
       </ul>
     </article>
 
     <article class="card">
-      <div class="row" style="justify-content:space-between"><span class="pill">2.7.0 · Minor</span><span class="small muted">1 July 2026</span></div>
+      <div class="row" style="justify-content:space-between"><span class="badge">v2.9.0 · minor</span><span class="small muted mono">2026-06-28</span></div>
+      <h3>Offline mode, and a regression we shipped</h3>
+      <ul class="checks">
+        <li><b>Added</b> — <code>offline = true</code> makes any outbound call a hard error rather than a silent fallback</li>
+        <li><b>Added</b> — SBOM available from the CLI with <code>--sbom</code></li>
+        <li><b>Regressed</b> — reranking got 4× slower on ARM because we shipped a wheel without the right SIMD path. Nobody noticed for eleven days. Fixed in 2.9.1; we now benchmark on ARM in CI, which is what should have happened first</li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <div class="row" style="justify-content:space-between"><span class="badge">v2.8.0 · minor</span><span class="small muted mono">2026-06-02</span></div>
       <h3>Table parsing rewrite</h3>
       <ul class="checks">
-        <li><b>Changed</b> — merged cells, multi-row headers and footnote markers now survive parsing. Attribution accuracy on table questions went from 74% to 96%</li>
-        <li><b>Added</b> — <code>GET /v1/documents/:id</code> returns parsed structure so you can see what we saw</li>
-        <li><b>Known issue</b> — rotated tables in scanned PDFs still fail about one time in six. Working on it</li>
+        <li><b>Changed</b> — merged cells, multi-row headers and footnote markers survive parsing. Attribution accuracy on table questions went from 74% to 96%</li>
+        <li><b>Added</b> — <code>quire show &lt;doc&gt;</code> prints the parsed structure so you can see what it saw</li>
+        <li><b>Known issue</b> — rotated tables in scanned PDFs still fail about one time in six. Tracked in #1204, help welcome</li>
       </ul>
     </article>
 
     <article class="card">
-      <div class="row" style="justify-content:space-between"><span class="pill">2.6.0 · Minor</span><span class="small muted">10 June 2026</span></div>
-      <h3>MCP server, and a pricing change in your favor</h3>
+      <div class="row" style="justify-content:space-between"><span class="badge">v2.7.0 · minor</span><span class="small muted mono">2026-05-11</span></div>
+      <h3>Agents</h3>
       <ul class="checks">
-        <li><b>Added</b> — <code>npx @quire/mcp</code> exposes your library as a tool to any MCP client</li>
-        <li><b>Changed</b> — removed the per-query overage on Team. It was small, but it changed how people used the product, which is worse than the revenue was good</li>
-        <li><b>Added</b> — Israel region (il-central-1)</li>
-      </ul>
-    </article>
-
-    <article class="card">
-      <div class="row" style="justify-content:space-between"><span class="pill">2.5.0 · Minor</span><span class="small muted">20 May 2026</span></div>
-      <h3>Trace export</h3>
-      <ul class="checks">
-        <li><b>Added</b> — SIEM streaming to Splunk, Datadog and generic webhook</li>
-        <li><b>Added</b> — replay any agent run from any step</li>
-        <li><b>Fixed</b> — citations pointing at a superseded version when a document changed mid-query</li>
+        <li><b>Added</b> — <code>quire agent run</code>, YAML definitions, no daemon</li>
+        <li><b>Added</b> — <code>quire trace</code> replays any answer including what verification cut</li>
+        <li><b>Rejected</b> — a proposal to add a built-in scheduler. Cron exists and is better than anything we'd write</li>
       </ul>
     </article>
 
     <div class="tile tile-aqua">
-      <h4>Older releases</h4>
-      <p>Everything back to 1.0 lives in the in-app changelog, and the API-specific changes are mirrored in the <a class="ink-link" href="docs.html">docs</a>. Breaking API changes get 12 months notice and an email to every key owner.</p>
+      <h4>Everything before 2.7</h4>
+      <p>All 89 releases are on the GitHub releases page with full notes and signed artifacts. The 1.x line is in security-fix-only mode until August 2027.</p>
+      <div class="row" style="margin-top:8px"><a class="btn btn-sm" href="https://github.com/tomerdamari/ai-startup">All releases</a></div>
     </div>
 
   </div>
@@ -126,17 +141,18 @@
     <div class="footer-cols">
       <div class="stack" style="gap:16px">
         <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
-        <p class="small" style="max-width:34ch">The AI workspace that reads everything you don't have time to. Built in Tel Aviv and Lisbon.</p>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
       </div>
-      <div><h5>Product</h5><ul><li><a href="product.html">Overview</a></li><li><a href="product.html#library">Library</a></li><li><a href="product.html#notebook">Notebook</a></li><li><a href="product.html#agents">Agents</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
-      <div><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="careers.html">Careers</a></li><li><a href="customers.html">Customers</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
-      <div><h5>Resources</h5><ul><li><a href="docs.html">Docs &amp; API</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="security.html">Security</a></li><li><a href="docs.html#status">Status</a></li><li><a href="https://github.com/tomerdamari/ai-startup">Source on GitHub</a></li></ul></div>
-      <div><h5>Legal</h5><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="security.html#dpa">DPA</a></li><li><a href="privacy.html#subprocessors">Subprocessors</a></li></ul></div>
+      <div><h5>Project</h5><ul><li><a href="index.html">Overview</a></li><li><a href="product.html">How it works</a></li><li><a href="docs.html">Docs</a></li><li><a href="solutions.html">Recipes</a></li><li><a href="changelog.html">Releases</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="careers.html">Contribute</a></li><li><a href="customers.html">Showcase</a></li><li><a href="contact.html">Discussions</a></li><li><a href="contact.html#discord">Discord</a></li><li><a href="careers.html#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="pricing.html">Why it's free</a></li><li><a href="about.html">Governance</a></li><li><a href="security.html">Security</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="terms.html">License</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html#trademark">Trademark</a></li><li><a href="https://github.com/tomerdamari/ai-startup">Source on GitHub</a></li></ul></div>
     </div>
     <hr class="divider">
     <div class="footer-base">
-      <span>© 2026 Quire Labs Ltd. A fictional company, for design purposes.</span>
-      <span>hello@quire.ai</span>
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>maintainers@quire.dev</span>
     </div>
   </div>
 </footer>

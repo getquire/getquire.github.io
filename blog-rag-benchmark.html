@@ -17,17 +17,19 @@
   <div class="wrap nav-in">
     <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
     <nav class="nav-links" aria-label="Primary">
-      <a href="product.html">Product</a>
-      <a href="solutions.html">Solutions</a>
-      <a href="pricing.html">Pricing</a>
       <a href="docs.html">Docs</a>
-      <a href="customers.html">Customers</a>
-      <a href="blog.html" aria-current="page">Blog</a>
-      <a href="about.html">About</a>
+      <a href="product.html">How it works</a>
+      <a href="solutions.html">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html">Community</a>
+      <a href="blog.html">Blog</a>
     </nav>
     <div class="nav-cta">
-      <a class="btn btn-ghost btn-sm" href="contact.html">Sign in</a>
-      <a class="btn btn-sm" href="contact.html">Get a demo</a>
+      <a class="btn btn-ghost btn-sm" href="careers.html">Contribute</a>
+      <a class="btn btn-sm btn-repo" href="https://github.com/tomerdamari/ai-startup">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <b>12.4k</b>
+      </a>
     </div>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
@@ -43,11 +45,11 @@
     <span class="pill">Engineering · 9 min read</span>
     <h1 style="font-size:clamp(36px,5.5vw,56px)">Your RAG benchmark is measuring the wrong thing</h1>
     <p class="lede">Scores on public corpora tell you almost nothing about how a system behaves on a shared drive with eleven years of accumulated mess in it. Here's what we measure instead.</p>
-    <div class="row"><span class="avatar">JM</span><span class="small">Joel Mensah · Co-founder, CTO<br><span class="muted">21 July 2026</span></span></div>
+    <div class="row"><span class="avatar">JM</span><span class="small">Joel Mensah · Maintainer, retrieval<br><span class="muted">21 July 2026</span></span></div>
   </div>
 
   <div class="wrap article">
-    <p>Public retrieval benchmarks are built on clean corpora: Wikipedia, news archives, curated document sets. Every document is well-formed, none of them contradict each other, nothing is superseded, and every user can see everything. Real enterprise corpora have none of these properties, and the differences are not cosmetic — they're where systems actually fail.</p>
+    <p>Public retrieval benchmarks are built on clean corpora: Wikipedia, news archives, curated document sets. Every document is well-formed, none of them contradict each other, nothing is superseded, and every user can see everything. Real corpora have none of these properties, and the differences are not cosmetic — they're where systems actually fail.</p>
 
     <p>We scored 0.81 on a well-known public benchmark and then watched our system confidently return a 2021 travel policy to someone asking about the current one. The benchmark had no notion of a superseded document, so it could not have caught that. It wasn't wrong; it was measuring a different thing than the one we cared about.</p>
 
@@ -85,7 +87,7 @@
     <blockquote>If your evaluation can't tell a confident wrong answer from a correct one, it will reward the confident wrong answer, because it reads better.</blockquote>
 
     <h2>How to build the corpus you need</h2>
-    <p>You cannot buy this benchmark. It has to be built from a corpus that looks like your customers' corpora, which means you need design partners willing to let you evaluate against their real content under a narrow agreement. We have three, each with a different flavor of mess, and we run against all three before anything ships.</p>
+    <p>You cannot buy this benchmark. It has to be built from a corpus that looks like your customers' corpora, which means it has to come from users willing to let you evaluate against their real content. Three groups donated corpora under a narrow agreement, each with a different flavour of mess, and every release runs against all three.</p>
     <ul>
       <li><b>Take a snapshot and freeze it.</b> A corpus that changes under you makes every comparison meaningless.</li>
       <li><b>Label at the span level, not the answer level.</b> "This answer is good" is unactionable. "This claim is not in this span" is a bug report.</li>
@@ -95,9 +97,9 @@
 
     <h2>The uncomfortable part</h2>
     <p>Doing this properly means your headline numbers get worse, and they get worse right before you need to show them to someone. Our attribution score dropped 14 points the week we added the scanned-document set, and it dropped another 6 when we started counting table-cell errors as failures rather than parse warnings.</p>
-    <p>Both drops were the benchmark starting to tell the truth. The alternative is a number that goes up while your customers' trust goes down, and you find out from a renewal call.</p>
+    <p>Both drops were the benchmark starting to tell the truth. The alternative is a number that goes up while the tool gets less trustworthy, and you find out from an issue titled "it made this up".</p>
 
-    <p class="muted small" style="margin-top:48px">The harness is open source at <span class="mono">github.com/quire-ai/refusal-bench</span>. The corpora aren't ours to share, but the generators and the scoring run against anything you point them at.</p>
+    <p class="muted small" style="margin-top:48px">The harness is open source at <span class="mono">github.com/quire-dev/refusal-bench</span>. The corpora aren't ours to share, but the generators and the scoring run against anything you point them at.</p>
   </div>
 
   <div class="wrap article">
@@ -116,17 +118,18 @@
     <div class="footer-cols">
       <div class="stack" style="gap:16px">
         <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
-        <p class="small" style="max-width:34ch">The AI workspace that reads everything you don't have time to. Built in Tel Aviv and Lisbon.</p>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
       </div>
-      <div><h5>Product</h5><ul><li><a href="product.html">Overview</a></li><li><a href="product.html#library">Library</a></li><li><a href="product.html#notebook">Notebook</a></li><li><a href="product.html#agents">Agents</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
-      <div><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="careers.html">Careers</a></li><li><a href="customers.html">Customers</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
-      <div><h5>Resources</h5><ul><li><a href="docs.html">Docs &amp; API</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="security.html">Security</a></li><li><a href="docs.html#status">Status</a></li><li><a href="https://github.com/tomerdamari/ai-startup">Source on GitHub</a></li></ul></div>
-      <div><h5>Legal</h5><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="security.html#dpa">DPA</a></li><li><a href="privacy.html#subprocessors">Subprocessors</a></li></ul></div>
+      <div><h5>Project</h5><ul><li><a href="index.html">Overview</a></li><li><a href="product.html">How it works</a></li><li><a href="docs.html">Docs</a></li><li><a href="solutions.html">Recipes</a></li><li><a href="changelog.html">Releases</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="careers.html">Contribute</a></li><li><a href="customers.html">Showcase</a></li><li><a href="contact.html">Discussions</a></li><li><a href="contact.html#discord">Discord</a></li><li><a href="careers.html#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="pricing.html">Why it's free</a></li><li><a href="about.html">Governance</a></li><li><a href="security.html">Security</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="terms.html">License</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html#trademark">Trademark</a></li><li><a href="https://github.com/tomerdamari/ai-startup">Source on GitHub</a></li></ul></div>
     </div>
     <hr class="divider">
     <div class="footer-base">
-      <span>© 2026 Quire Labs Ltd. A fictional company, for design purposes.</span>
-      <span>hello@quire.ai</span>
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>maintainers@quire.dev</span>
     </div>
   </div>
 </footer>

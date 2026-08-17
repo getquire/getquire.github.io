@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Docs &amp; API — Quire</title>
-<meta name="description" content="Quickstart, REST API, agent definitions, webhooks and SDKs. Every response includes citations.">
+<title>Docs — Quire</title>
+<meta name="description" content="Install, index, ask. CLI reference, configuration, the Python and HTTP APIs, and how to write a plugin.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='5' width='21' height='22' rx='6' fill='%23cce7ff' transform='rotate(-12 13 16)'/><rect x='8' y='5' width='21' height='22' rx='6' fill='%230069e0'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,17 +17,19 @@
   <div class="wrap nav-in">
     <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
     <nav class="nav-links" aria-label="Primary">
-      <a href="product.html">Product</a>
-      <a href="solutions.html">Solutions</a>
-      <a href="pricing.html">Pricing</a>
       <a href="docs.html" aria-current="page">Docs</a>
-      <a href="customers.html">Customers</a>
+      <a href="product.html">How it works</a>
+      <a href="solutions.html">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html">Community</a>
       <a href="blog.html">Blog</a>
-      <a href="about.html">About</a>
     </nav>
     <div class="nav-cta">
-      <a class="btn btn-ghost btn-sm" href="contact.html">Sign in</a>
-      <a class="btn btn-sm" href="contact.html">Get a demo</a>
+      <a class="btn btn-ghost btn-sm" href="careers.html">Contribute</a>
+      <a class="btn btn-sm btn-repo" href="https://github.com/tomerdamari/ai-startup">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <b>12.4k</b>
+      </a>
     </div>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
@@ -39,153 +41,207 @@
 
 <section class="section">
   <div class="wrap center stack-lg">
-    <span class="pill">Docs &amp; API</span>
-    <h1>Everything Quire does,<br>you can do over HTTP.</h1>
-    <p class="lede measure">The product is a client of its own API. If the notebook can do it, the API can do it — including the citations, which are first-class objects, not text you have to parse back out.</p>
-    <div class="row row-center"><a class="btn" href="#quickstart">Quickstart</a><a class="btn btn-ghost" href="#reference">API reference</a></div>
+    <span class="pill">Docs</span>
+    <h1>From nothing to a<br>cited answer in four minutes.</h1>
+    <p class="lede measure">If any step here takes longer than it says, that's a documentation bug and we treat it as a real one. Open an issue with the <span class="mono">docs</span> label.</p>
+    <div class="row row-center">
+      <div class="install"><code>pipx install quire</code><button data-copy="pipx install quire">Copy</button></div>
+    </div>
   </div>
 </section>
 
 <section class="section-tight">
   <div class="wrap grid g4 reveal">
-    <a class="card card-link card-sm" href="#quickstart"><h4>Quickstart</h4><p class="small">Key to first cited answer in about four minutes.</p></a>
-    <a class="card card-link card-sm" href="#reference"><h4>API reference</h4><p class="small">Query, sources, agents, traces, webhooks.</p></a>
-    <a class="card card-link card-sm" href="#sdks"><h4>SDKs</h4><p class="small">TypeScript, Python, Go. Plus an MCP server.</p></a>
-    <a class="card card-link card-sm" href="#status"><h4>Status &amp; limits</h4><p class="small">Uptime, rate limits, versioning policy.</p></a>
+    <a class="card card-link card-sm" href="#install"><h4>Install</h4><p class="small">pipx, brew, npm, Docker, or from source.</p></a>
+    <a class="card card-link card-sm" href="#cli"><h4>CLI reference</h4><p class="small">index, ask, serve, agent, trace, bench.</p></a>
+    <a class="card card-link card-sm" href="#config"><h4>Configuration</h4><p class="small">Every key in <code>quire.toml</code>.</p></a>
+    <a class="card card-link card-sm" href="#api"><h4>APIs</h4><p class="small">Python library and the HTTP surface.</p></a>
   </div>
 </section>
 
-<section class="section" id="quickstart">
+<section class="section" id="install">
   <div class="wrap split" style="align-items:start">
     <div class="stack">
-      <span class="pill pill-accent">Quickstart</span>
-      <h2>Four minutes, three calls.</h2>
-      <ol class="checks" style="list-style:none">
-        <li><b>1.</b> Create a workspace key in Settings → API. Keys are scoped to a workspace and inherit that workspace's permissions.</li>
-        <li><b>2.</b> Connect a source. OAuth connectors return a redirect URL; storage connectors take a role ARN.</li>
-        <li><b>3.</b> Ask a question. You get an answer plus a <code>citations</code> array with document, span and version.</li>
-      </ol>
-      <p class="small muted">Indexing is asynchronous. Poll <code>GET /v1/sources/:id</code> or subscribe to the <code>source.indexed</code> webhook — the first sync of 100k documents takes about 20 minutes.</p>
+      <span class="pill pill-accent">Install</span>
+      <h2>Pick a package manager.</h2>
+      <p class="lede">Python 3.10 or newer. The default install pulls a small embedding model and nothing else — no model weights until you ask for them.</p>
+      <ul class="checks">
+        <li>Local models need <a class="ink-link" href="https://ollama.com">Ollama</a> or any OpenAI-compatible endpoint</li>
+        <li>OCR is optional; install the <code>[ocr]</code> extra if you have scans</li>
+        <li>Nothing writes outside the working directory and <code>~/.cache/quire</code></li>
+      </ul>
     </div>
-    <div class="stack">
-      <div class="card">
-        <p class="caption">Ask a question</p>
-        <pre><code>curl https://api.quire.ai/v1/query \
-  -H "Authorization: Bearer $QUIRE_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "question": "Why did EU churn spike in Q2?",
-    "sources": ["src_drive_9f2", "src_zendesk_11a"],
-    "on_insufficient_evidence": "refuse"
-  }'</code></pre>
-      </div>
-      <div class="card">
-        <p class="caption">Response</p>
-        <pre><code>{
-  "answer": "Two causes. The May billing migration
-    failed for 340 SEPA customers [1], and German
-    residency landed before the feature shipped [2].",
-  "citations": [
-    {
-      "n": 1,
-      "document_id": "doc_8812",
-      "title": "Incident review — SEPA migration",
-      "span": { "page": 2, "start": 1180, "end": 1394 },
-      "version": "2026-05-14T09:22:00Z",
-      "author": "t.weiss@company.com"
-    }
-  ],
-  "conflicts": [
-    { "claim": "340 affected customers",
-      "alternative": "361", "source": "doc_9004" }
-  ],
-  "confidence": 0.91,
-  "trace_id": "tr_01J8Z3K"
-}</code></pre>
-      </div>
+    <div class="terminal">
+      <div class="terminal-bar"><i></i><i></i><i></i><span>install</span></div>
+<pre><code><span class="t-prompt">$</span> pipx install quire            <span class="t-dim"># recommended</span>
+<span class="t-prompt">$</span> brew install quire
+<span class="t-prompt">$</span> npm install -g @quire/cli     <span class="t-dim"># node wrapper</span>
+<span class="t-prompt">$</span> docker run -v $PWD:/w quire/quire
+
+<span class="t-dim"># from source</span>
+<span class="t-prompt">$</span> git clone https://github.com/quire-dev/quire
+<span class="t-prompt">$</span> cd quire && uv sync && uv run quire --help
+
+<span class="t-dim"># optional extras</span>
+<span class="t-prompt">$</span> pipx install <span class="t-out">"quire[ocr,postgres]"</span></code></pre>
     </div>
   </div>
 </section>
 
-<section class="section" id="reference">
+<section class="section" id="cli">
   <div class="wrap stack-lg">
-    <div class="measure stack"><span class="pill">Reference</span><h2>Endpoints</h2><p class="lede">REST, JSON, cursor pagination. Streaming responses over SSE where it makes sense.</p></div>
+    <div class="measure stack"><span class="pill">CLI</span><h2>Six commands, and you'll use two.</h2></div>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Method</th><th>Path</th><th>Does</th></tr></thead>
+        <thead><tr><th>Command</th><th>Does</th></tr></thead>
         <tbody>
-          <tr><td><code>POST</code></td><td><code>/v1/query</code></td><td>Ask a question. Returns answer, citations, conflicts, confidence.</td></tr>
-          <tr><td><code>POST</code></td><td><code>/v1/query/stream</code></td><td>Same, over SSE. Citations arrive as they are resolved.</td></tr>
-          <tr><td><code>GET</code></td><td><code>/v1/search</code></td><td>Retrieval without generation. Ranked spans, no model call.</td></tr>
-          <tr><td><code>GET</code></td><td><code>/v1/sources</code></td><td>List connected sources with sync state and document counts.</td></tr>
-          <tr><td><code>POST</code></td><td><code>/v1/sources</code></td><td>Connect a source. Returns an OAuth URL or validates credentials.</td></tr>
-          <tr><td><code>POST</code></td><td><code>/v1/documents</code></td><td>Push a document directly, for systems we have no connector for.</td></tr>
-          <tr><td><code>GET</code></td><td><code>/v1/documents/:id</code></td><td>Metadata, version history and parsed structure.</td></tr>
-          <tr><td><code>POST</code></td><td><code>/v1/agents</code></td><td>Create an agent from an instruction, a trigger and a destination.</td></tr>
-          <tr><td><code>POST</code></td><td><code>/v1/agents/:id/run</code></td><td>Run now, ignoring the schedule.</td></tr>
-          <tr><td><code>GET</code></td><td><code>/v1/traces/:id</code></td><td>Full trace: retrieval, reranking, model calls, cost.</td></tr>
-          <tr><td><code>POST</code></td><td><code>/v1/webhooks</code></td><td>Subscribe to <code>answer.created</code>, <code>agent.completed</code>, <code>source.indexed</code>.</td></tr>
+          <tr><td><code>quire index &lt;path&gt;</code></td><td>Parse and index a folder, git repo, URL or connector. Incremental by default; <code>--rebuild</code> to start over.</td></tr>
+          <tr><td><code>quire ask "…"</code></td><td>A cited answer on stdout. <code>--json</code> for machine use, <code>--strict</code> to exit non-zero when it can't ground the answer.</td></tr>
+          <tr><td><code>quire serve</code></td><td>Web UI and HTTP API on <code>:7777</code>. <code>--host 0.0.0.0</code> to expose it, which you should think about first.</td></tr>
+          <tr><td><code>quire agent run &lt;name&gt;</code></td><td>Run one agent from <code>.quire/agents/</code>. Designed to be called by cron or CI, not to run as a daemon.</td></tr>
+          <tr><td><code>quire trace &lt;id&gt;</code></td><td>Replay any answer: what was retrieved, what was cut in verification, what the models cost.</td></tr>
+          <tr><td><code>quire bench</code></td><td>Run the evaluation suite against your own corpus. This is how you find out if it works for you.</td></tr>
         </tbody>
       </table>
     </div>
+
+    <div class="grid g2" id="ask">
+      <div class="terminal">
+        <div class="terminal-bar"><i></i><i></i><i></i><span>ask, piped</span></div>
+<pre><code><span class="t-prompt">$</span> quire ask <span class="t-out">"open questions in the RFCs?"</span> --json \
+    | jq <span class="t-out">'.citations[].locator'</span>
+
+<span class="t-out">"docs/rfc/012-v2-migration.md:88"</span>
+<span class="t-out">"docs/rfc/018-multi-region.md:41"</span>
+
+<span class="t-dim"># fail a CI job on an ungrounded claim</span>
+<span class="t-prompt">$</span> quire ask <span class="t-out">"is the runbook current?"</span> --strict \
+    || echo <span class="t-out">"needs a human"</span></code></pre>
+      </div>
+      <div class="terminal" id="serve">
+        <div class="terminal-bar"><i></i><i></i><i></i><span>serve</span></div>
+<pre><code><span class="t-prompt">$</span> quire serve
+<span class="t-dim">  ui    http://127.0.0.1:7777
+  api   http://127.0.0.1:7777/v1
+  index .quire/index.db (18,332 spans)
+  model ollama/llama3.1:8b — local</span>
+
+<span class="t-prompt">$</span> curl -s localhost:7777/v1/ask \
+    -d <span class="t-out">'{"question":"who owns billing?"}'</span> \
+    | jq <span class="t-out">.answer</span></code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="config">
+  <div class="wrap split" style="align-items:start">
+    <div class="stack">
+      <span class="pill pill-accent">Configuration</span>
+      <h2>One file. Committed to your repo.</h2>
+      <p class="lede"><code>quire.toml</code> sits next to your documents. Every key has a default that works, so the shortest useful config is an empty file.</p>
+      <ul class="checks">
+        <li>Environment variables override file values: <code>QUIRE_MODEL_ANSWER</code></li>
+        <li>Secrets are read from the environment only — never from the file</li>
+        <li><code>quire config --explain</code> prints the resolved config and where each value came from</li>
+      </ul>
+      <div class="tile tile-solar" style="margin-top:8px">
+        <h4>The one setting to change</h4>
+        <p><code>strict = true</code>. It converts "confidently wrong" into "no answer and a non-zero exit". It's off by default only because it surprises people on their first run.</p>
+      </div>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar"><i></i><i></i><i></i><span>quire.toml</span></div>
+<pre><code><span class="t-dim">[model]</span>
+answer    = <span class="t-out">"ollama/llama3.1:8b"</span>
+verify    = <span class="t-out">"ollama/qwen2.5:3b"</span>
+embed     = <span class="t-out">"bge-small-en-v1.5"</span>   <span class="t-dim"># local, bundled</span>
+
+<span class="t-dim">[index]</span>
+store     = <span class="t-out">"sqlite://.quire/index.db"</span>
+include   = [<span class="t-out">"docs/**"</span>, <span class="t-out">"notes/**"</span>]
+exclude   = [<span class="t-out">"**/node_modules"</span>, <span class="t-out">"**/.git"</span>]
+ocr       = <span class="t-out">"auto"</span>
+
+<span class="t-dim">[retrieve]</span>
+k         = <span class="t-out">50</span>
+rerank    = <span class="t-out">true</span>
+recency   = <span class="t-out">"graph"</span>   <span class="t-dim"># off | linear | graph</span>
+
+<span class="t-dim">[answer]</span>
+strict    = <span class="t-out">true</span>
+conflicts = <span class="t-out">"show"</span>    <span class="t-dim"># show | pick-newest</span>
+max_words = <span class="t-out">400</span></code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="api">
+  <div class="wrap stack-lg">
+    <div class="measure stack"><span class="pill">APIs</span><h2>Library first, HTTP when you need it.</h2></div>
     <div class="grid g2">
-      <div class="card">
-        <h4>Agent definition</h4>
-        <pre><code>{
-  "name": "Monday competitor brief",
-  "instruction": "Summarize what changed for our
-     tracked competitors in the last 7 days.
-     Cite every claim. Max 400 words.",
-  "trigger": { "type": "schedule", "cron": "0 7 * * 1" },
-  "sources": ["src_drive_9f2", "src_web_track_2"],
-  "destination": { "type": "slack", "channel": "#market-intel" },
-  "approval": "first_10_runs"
-}</code></pre>
+      <div class="terminal">
+        <div class="terminal-bar"><i></i><i></i><i></i><span>python</span></div>
+<pre><code><span class="t-prompt">from</span> quire <span class="t-prompt">import</span> Index
+
+idx = Index(<span class="t-out">".quire/index.db"</span>)
+idx.add(<span class="t-out">"docs/"</span>)
+
+answer = idx.ask(
+    <span class="t-out">"why did we drop v2?"</span>,
+    strict=<span class="t-out">True</span>,
+)
+
+<span class="t-prompt">for</span> c <span class="t-prompt">in</span> answer.citations:
+    print(c.locator, c.date)
+
+<span class="t-dim"># retrieval only, no model call</span>
+spans = idx.search(<span class="t-out">"rollback plan"</span>, k=<span class="t-out">10</span>)</code></pre>
       </div>
-      <div class="card">
-        <h4>Errors</h4>
-        <pre><code>{
-  "error": {
-    "type": "insufficient_evidence",
-    "message": "No source supports an answer.",
-    "nearest": ["doc_4410", "doc_7781"]
-  }
-}</code></pre>
-        <p class="small muted"><code>insufficient_evidence</code> is a 200 by default, because it's a valid answer. Set <code>on_insufficient_evidence: "error"</code> if you'd rather branch on a 422.</p>
+      <div class="stack">
+        <div class="table-wrap">
+          <table style="min-width:0">
+            <thead><tr><th>Method</th><th>Path</th><th>Does</th></tr></thead>
+            <tbody>
+              <tr><td><code>POST</code></td><td><code>/v1/ask</code></td><td>Cited answer, conflicts, confidence, trace id</td></tr>
+              <tr><td><code>POST</code></td><td><code>/v1/ask/stream</code></td><td>Same over SSE; citations arrive as verified</td></tr>
+              <tr><td><code>GET</code></td><td><code>/v1/search</code></td><td>Ranked spans, no generation</td></tr>
+              <tr><td><code>POST</code></td><td><code>/v1/index</code></td><td>Add or refresh a path</td></tr>
+              <tr><td><code>GET</code></td><td><code>/v1/traces/:id</code></td><td>Full replay of one answer</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tile tile-aqua">
+          <h4>There is no auth layer</h4>
+          <p>By design. <code>quire serve</code> binds to localhost and assumes the network boundary is yours. If you expose it, put it behind something that does authentication properly — we'd rather ship no auth than bad auth.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section" id="sdks">
+<section class="section">
   <div class="wrap stack-lg">
-    <div class="measure stack"><span class="pill">SDKs</span><h2>Four ways in.</h2></div>
+    <div class="measure stack"><span class="pill">Extending</span><h2>Four extension points.</h2></div>
     <div class="grid g4 reveal">
-      <div class="card card-sm"><h4>TypeScript</h4><pre style="font-size:12px"><code>npm i @quire/sdk</code></pre><p class="small">Full types for citations and traces.</p></div>
-      <div class="card card-sm"><h4>Python</h4><pre style="font-size:12px"><code>pip install quire</code></pre><p class="small">Async client, pandas helper for traces.</p></div>
-      <div class="card card-sm"><h4>Go</h4><pre style="font-size:12px"><code>go get quire.ai/go</code></pre><p class="small">Thin, no reflection, context-aware.</p></div>
-      <div class="card card-sm"><h4>MCP server</h4><pre style="font-size:12px"><code>npx @quire/mcp</code></pre><p class="small">Expose your library to any MCP client as a tool.</p></div>
+      <div class="card card-sm"><h4><code>quire.parsers</code></h4><p class="small">New file formats. The most common contribution by a wide margin.</p></div>
+      <div class="card card-sm"><h4><code>quire.sources</code></h4><p class="small">Connectors — anything that yields documents with a stable id.</p></div>
+      <div class="card card-sm"><h4><code>quire.models</code></h4><p class="small">Model backends. Anything OpenAI-compatible already works without one.</p></div>
+      <div class="card card-sm"><h4><code>quire.outputs</code></h4><p class="small">Where agent results go. Slack, webhook, file, issue tracker.</p></div>
     </div>
-  </div>
-</section>
-
-<section class="section" id="status">
-  <div class="wrap stack-lg">
-    <div class="measure stack"><span class="pill">Status &amp; limits</span><h2>What we commit to.</h2></div>
-    <div class="grid g3">
-      <div class="tile tile-mint"><h4>All systems operational</h4><p>99.98% over the last 90 days. Incidents are posted within 15 minutes and post-mortems within five business days.</p></div>
-      <div class="card"><h4>Rate limits</h4><ul class="checks"><li>Team: 60 queries/min</li><li>Business: 300 queries/min</li><li>Enterprise: negotiated</li><li>Bursts of 3× for 30 seconds</li></ul></div>
-      <div class="card"><h4>Versioning</h4><ul class="checks"><li>Date-pinned via <code>Quire-Version</code> header</li><li>Breaking changes get 12 months notice</li><li>Additive changes ship continuously</li><li>Deprecations announced in the changelog</li></ul></div>
-    </div>
+    <p class="small muted">Each is a documented protocol with a reference implementation under 100 lines. If your plugin is useful, open a PR to list it in the <a class="ink-link" href="solutions.html">recipes</a> — we don't vendor plugins into core.</p>
   </div>
 </section>
 
 <section class="section">
   <div class="wrap">
     <div class="tile tile-ink center stack" style="padding:clamp(40px,7vw,88px)">
-      <h2>Get a key.</h2>
-      <p class="lede" style="color:rgba(255,255,255,.7);max-width:44ch;margin-inline:auto">The free tier includes API access. Rate-limited, fully featured, no card.</p>
-      <div class="row row-center"><a class="btn btn-light" href="contact.html">Start free</a><a class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.25)" href="changelog.html">API changelog</a></div>
+      <h2>Docs missing something?</h2>
+      <p class="lede" style="color:rgba(255,255,255,.7);max-width:48ch;margin-inline:auto">Every page has an edit link. Documentation PRs skip the review queue and get merged same-day.</p>
+      <div class="row row-center">
+        <a class="btn btn-light" href="careers.html">Contribute docs</a>
+        <a class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.25)" href="contact.html">Ask in Discussions</a>
+      </div>
     </div>
   </div>
 </section>
@@ -197,17 +253,18 @@
     <div class="footer-cols">
       <div class="stack" style="gap:16px">
         <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
-        <p class="small" style="max-width:34ch">The AI workspace that reads everything you don't have time to. Built in Tel Aviv and Lisbon.</p>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
       </div>
-      <div><h5>Product</h5><ul><li><a href="product.html">Overview</a></li><li><a href="product.html#library">Library</a></li><li><a href="product.html#notebook">Notebook</a></li><li><a href="product.html#agents">Agents</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
-      <div><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="careers.html">Careers</a></li><li><a href="customers.html">Customers</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
-      <div><h5>Resources</h5><ul><li><a href="docs.html">Docs &amp; API</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="security.html">Security</a></li><li><a href="docs.html#status">Status</a></li><li><a href="https://github.com/tomerdamari/ai-startup">Source on GitHub</a></li></ul></div>
-      <div><h5>Legal</h5><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="security.html#dpa">DPA</a></li><li><a href="privacy.html#subprocessors">Subprocessors</a></li></ul></div>
+      <div><h5>Project</h5><ul><li><a href="index.html">Overview</a></li><li><a href="product.html">How it works</a></li><li><a href="docs.html">Docs</a></li><li><a href="solutions.html">Recipes</a></li><li><a href="changelog.html">Releases</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="careers.html">Contribute</a></li><li><a href="customers.html">Showcase</a></li><li><a href="contact.html">Discussions</a></li><li><a href="contact.html#discord">Discord</a></li><li><a href="careers.html#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="pricing.html">Why it's free</a></li><li><a href="about.html">Governance</a></li><li><a href="security.html">Security</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="terms.html">License</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html#trademark">Trademark</a></li><li><a href="https://github.com/tomerdamari/ai-startup">Source on GitHub</a></li></ul></div>
     </div>
     <hr class="divider">
     <div class="footer-base">
-      <span>© 2026 Quire Labs Ltd. A fictional company, for design purposes.</span>
-      <span>hello@quire.ai</span>
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>maintainers@quire.dev</span>
     </div>
   </div>
 </footer>

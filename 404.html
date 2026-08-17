@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Not in the library — Quire</title>
+<title>insufficient_evidence — Quire</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='5' width='21' height='22' rx='6' fill='%23cce7ff' transform='rotate(-12 13 16)'/><rect x='8' y='5' width='21' height='22' rx='6' fill='%230069e0'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,17 +17,19 @@
   <div class="wrap nav-in">
     <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
     <nav class="nav-links" aria-label="Primary">
-      <a href="product.html">Product</a>
-      <a href="solutions.html">Solutions</a>
-      <a href="pricing.html">Pricing</a>
       <a href="docs.html">Docs</a>
-      <a href="customers.html">Customers</a>
+      <a href="product.html">How it works</a>
+      <a href="solutions.html">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html">Community</a>
       <a href="blog.html">Blog</a>
-      <a href="about.html">About</a>
     </nav>
     <div class="nav-cta">
-      <a class="btn btn-ghost btn-sm" href="contact.html">Sign in</a>
-      <a class="btn btn-sm" href="contact.html">Get a demo</a>
+      <a class="btn btn-ghost btn-sm" href="careers.html">Contribute</a>
+      <a class="btn btn-sm btn-repo" href="https://github.com/tomerdamari/ai-startup">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <b>12.4k</b>
+      </a>
     </div>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
@@ -38,32 +40,33 @@
 <main>
 <section class="section">
   <div class="wrap center stack-lg">
-    <span class="pill pill-accent">404 · insufficient_evidence</span>
-    <h1 class="hero-type">Not in<br>the library.</h1>
-    <p class="lede measure">We'd rather say that than invent a page. Here's the nearest thing we did find.</p>
+    <span class="badge badge-accent">exit 2 · insufficient_evidence</span>
+    <h1 class="hero-type">Not in<br>the index.</h1>
+    <p class="lede measure">We'd rather say that than invent a page. Here are the nearest matches, which is what the tool would do too.</p>
 
-    <div class="float" style="margin-block:16px">
-      <svg viewBox="0 0 600 220" role="img" aria-label="An empty folder with floating shapes" style="margin-inline:auto;max-width:600px">
-        <defs>
-          <linearGradient id="n1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2eb"/><stop offset="1" stop-color="#ffd1b8"/></linearGradient>
-        </defs>
-        <rect x="200" y="40" width="200" height="140" rx="28" fill="#fafdff"/>
-        <rect x="230" y="80" width="90" height="10" rx="5" fill="#e6eef7"/>
-        <rect x="230" y="106" width="140" height="10" rx="5" fill="#eef3f9"/>
-        <circle cx="120" cy="90" r="40" fill="url(#n1)"/>
-        <rect x="440" y="60" width="90" height="90" rx="26" fill="#d3f6e3"/>
-        <circle cx="140" cy="180" r="26" fill="#cce7ff"/>
-      </svg>
+    <div class="terminal" style="max-width:640px;margin-inline:auto">
+      <div class="terminal-bar"><i></i><i></i><i></i><span>404</span></div>
+<pre><code><span class="t-prompt">$</span> quire ask <span class="t-out">"where is this page?"</span> --strict
+
+<span class="t-warn">  insufficient evidence</span>
+<span class="t-dim">  No document in this site matches that path.</span>
+
+<span class="t-out">  Closest matches:</span>
+<span class="t-cite">    /index.html</span>
+<span class="t-cite">    /docs.html</span>
+<span class="t-cite">    /product.html</span>
+
+<span class="t-dim">  exit 2</span></code></pre>
     </div>
 
     <div class="grid g4" style="max-width:900px;margin-inline:auto;text-align:left">
       <a class="card card-link card-sm" href="index.html"><h4>Home</h4><p class="small">Start over.</p></a>
-      <a class="card card-link card-sm" href="product.html"><h4>Product</h4><p class="small">Library, Notebook, Agents.</p></a>
-      <a class="card card-link card-sm" href="docs.html"><h4>Docs</h4><p class="small">API and quickstart.</p></a>
-      <a class="card card-link card-sm" href="contact.html"><h4>Contact</h4><p class="small">Ask a person instead.</p></a>
+      <a class="card card-link card-sm" href="docs.html"><h4>Docs</h4><p class="small">Install and CLI reference.</p></a>
+      <a class="card card-link card-sm" href="product.html"><h4>How it works</h4><p class="small">The five-stage pipeline.</p></a>
+      <a class="card card-link card-sm" href="contact.html"><h4>Community</h4><p class="small">Ask a person instead.</p></a>
     </div>
 
-    <p class="small muted">If a link on our own site sent you here, tell us at <a class="ink-link" href="mailto:hello@quire.ai">hello@quire.ai</a> — that's a bug on our end.</p>
+    <p class="small muted">If a link on this site sent you here, that's a bug — <a class="ink-link" href="https://github.com/tomerdamari/ai-startup">file it</a>.</p>
   </div>
 </section>
 </main>
@@ -73,17 +76,18 @@
     <div class="footer-cols">
       <div class="stack" style="gap:16px">
         <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
-        <p class="small" style="max-width:34ch">The AI workspace that reads everything you don't have time to. Built in Tel Aviv and Lisbon.</p>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
       </div>
-      <div><h5>Product</h5><ul><li><a href="product.html">Overview</a></li><li><a href="product.html#library">Library</a></li><li><a href="product.html#notebook">Notebook</a></li><li><a href="product.html#agents">Agents</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
-      <div><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="careers.html">Careers</a></li><li><a href="customers.html">Customers</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
-      <div><h5>Resources</h5><ul><li><a href="docs.html">Docs &amp; API</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="security.html">Security</a></li><li><a href="docs.html#status">Status</a></li><li><a href="https://github.com/tomerdamari/ai-startup">Source on GitHub</a></li></ul></div>
-      <div><h5>Legal</h5><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="security.html#dpa">DPA</a></li><li><a href="privacy.html#subprocessors">Subprocessors</a></li></ul></div>
+      <div><h5>Project</h5><ul><li><a href="index.html">Overview</a></li><li><a href="product.html">How it works</a></li><li><a href="docs.html">Docs</a></li><li><a href="solutions.html">Recipes</a></li><li><a href="changelog.html">Releases</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="careers.html">Contribute</a></li><li><a href="customers.html">Showcase</a></li><li><a href="contact.html">Discussions</a></li><li><a href="contact.html#discord">Discord</a></li><li><a href="careers.html#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="pricing.html">Why it's free</a></li><li><a href="about.html">Governance</a></li><li><a href="security.html">Security</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="terms.html">License</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html#trademark">Trademark</a></li><li><a href="https://github.com/tomerdamari/ai-startup">Source on GitHub</a></li></ul></div>
     </div>
     <hr class="divider">
     <div class="footer-base">
-      <span>© 2026 Quire Labs Ltd. A fictional company, for design purposes.</span>
-      <span>hello@quire.ai</span>
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>maintainers@quire.dev</span>
     </div>
   </div>
 </footer>

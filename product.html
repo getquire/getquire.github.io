@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Product — Quire</title>
-<meta name="description" content="Library, Notebook and Agents: how Quire indexes your sources, answers with checkable citations, and automates the recurring work.">
+<title>How it works — Quire</title>
+<meta name="description" content="The Quire pipeline: parse, index, retrieve, generate, verify. What each stage does, where it fails, and how to swap any of it out.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='5' width='21' height='22' rx='6' fill='%23cce7ff' transform='rotate(-12 13 16)'/><rect x='8' y='5' width='21' height='22' rx='6' fill='%230069e0'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,17 +17,19 @@
   <div class="wrap nav-in">
     <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
     <nav class="nav-links" aria-label="Primary">
-      <a href="product.html" aria-current="page">Product</a>
-      <a href="solutions.html">Solutions</a>
-      <a href="pricing.html">Pricing</a>
       <a href="docs.html">Docs</a>
-      <a href="customers.html">Customers</a>
+      <a href="product.html" aria-current="page">How it works</a>
+      <a href="solutions.html">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html">Community</a>
       <a href="blog.html">Blog</a>
-      <a href="about.html">About</a>
     </nav>
     <div class="nav-cta">
-      <a class="btn btn-ghost btn-sm" href="contact.html">Sign in</a>
-      <a class="btn btn-sm" href="contact.html">Get a demo</a>
+      <a class="btn btn-ghost btn-sm" href="careers.html">Contribute</a>
+      <a class="btn btn-sm btn-repo" href="https://github.com/tomerdamari/ai-startup">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <b>12.4k</b>
+      </a>
     </div>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
@@ -39,137 +41,165 @@
 
 <section class="section">
   <div class="wrap center stack-lg">
-    <span class="pill">Product</span>
-    <h1>One library. Every answer.<br>Nothing invented.</h1>
-    <p class="lede measure">Quire has three parts, and they only make sense together: a library that knows what you have, a notebook that answers from it, and agents that keep doing it without being asked.</p>
-    <div class="row row-center"><a class="btn" href="contact.html">Get a demo</a><a class="btn btn-ghost" href="docs.html">Read the docs</a></div>
+    <span class="pill">How it works</span>
+    <h1>Five stages.<br>Every one swappable.</h1>
+    <p class="lede measure">Quire is a pipeline, not a framework. Each stage is an entry point you can replace without forking, and the default for each is the boring choice that survived benchmarking.</p>
+    <div class="row row-center"><a class="btn" href="docs.html">Read the docs</a><a class="btn btn-ghost" href="#verify">Jump to verification</a></div>
   </div>
 </section>
 
-<!-- LIBRARY -->
-<section class="section" id="library">
+<section class="section-tight">
+  <div class="wrap">
+    <div class="timeline">
+      <div class="timeline-row"><span class="small muted mono">1 · parse</span><span class="small">Files become spans with structure intact. Tables stay tables, footnotes stay attached to their claim, headings become hierarchy.</span></div>
+      <div class="timeline-row"><span class="small muted mono">2 · index</span><span class="small">Spans get embedded and written to SQLite alongside a BM25 table and a document graph. Incremental — a changed file re-indexes in milliseconds.</span></div>
+      <div class="timeline-row"><span class="small muted mono">3 · retrieve</span><span class="small">Hybrid dense plus lexical, fused with reciprocal rank, then reranked. Recency and supersession applied here, not in the prompt.</span></div>
+      <div class="timeline-row"><span class="small muted mono">4 · generate</span><span class="small">Only the selected spans go to the model, with a fixed instruction to cite by span id. Nothing else about your corpus is sent.</span></div>
+      <div class="timeline-row"><span class="small muted mono">5 · verify</span><span class="small">Claims decomposed and checked against their cited spans. Unsupported ones are cut before you see the answer.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="parse">
   <div class="wrap split">
     <div class="stack">
-      <span class="pill pill-accent">01 — Library</span>
-      <h2>Index everything. Break nothing.</h2>
-      <p class="lede">Quire reads your sources where they live. It does not copy them into a second system of record, and it does not flatten your permissions to make search easier.</p>
+      <span class="pill pill-accent">01 — parse</span>
+      <h2>The stage nobody writes blog posts about.</h2>
+      <p class="lede">Roughly 60% of the parsing code exists because of PDFs, and most of the rest exists because of spreadsheets where the real data starts at row 14.</p>
       <ul class="checks">
-        <li>42 connectors: Drive, Notion, Slack, Confluence, SharePoint, Gmail, Box, S3, Zendesk, Jira, GitHub, Salesforce, Airtable and more</li>
-        <li>Permission inheritance at the document level, re-checked at query time — not at index time</li>
-        <li>Layout-aware parsing for PDFs: tables stay tables, footnotes stay attached to their claim</li>
-        <li>Incremental sync, so a 40-page edit reindexes in seconds, not hours</li>
-        <li>Native OCR for scans, handwriting and screenshots pasted into tickets</li>
+        <li>Layout-aware PDF extraction — merged cells, multi-row headers, rotated tables</li>
+        <li>OCR fallback for scans and screenshots, via Tesseract or a vision model</li>
+        <li>Markdown, HTML, docx, xlsx, pptx, epub, mbox, plus 30 community formats</li>
+        <li>Code-aware chunking that respects function and class boundaries</li>
+        <li>Parsers register through <code>quire.parsers</code> entry points — adding one is a small file</li>
       </ul>
     </div>
+    <div class="terminal">
+      <div class="terminal-bar"><i></i><i></i><i></i><span>custom parser</span></div>
+<pre><code><span class="t-dim"># pyproject.toml of your plugin</span>
+[project.entry-points.<span class="t-out">"quire.parsers"</span>]
+jupyter = <span class="t-out">"my_plugin:NotebookParser"</span>
+
+<span class="t-dim"># my_plugin.py</span>
+<span class="t-prompt">class</span> NotebookParser(Parser):
+    extensions = {<span class="t-out">".ipynb"</span>}
+
+    <span class="t-prompt">def</span> parse(self, path) -> Iterable[Span]:
+        nb = json.loads(path.read_text())
+        <span class="t-prompt">for</span> i, cell <span class="t-prompt">in</span> enumerate(nb[<span class="t-out">"cells"</span>]):
+            <span class="t-prompt">yield</span> Span(
+                text=<span class="t-out">""</span>.join(cell[<span class="t-out">"source"</span>]),
+                locator=<span class="t-out">f"cell {i}"</span>,
+                kind=cell[<span class="t-out">"cell_type"</span>],
+            )</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="retrieve">
+  <div class="wrap split">
     <div class="stack">
-      <div class="card">
-        <p class="caption">Connected sources</p>
-        <div class="stack" style="gap:12px">
-          <div class="row" style="justify-content:space-between"><span class="small">Google Drive</span><span class="pill small">418,220 files</span></div>
-          <div class="row" style="justify-content:space-between"><span class="small">Notion</span><span class="pill small">12,904 pages</span></div>
-          <div class="row" style="justify-content:space-between"><span class="small">Slack — 61 channels</span><span class="pill small">2.1M messages</span></div>
-          <div class="row" style="justify-content:space-between"><span class="small">Zendesk</span><span class="pill small">88,340 tickets</span></div>
-          <div class="row" style="justify-content:space-between"><span class="small">S3 — contracts/</span><span class="pill small">6,112 PDFs</span></div>
-        </div>
-        <hr class="divider">
-        <p class="small muted">Last full sync 3 minutes ago · 0 permission conflicts</p>
-      </div>
       <div class="tile tile-aqua">
-        <h4>The unglamorous part</h4>
-        <p>Roughly 60% of our engineering time goes to parsing and permissions, because that is where every retrieval system actually fails.</p>
+        <h4>Why hybrid, still</h4>
+        <p>Pure vector search fails on exact tokens — error codes, ticket numbers, a person's surname. Pure lexical fails on paraphrase. Fusing them costs about 40ms and removes an entire class of "why didn't it find that" issues.</p>
+      </div>
+      <div class="tile tile-violet">
+        <h4>Supersession is a retrieval problem</h4>
+        <p>Quire builds a document graph from links, filenames, frontmatter and git history, so a policy that was replaced ranks below the one replacing it — unless you ask a question about history, which is detected separately.</p>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- NOTEBOOK -->
-<section class="section" id="notebook">
-  <div class="wrap split">
-    <div class="card card-white">
-      <p class="caption">Ask</p>
-      <p style="color:var(--ink);font-size:20px">Why did churn spike in the EU in Q2?</p>
-      <hr class="divider">
-      <p class="caption">Answer</p>
-      <p style="color:var(--ink);font-size:18px;line-height:1.55">Two causes, not one. The May billing migration failed for 340 SEPA customers<sup class="ink-link">1</sup>, and separately the German data-residency requirement landed before residency shipped<sup class="ink-link">2</sup>. Support tickets separate cleanly by cause after 12 May<sup class="ink-link">3</sup>.</p>
-      <div class="badge-row"><span class="pill pill-accent">3 sources</span><span class="pill">1 source disagrees</span></div>
-      <hr class="divider">
-      <p class="small muted">Sources disagree on the SEPA count: the incident review says 340, the finance reconciliation says 361. Both shown.</p>
-    </div>
     <div class="stack">
-      <span class="pill pill-accent">02 — Notebook</span>
-      <h2>An answer you can argue with.</h2>
-      <p class="lede">The Notebook is where you actually work: a document that answers back. Ask in the margin, and the answer lands inline with footnotes you can open.</p>
+      <span class="pill pill-accent">02–03 — index &amp; retrieve</span>
+      <h2>SQLite until it hurts.</h2>
+      <p class="lede">The default store is a single file next to your documents. It handles about 500k documents on a laptop, which is more than most people have, and it means there's no service to stand up before you can try the tool.</p>
       <ul class="checks">
-        <li>Sentence-level citations — page, version, author, timestamp</li>
-        <li>Disagreement detection when two sources give different numbers</li>
-        <li>Explicit refusal when the library has no basis for an answer</li>
-        <li>Follow-ups keep the thread; the notebook is the artifact, not the chat</li>
-        <li>Export to Docs, Notion, Markdown or PDF with citations intact</li>
+        <li>Dense vectors plus BM25, fused with reciprocal rank fusion</li>
+        <li>Cross-encoder rerank on the top 50, locally by default</li>
+        <li>Document graph for supersession, authorship and thread context</li>
+        <li>Postgres with pgvector for anything larger — one config line</li>
+        <li>Index format is documented and stable; it's just SQL you can query</li>
       </ul>
     </div>
   </div>
 </section>
 
-<!-- AGENTS -->
-<section class="section" id="agents">
-  <div class="wrap stack-lg">
-    <div class="measure stack">
-      <span class="pill pill-accent">03 — Agents</span>
-      <h2>The work you do every Monday, done by Sunday night.</h2>
-      <p class="lede">An agent is a standing instruction plus a trigger plus an output destination. No graph builder, no node canvas — you write what you want in a sentence and pick when it runs.</p>
+<section class="section" id="verify">
+  <div class="wrap split">
+    <div class="stack">
+      <span class="pill pill-accent">04–05 — generate &amp; verify</span>
+      <h2>Generation writes. Verification decides.</h2>
+      <p class="lede">These want different objectives, so Quire runs them as different models. A big model drafts; a small cheap one checks each claim against its span and never sees the question — given the question it starts reasoning about plausibility instead of support.</p>
+      <ul class="checks">
+        <li>Claims decomposed to atomic statements before checking</li>
+        <li>Verifier sees the span and the claim, nothing else</li>
+        <li>Explicit numeric rules — "roughly 340" entails "340" one way only</li>
+        <li>Conflicts surfaced rather than resolved: you get both numbers</li>
+        <li>Every stage logged to a trace you can replay with <code>quire trace</code></li>
+      </ul>
+      <div class="row"><a class="btn" href="blog-refusal.html">The full write-up</a></div>
     </div>
-    <div class="grid g3 reveal">
-      <div class="card">
-        <h4>Scheduled</h4>
-        <p>"Every Monday 07:00, summarize competitor changes from the tracked sites and post to #market-intel."</p>
+    <div class="stack">
+      <div class="terminal">
+        <div class="terminal-bar"><i></i><i></i><i></i><span>verification loop</span></div>
+<pre><code><span class="t-prompt">for</span> claim <span class="t-prompt">in</span> decompose(draft):
+    span = citations[claim.cite_id]
+    <span class="t-prompt">if not</span> entails(span, claim):
+        draft.drop(claim)        <span class="t-dim"># quietly, always</span>
+
+<span class="t-prompt">if not</span> draft.claims:
+    <span class="t-prompt">raise</span> InsufficientEvidence(
+        nearest=retriever.top(3),
+    )</code></pre>
       </div>
       <div class="card">
-        <h4>Triggered</h4>
-        <p>"When a contract lands in /inbound, redline it against our playbook and flag anything outside our approved positions."</p>
-      </div>
-      <div class="card">
-        <h4>Watching</h4>
-        <p>"Tell me when any document contradicts the security policy page, and quote both sides."</p>
-      </div>
-    </div>
-    <div class="grid g2">
-      <div class="tile tile-solar">
-        <h4>Agents ask before they act</h4>
-        <p>Anything that leaves your workspace — an email, a Jira ticket, a Slack post to a channel you didn't name — waits for approval the first ten times. You promote it to automatic when you trust it.</p>
-      </div>
-      <div class="tile tile-lavender">
-        <h4>And they show their work</h4>
-        <p>Every run keeps a trace: what it retrieved, what it skipped, which model answered, what it cost. Replay any run from any point.</p>
+        <h4>What this buys, measured</h4>
+        <div class="table-wrap" style="padding:0;background:none">
+          <table style="min-width:0">
+            <thead><tr><th>Metric</th><th>Off</th><th>On</th></tr></thead>
+            <tbody>
+              <tr><td>Claim attributable to its span</td><td>71%</td><td>99.2%</td></tr>
+              <tr><td>Correct refusal when absent</td><td>12%</td><td>94%</td></tr>
+              <tr><td>Recall on answerable questions</td><td>100%</td><td>98.8%</td></tr>
+              <tr><td>Added latency</td><td>—</td><td>+180ms</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small muted">Fictional figures, illustrating the tradeoff: verification costs a little recall and buys a lot of trust.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- architecture -->
 <section class="section">
   <div class="wrap stack-lg">
     <div class="measure stack">
-      <span class="pill">Under the hood</span>
-      <h2>Retrieval is the product. The model is a component.</h2>
-      <p class="lede">Swapping in a better model gains you a few points. Getting retrieval right is the difference between a demo and a tool people open on Tuesday.</p>
+      <span class="pill">Agents</span>
+      <h2>A cron job with a good memory.</h2>
+      <p class="lede">An agent is a YAML file: an instruction, a schedule or trigger, and somewhere to put the output. No canvas, no node graph, no orchestration runtime.</p>
     </div>
-    <div class="grid g4 reveal">
-      <div class="card card-sm"><h4>Hybrid retrieval</h4><p class="small">Dense vectors plus BM25 plus structural filters, fused and reranked. Keyword-exact queries stay exact.</p></div>
-      <div class="card card-sm"><h4>Document graph</h4><p class="small">Files link to the decisions, people and threads around them, so "the latest version" means something.</p></div>
-      <div class="card card-sm"><h4>Recency weighting</h4><p class="small">A policy from 2021 loses to the one from March unless you explicitly ask for history.</p></div>
-      <div class="card card-sm"><h4>Grounding check</h4><p class="small">A second pass verifies every claim against its cited span before you see it. Unsupported sentences get cut.</p></div>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <caption class="caption" style="text-align:left;padding:8px 16px">Internal benchmark, 4,000 questions over three customer corpora. Fictional figures for illustration.</caption>
-        <thead><tr><th>Metric</th><th>Naive RAG baseline</th><th>Quire</th></tr></thead>
-        <tbody>
-          <tr><td>Answer attributable to a real span</td><td>71%</td><td>99.2%</td></tr>
-          <tr><td>Correct refusal when answer absent</td><td>12%</td><td>94%</td></tr>
-          <tr><td>Median latency to first token</td><td>2.1s</td><td>0.9s</td></tr>
-          <tr><td>Permission leakage in red-team set</td><td>3 incidents</td><td>0 incidents</td></tr>
-        </tbody>
-      </table>
+    <div class="grid g2">
+      <div class="terminal">
+        <div class="terminal-bar"><i></i><i></i><i></i><span>.quire/agents/weekly.yml</span></div>
+<pre><code><span class="t-dim">name:</span> weekly-changes
+<span class="t-dim">schedule:</span> <span class="t-out">"0 7 * * 1"</span>
+<span class="t-dim">ask:</span> <span class="t-out">|</span>
+  <span class="t-out">What changed in the RFCs in the last 7 days?</span>
+  <span class="t-out">Cite everything. Max 400 words.</span>
+<span class="t-dim">sources:</span> [<span class="t-out">"docs/rfc/**"</span>]
+<span class="t-dim">output:</span>
+  <span class="t-dim">to:</span> <span class="t-out">"stdout"</span>     <span class="t-dim"># or file, webhook, slack</span>
+<span class="t-dim">strict:</span> <span class="t-out">true</span>        <span class="t-dim"># no output beats a wrong one</span></code></pre>
+      </div>
+      <div class="stack">
+        <div class="tile tile-solar">
+          <h4>Agents never act on their own</h4>
+          <p>The only outputs are stdout, a file, a webhook you configured, or an exit code. There is no browser, no shell access, no "do the thing" step. If you want it to open a pull request, you pipe it into something that does — visibly, in your own CI.</p>
+        </div>
+        <div class="tile tile-peach">
+          <h4>They run where you run them</h4>
+          <p>No scheduler service, no hosted runner. <code>quire agent run</code> inside a GitHub Action, a systemd timer, or a laptop crontab. The state is a file in <code>.quire/</code>.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -177,9 +207,12 @@
 <section class="section">
   <div class="wrap">
     <div class="tile tile-ink center stack" style="padding:clamp(40px,7vw,88px)">
-      <h2>Bring one messy folder.</h2>
-      <p class="lede" style="color:rgba(255,255,255,.7);max-width:48ch;margin-inline:auto">We'll index it live on the call and you can try to break it. Most people start with the shared drive nobody has cleaned since 2023.</p>
-      <div class="row row-center"><a class="btn btn-light" href="contact.html">Get a demo</a><a class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.25)" href="pricing.html">See pricing</a></div>
+      <h2>Read the source instead.</h2>
+      <p class="lede" style="color:rgba(255,255,255,.7);max-width:48ch;margin-inline:auto">The pipeline is about 4,000 lines. Everything on this page lives in <code>quire/pipeline/</code>, and the benchmarks justifying each default are in <code>bench/</code>.</p>
+      <div class="row row-center">
+        <a class="btn btn-light" href="https://github.com/tomerdamari/ai-startup">Browse the repo</a>
+        <a class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.25)" href="docs.html">Docs</a>
+      </div>
     </div>
   </div>
 </section>
@@ -191,17 +224,18 @@
     <div class="footer-cols">
       <div class="stack" style="gap:16px">
         <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
-        <p class="small" style="max-width:34ch">The AI workspace that reads everything you don't have time to. Built in Tel Aviv and Lisbon.</p>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
       </div>
-      <div><h5>Product</h5><ul><li><a href="product.html">Overview</a></li><li><a href="product.html#library">Library</a></li><li><a href="product.html#notebook">Notebook</a></li><li><a href="product.html#agents">Agents</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
-      <div><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="careers.html">Careers</a></li><li><a href="customers.html">Customers</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
-      <div><h5>Resources</h5><ul><li><a href="docs.html">Docs &amp; API</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="security.html">Security</a></li><li><a href="docs.html#status">Status</a></li><li><a href="https://github.com/tomerdamari/ai-startup">Source on GitHub</a></li></ul></div>
-      <div><h5>Legal</h5><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="security.html#dpa">DPA</a></li><li><a href="privacy.html#subprocessors">Subprocessors</a></li></ul></div>
+      <div><h5>Project</h5><ul><li><a href="index.html">Overview</a></li><li><a href="product.html">How it works</a></li><li><a href="docs.html">Docs</a></li><li><a href="solutions.html">Recipes</a></li><li><a href="changelog.html">Releases</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="careers.html">Contribute</a></li><li><a href="customers.html">Showcase</a></li><li><a href="contact.html">Discussions</a></li><li><a href="contact.html#discord">Discord</a></li><li><a href="careers.html#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="pricing.html">Why it's free</a></li><li><a href="about.html">Governance</a></li><li><a href="security.html">Security</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="terms.html">License</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html#trademark">Trademark</a></li><li><a href="https://github.com/tomerdamari/ai-startup">Source on GitHub</a></li></ul></div>
     </div>
     <hr class="divider">
     <div class="footer-base">
-      <span>© 2026 Quire Labs Ltd. A fictional company, for design purposes.</span>
-      <span>hello@quire.ai</span>
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>maintainers@quire.dev</span>
     </div>
   </div>
 </footer>
