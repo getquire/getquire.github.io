@@ -4,10 +4,11 @@
 
 /* ---------- tokens ---------- */
 :root {
-  /* surfaces */
-  --sky-tint: #ebf5ff;
+  /* surfaces — canvas and card must stay a few steps apart;
+     the design takes its depth from that shift, not from shadows */
+  --sky-tint: #f3f9ff;
   --paper: #ffffff;
-  --bone: #fafdff;
+  --bone: #fdfeff;
   --mist: #f6f7f8;
 
   /* ink */
@@ -173,7 +174,7 @@ p { margin: 0; color: var(--graphite); line-height: 1.5; }
 }
 
 /* ---------- header ---------- */
-.nav { position: sticky; top: 0; z-index: 40; background: rgba(235, 245, 255, 0.82); backdrop-filter: blur(12px); }
+.nav { position: sticky; top: 0; z-index: 40; background: rgba(243, 249, 255, 0.82); backdrop-filter: blur(12px); }
 .nav-in { display: flex; align-items: center; gap: var(--s4); height: 72px; }
 .brand { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-size: 20px; letter-spacing: -0.02em; }
 .brand-mark { width: 28px; height: 28px; border-radius: 9px; background: var(--iris-grad); }
