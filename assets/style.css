@@ -1,6 +1,7 @@
-/* Margin — design system
-   Source spec: soft daylight notebook. Canvas #ebf5ff, cards #fafdff,
-   charcoal pills as the only dense weight, display type at weight 500 only. */
+/* Quire — design system
+   Source spec: soft daylight notebook. Canvas and cards run a few steps
+   lighter than the spec's #ebf5ff / #fafdff, keeping the same separation.
+   Charcoal pills as the only dense weight, display type at weight 500 only. */
 
 /* ---------- tokens ---------- */
 :root {

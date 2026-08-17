@@ -1,4 +1,4 @@
-# Margin — a fictional AI startup site
+# Quire — a fictional AI startup site
 
 A complete 17-page marketing site for a company that does not exist. Built as a
 design and copywriting exercise. MIT licensed — take the whole thing, swap the
@@ -8,7 +8,7 @@ name, ship your own.
 
 ## What this is
 
-Margin is an invented company: an AI workspace that indexes your team's existing
+Quire is an invented company: an AI workspace that indexes your team's existing
 documents, answers questions with clickable citations, and runs scheduled agents.
 Its positioning wedge is that **it refuses to answer when it can't cite a source**.
 
@@ -69,17 +69,17 @@ copy was taken from it or from the site it describes.
 
 Applied as specified:
 
-| Token | Value |
-|---|---|
-| Canvas | `#ebf5ff` |
-| Card surface | `#fafdff` |
-| Ink / headings | `#0a0d12` |
-| Filled buttons | `#181d27` |
-| Accent | `#0069e0` |
-| Card radius | 32px |
-| Pill radius | 9999px |
-| Section gap | 80–120px |
-| Base unit | 8px |
+| Token | Value | Spec |
+|---|---|---|
+| Canvas | `#f3f9ff` | lightened from `#ebf5ff` |
+| Card surface | `#fdfeff` | lightened from `#fafdff` |
+| Ink / headings | `#0a0d12` | as specified |
+| Filled buttons | `#181d27` | as specified |
+| Accent | `#0069e0` | as specified |
+| Card radius | 32px | as specified |
+| Pill radius | 9999px | as specified |
+| Section gap | 80–120px | as specified |
+| Base unit | 8px | as specified |
 
 Constraints the spec imposes and this site keeps: display type is weight 500
 only, never bold. No shadows on content cards. No sharp corners below 16px. No

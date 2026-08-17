@@ -1,4 +1,4 @@
-// Margin — three small behaviors: mobile nav, FAQ accordion, scroll reveal.
+// Quire — three small behaviors: mobile nav, FAQ accordion, scroll reveal.
 document.addEventListener('click', (e) => {
   const toggle = e.target.closest('.nav-toggle');
   if (toggle) {

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Docs &amp; API — Margin</title>
+<title>Docs &amp; API — Quire</title>
 <meta name="description" content="Quickstart, REST API, agent definitions, webhooks and SDKs. Every response includes citations.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +15,7 @@
 
 <header class="nav">
   <div class="wrap nav-in">
-    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Margin</a>
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
     <nav class="nav-links" aria-label="Primary">
       <a href="product.html">Product</a>
       <a href="solutions.html">Solutions</a>
@@ -40,7 +40,7 @@
 <section class="section">
   <div class="wrap center stack-lg">
     <span class="pill">Docs &amp; API</span>
-    <h1>Everything Margin does,<br>you can do over HTTP.</h1>
+    <h1>Everything Quire does,<br>you can do over HTTP.</h1>
     <p class="lede measure">The product is a client of its own API. If the notebook can do it, the API can do it — including the citations, which are first-class objects, not text you have to parse back out.</p>
     <div class="row row-center"><a class="btn" href="#quickstart">Quickstart</a><a class="btn btn-ghost" href="#reference">API reference</a></div>
   </div>
@@ -70,8 +70,8 @@
     <div class="stack">
       <div class="card">
         <p class="caption">Ask a question</p>
-        <pre><code>curl https://api.margin.ai/v1/query \
-  -H "Authorization: Bearer $MARGIN_KEY" \
+        <pre><code>curl https://api.quire.ai/v1/query \
+  -H "Authorization: Bearer $QUIRE_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "question": "Why did EU churn spike in Q2?",
@@ -161,10 +161,10 @@
   <div class="wrap stack-lg">
     <div class="measure stack"><span class="pill">SDKs</span><h2>Four ways in.</h2></div>
     <div class="grid g4 reveal">
-      <div class="card card-sm"><h4>TypeScript</h4><pre style="font-size:12px"><code>npm i @margin/sdk</code></pre><p class="small">Full types for citations and traces.</p></div>
-      <div class="card card-sm"><h4>Python</h4><pre style="font-size:12px"><code>pip install margin</code></pre><p class="small">Async client, pandas helper for traces.</p></div>
-      <div class="card card-sm"><h4>Go</h4><pre style="font-size:12px"><code>go get margin.ai/go</code></pre><p class="small">Thin, no reflection, context-aware.</p></div>
-      <div class="card card-sm"><h4>MCP server</h4><pre style="font-size:12px"><code>npx @margin/mcp</code></pre><p class="small">Expose your library to any MCP client as a tool.</p></div>
+      <div class="card card-sm"><h4>TypeScript</h4><pre style="font-size:12px"><code>npm i @quire/sdk</code></pre><p class="small">Full types for citations and traces.</p></div>
+      <div class="card card-sm"><h4>Python</h4><pre style="font-size:12px"><code>pip install quire</code></pre><p class="small">Async client, pandas helper for traces.</p></div>
+      <div class="card card-sm"><h4>Go</h4><pre style="font-size:12px"><code>go get quire.ai/go</code></pre><p class="small">Thin, no reflection, context-aware.</p></div>
+      <div class="card card-sm"><h4>MCP server</h4><pre style="font-size:12px"><code>npx @quire/mcp</code></pre><p class="small">Expose your library to any MCP client as a tool.</p></div>
     </div>
   </div>
 </section>
@@ -175,7 +175,7 @@
     <div class="grid g3">
       <div class="tile tile-mint"><h4>All systems operational</h4><p>99.98% over the last 90 days. Incidents are posted within 15 minutes and post-mortems within five business days.</p></div>
       <div class="card"><h4>Rate limits</h4><ul class="checks"><li>Team: 60 queries/min</li><li>Business: 300 queries/min</li><li>Enterprise: negotiated</li><li>Bursts of 3× for 30 seconds</li></ul></div>
-      <div class="card"><h4>Versioning</h4><ul class="checks"><li>Date-pinned via <code>Margin-Version</code> header</li><li>Breaking changes get 12 months notice</li><li>Additive changes ship continuously</li><li>Deprecations announced in the changelog</li></ul></div>
+      <div class="card"><h4>Versioning</h4><ul class="checks"><li>Date-pinned via <code>Quire-Version</code> header</li><li>Breaking changes get 12 months notice</li><li>Additive changes ship continuously</li><li>Deprecations announced in the changelog</li></ul></div>
     </div>
   </div>
 </section>
@@ -196,7 +196,7 @@
   <div class="wrap footer-in">
     <div class="footer-cols">
       <div class="stack" style="gap:16px">
-        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Margin</a>
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
         <p class="small" style="max-width:34ch">The AI workspace that reads everything you don't have time to. Built in Tel Aviv and Lisbon.</p>
       </div>
       <div><h5>Product</h5><ul><li><a href="product.html">Overview</a></li><li><a href="product.html#library">Library</a></li><li><a href="product.html#notebook">Notebook</a></li><li><a href="product.html#agents">Agents</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
@@ -206,8 +206,8 @@
     </div>
     <hr class="divider">
     <div class="footer-base">
-      <span>© 2026 Margin Labs Ltd. A fictional company, for design purposes.</span>
-      <span>hello@margin.ai</span>
+      <span>© 2026 Quire Labs Ltd. A fictional company, for design purposes.</span>
+      <span>hello@quire.ai</span>
     </div>
   </div>
 </footer>
