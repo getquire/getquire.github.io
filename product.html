@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product — Margin</title>
+<meta name="description" content="Library, Notebook and Agents: how Margin indexes your sources, answers with checkable citations, and automates the recurring work.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Margin</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="product.html" aria-current="page">Product</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="docs.html">Docs</a>
+      <a href="customers.html">Customers</a>
+      <a href="blog.html">Blog</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="contact.html">Sign in</a>
+      <a class="btn btn-sm" href="contact.html">Get a demo</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+<section class="section">
+  <div class="wrap center stack-lg">
+    <span class="pill">Product</span>
+    <h1>One library. Every answer.<br>Nothing invented.</h1>
+    <p class="lede measure">Margin has three parts, and they only make sense together: a library that knows what you have, a notebook that answers from it, and agents that keep doing it without being asked.</p>
+    <div class="row row-center"><a class="btn" href="contact.html">Get a demo</a><a class="btn btn-ghost" href="docs.html">Read the docs</a></div>
+  </div>
+</section>
+
+<!-- LIBRARY -->
+<section class="section" id="library">
+  <div class="wrap split">
+    <div class="stack">
+      <span class="pill pill-accent">01 — Library</span>
+      <h2>Index everything. Break nothing.</h2>
+      <p class="lede">Margin reads your sources where they live. It does not copy them into a second system of record, and it does not flatten your permissions to make search easier.</p>
+      <ul class="checks">
+        <li>42 connectors: Drive, Notion, Slack, Confluence, SharePoint, Gmail, Box, S3, Zendesk, Jira, GitHub, Salesforce, Airtable and more</li>
+        <li>Permission inheritance at the document level, re-checked at query time — not at index time</li>
+        <li>Layout-aware parsing for PDFs: tables stay tables, footnotes stay attached to their claim</li>
+        <li>Incremental sync, so a 40-page edit reindexes in seconds, not hours</li>
+        <li>Native OCR for scans, handwriting and screenshots pasted into tickets</li>
+      </ul>
+    </div>
+    <div class="stack">
+      <div class="card">
+        <p class="caption">Connected sources</p>
+        <div class="stack" style="gap:12px">
+          <div class="row" style="justify-content:space-between"><span class="small">Google Drive</span><span class="pill small">418,220 files</span></div>
+          <div class="row" style="justify-content:space-between"><span class="small">Notion</span><span class="pill small">12,904 pages</span></div>
+          <div class="row" style="justify-content:space-between"><span class="small">Slack — 61 channels</span><span class="pill small">2.1M messages</span></div>
+          <div class="row" style="justify-content:space-between"><span class="small">Zendesk</span><span class="pill small">88,340 tickets</span></div>
+          <div class="row" style="justify-content:space-between"><span class="small">S3 — contracts/</span><span class="pill small">6,112 PDFs</span></div>
+        </div>
+        <hr class="divider">
+        <p class="small muted">Last full sync 3 minutes ago · 0 permission conflicts</p>
+      </div>
+      <div class="tile tile-aqua">
+        <h4>The unglamorous part</h4>
+        <p>Roughly 60% of our engineering time goes to parsing and permissions, because that is where every retrieval system actually fails.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOTEBOOK -->
+<section class="section" id="notebook">
+  <div class="wrap split">
+    <div class="card card-white">
+      <p class="caption">Ask</p>
+      <p style="color:var(--ink);font-size:20px">Why did churn spike in the EU in Q2?</p>
+      <hr class="divider">
+      <p class="caption">Answer</p>
+      <p style="color:var(--ink);font-size:18px;line-height:1.55">Two causes, not one. The May billing migration failed for 340 SEPA customers<sup class="ink-link">1</sup>, and separately the German data-residency requirement landed before residency shipped<sup class="ink-link">2</sup>. Support tickets separate cleanly by cause after 12 May<sup class="ink-link">3</sup>.</p>
+      <div class="badge-row"><span class="pill pill-accent">3 sources</span><span class="pill">1 source disagrees</span></div>
+      <hr class="divider">
+      <p class="small muted">Sources disagree on the SEPA count: the incident review says 340, the finance reconciliation says 361. Both shown.</p>
+    </div>
+    <div class="stack">
+      <span class="pill pill-accent">02 — Notebook</span>
+      <h2>An answer you can argue with.</h2>
+      <p class="lede">The Notebook is where you actually work: a document that answers back. Ask in the margin, and the answer lands inline with footnotes you can open.</p>
+      <ul class="checks">
+        <li>Sentence-level citations — page, version, author, timestamp</li>
+        <li>Disagreement detection when two sources give different numbers</li>
+        <li>Explicit refusal when the library has no basis for an answer</li>
+        <li>Follow-ups keep the thread; the notebook is the artifact, not the chat</li>
+        <li>Export to Docs, Notion, Markdown or PDF with citations intact</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- AGENTS -->
+<section class="section" id="agents">
+  <div class="wrap stack-lg">
+    <div class="measure stack">
+      <span class="pill pill-accent">03 — Agents</span>
+      <h2>The work you do every Monday, done by Sunday night.</h2>
+      <p class="lede">An agent is a standing instruction plus a trigger plus an output destination. No graph builder, no node canvas — you write what you want in a sentence and pick when it runs.</p>
+    </div>
+    <div class="grid g3 reveal">
+      <div class="card">
+        <h4>Scheduled</h4>
+        <p>"Every Monday 07:00, summarize competitor changes from the tracked sites and post to #market-intel."</p>
+      </div>
+      <div class="card">
+        <h4>Triggered</h4>
+        <p>"When a contract lands in /inbound, redline it against our playbook and flag anything outside our approved positions."</p>
+      </div>
+      <div class="card">
+        <h4>Watching</h4>
+        <p>"Tell me when any document contradicts the security policy page, and quote both sides."</p>
+      </div>
+    </div>
+    <div class="grid g2">
+      <div class="tile tile-solar">
+        <h4>Agents ask before they act</h4>
+        <p>Anything that leaves your workspace — an email, a Jira ticket, a Slack post to a channel you didn't name — waits for approval the first ten times. You promote it to automatic when you trust it.</p>
+      </div>
+      <div class="tile tile-lavender">
+        <h4>And they show their work</h4>
+        <p>Every run keeps a trace: what it retrieved, what it skipped, which model answered, what it cost. Replay any run from any point.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- architecture -->
+<section class="section">
+  <div class="wrap stack-lg">
+    <div class="measure stack">
+      <span class="pill">Under the hood</span>
+      <h2>Retrieval is the product. The model is a component.</h2>
+      <p class="lede">Swapping in a better model gains you a few points. Getting retrieval right is the difference between a demo and a tool people open on Tuesday.</p>
+    </div>
+    <div class="grid g4 reveal">
+      <div class="card card-sm"><h4>Hybrid retrieval</h4><p class="small">Dense vectors plus BM25 plus structural filters, fused and reranked. Keyword-exact queries stay exact.</p></div>
+      <div class="card card-sm"><h4>Document graph</h4><p class="small">Files link to the decisions, people and threads around them, so "the latest version" means something.</p></div>
+      <div class="card card-sm"><h4>Recency weighting</h4><p class="small">A policy from 2021 loses to the one from March unless you explicitly ask for history.</p></div>
+      <div class="card card-sm"><h4>Grounding check</h4><p class="small">A second pass verifies every claim against its cited span before you see it. Unsupported sentences get cut.</p></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <caption class="caption" style="text-align:left;padding:8px 16px">Internal benchmark, 4,000 questions over three customer corpora. Fictional figures for illustration.</caption>
+        <thead><tr><th>Metric</th><th>Naive RAG baseline</th><th>Margin</th></tr></thead>
+        <tbody>
+          <tr><td>Answer attributable to a real span</td><td>71%</td><td>99.2%</td></tr>
+          <tr><td>Correct refusal when answer absent</td><td>12%</td><td>94%</td></tr>
+          <tr><td>Median latency to first token</td><td>2.1s</td><td>0.9s</td></tr>
+          <tr><td>Permission leakage in red-team set</td><td>3 incidents</td><td>0 incidents</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="tile tile-ink center stack" style="padding:clamp(40px,7vw,88px)">
+      <h2>Bring one messy folder.</h2>
+      <p class="lede" style="color:rgba(255,255,255,.7);max-width:48ch;margin-inline:auto">We'll index it live on the call and you can try to break it. Most people start with the shared drive nobody has cleaned since 2023.</p>
+      <div class="row row-center"><a class="btn btn-light" href="contact.html">Get a demo</a><a class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.25)" href="pricing.html">See pricing</a></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-cols">
+      <div class="stack" style="gap:16px">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Margin</a>
+        <p class="small" style="max-width:34ch">The AI workspace that reads everything you don't have time to. Built in Tel Aviv and Lisbon.</p>
+      </div>
+      <div><h5>Product</h5><ul><li><a href="product.html">Overview</a></li><li><a href="product.html#library">Library</a></li><li><a href="product.html#notebook">Notebook</a></li><li><a href="product.html#agents">Agents</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
+      <div><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="careers.html">Careers</a></li><li><a href="customers.html">Customers</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div><h5>Resources</h5><ul><li><a href="docs.html">Docs &amp; API</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="security.html">Security</a></li><li><a href="docs.html#status">Status</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="security.html#dpa">DPA</a></li><li><a href="privacy.html#subprocessors">Subprocessors</a></li></ul></div>
+    </div>
+    <hr class="divider">
+    <div class="footer-base">
+      <span>© 2026 Margin Labs Ltd. A fictional company, for design purposes.</span>
+      <span>hello@margin.ai</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

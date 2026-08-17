@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy — Margin</title>
+<meta name="description" content="What we collect, what we never do with it, how long we keep it, and how to get it deleted.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Margin</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="product.html">Product</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="docs.html">Docs</a>
+      <a href="customers.html">Customers</a>
+      <a href="blog.html">Blog</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="contact.html">Sign in</a>
+      <a class="btn btn-sm" href="contact.html">Get a demo</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+<section class="section">
+  <div class="wrap center stack">
+    <span class="pill">Privacy</span>
+    <h1>Privacy policy</h1>
+    <p class="lede measure">Written to be read. The legally operative version is the same text — we didn't write a friendly summary on top of a hostile document.</p>
+    <p class="small muted">Last updated 12 August 2026 · Margin Labs Ltd.</p>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="wrap article">
+
+    <div class="tile tile-mint" style="margin-bottom:40px">
+      <h4>The short version</h4>
+      <ul class="checks">
+        <li>Your documents are yours. We never train on them and never use them outside your workspace.</li>
+        <li>We collect the minimum needed to run the product and bill you for it.</li>
+        <li>We don't sell data, don't run ad trackers, and don't share with anyone outside the subprocessors listed below.</li>
+        <li>You can export everything and have it deleted, and we confirm deletion in writing.</li>
+      </ul>
+    </div>
+
+    <h2>1. Who we are</h2>
+    <p>Margin Labs Ltd., Rothschild Blvd 45, Tel Aviv-Yafo 6578403, Israel, with an EU establishment at Rua da Prata 80, 1100-420 Lisboa, Portugal. For customer content we act as a <b>processor</b>; for account and website data we act as a <b>controller</b>. Data protection contact: <a class="ink-link" href="mailto:privacy@margin.ai">privacy@margin.ai</a>.</p>
+
+    <h2>2. What we collect</h2>
+    <h3>Customer content</h3>
+    <p>Documents, messages and files from the sources you connect, plus the questions you ask and the answers produced. We process this only to provide the service to your workspace. We do not use it to train models, improve retrieval for other customers, or build any shared index.</p>
+    <h3>Account data</h3>
+    <p>Name, work email, company, role, authentication identifiers, and billing details (held by Stripe — we never see full card numbers).</p>
+    <h3>Usage data</h3>
+    <p>Feature events, query counts, latency and error traces. Query <em>text</em> is treated as customer content, not usage data, and is excluded from our analytics pipeline.</p>
+    <h3>Website data</h3>
+    <p>Page views and referrer, collected with a privacy-preserving analytics tool that sets no cookies and does not fingerprint. There is no cookie banner on this site because there is nothing to consent to.</p>
+
+    <h2>3. What we never do</h2>
+    <ul>
+      <li>Train foundation models on your content, or fine-tune anything on it</li>
+      <li>Sell, rent or share personal data with advertisers or data brokers</li>
+      <li>Let our engineers read your documents — debug access requires your written approval, is time-boxed, and appears in your audit trace</li>
+      <li>Retain your content with any model provider; all inference runs under zero-retention terms</li>
+    </ul>
+
+    <h2>4. Legal bases (GDPR)</h2>
+    <ul>
+      <li><b>Contract</b> — providing the service, billing, support</li>
+      <li><b>Legitimate interest</b> — security monitoring, fraud prevention, aggregate product analytics</li>
+      <li><b>Consent</b> — marketing email, which you can withdraw in one click</li>
+      <li><b>Legal obligation</b> — tax, accounting, lawful requests</li>
+    </ul>
+
+    <h2>5. How long we keep things</h2>
+    <div class="table-wrap" style="margin:24px 0">
+      <table>
+        <thead><tr><th>Data</th><th>Retention</th></tr></thead>
+        <tbody>
+          <tr><td>Customer content and index</td><td>While your workspace is active. Deleted within 24 hours of workspace deletion; backups purged within 30 days.</td></tr>
+          <tr><td>Query and answer history</td><td>Your configured window, default 12 months. Can be set as low as 24 hours.</td></tr>
+          <tr><td>Audit traces</td><td>Your configured window, default 24 months.</td></tr>
+          <tr><td>Account data</td><td>Duration of the relationship plus 12 months.</td></tr>
+          <tr><td>Billing records</td><td>7 years, as tax law requires.</td></tr>
+          <tr><td>Website analytics</td><td>Aggregated, no individual retention.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>6. Where data lives</h2>
+    <p>You choose a region at workspace creation: EU (eu-central-1), US (us-east-1), Israel (il-central-1) or Australia (ap-southeast-2). Content at rest, in transit and during inference stays in that region, including the model endpoint. Transfers outside the EEA, where they occur, rely on Standard Contractual Clauses attached to our <a class="ink-link" href="security.html#dpa">DPA</a>.</p>
+
+    <h2 id="subprocessors">7. Subprocessors</h2>
+    <p>Current list: AWS (hosting), Anthropic and OpenAI (inference, zero-retention), Cloudflare (edge), Datadog (telemetry, no customer content), Stripe (billing). We give 30 days notice before adding any subprocessor. Enterprise customers may object and we will route around the addition or let you terminate without penalty. Subscribe to changes at <a class="ink-link" href="mailto:privacy@margin.ai">privacy@margin.ai</a>.</p>
+
+    <h2>8. Your rights</h2>
+    <p>Access, correction, deletion, portability, restriction, objection, and the right to complain to a supervisory authority. If your data sits inside a customer's workspace, they are the controller — contact them first, and we'll assist them within five business days. For data we control, write to <a class="ink-link" href="mailto:privacy@margin.ai">privacy@margin.ai</a> and we'll respond within 30 days, usually within three.</p>
+
+    <h2>9. Security</h2>
+    <p>AES-256 at rest, TLS 1.3 in transit, per-workspace key separation, hardware-key MFA for all staff, quarterly access reviews, twice-yearly penetration tests plus a dedicated LLM red team. Detail on the <a class="ink-link" href="security.html">security page</a>. Confirmed breaches affecting your data are reported to you within 24 hours.</p>
+
+    <h2>10. Children</h2>
+    <p>Margin is a business product and is not directed at anyone under 16. We don't knowingly collect their data, and we delete it if we learn we have.</p>
+
+    <h2>11. Changes</h2>
+    <p>Material changes get 30 days notice by email to workspace admins, and the previous version stays available for comparison. We won't retroactively narrow your rights over data you already gave us.</p>
+
+    <hr class="divider" style="margin-block:40px">
+    <p class="small muted">This is a demonstration site for a fictional company. The text above is illustrative and is not legal advice or an actual privacy policy — have counsel draft the real one.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-cols">
+      <div class="stack" style="gap:16px">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Margin</a>
+        <p class="small" style="max-width:34ch">The AI workspace that reads everything you don't have time to. Built in Tel Aviv and Lisbon.</p>
+      </div>
+      <div><h5>Product</h5><ul><li><a href="product.html">Overview</a></li><li><a href="product.html#library">Library</a></li><li><a href="product.html#notebook">Notebook</a></li><li><a href="product.html#agents">Agents</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
+      <div><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="careers.html">Careers</a></li><li><a href="customers.html">Customers</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div><h5>Resources</h5><ul><li><a href="docs.html">Docs &amp; API</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="security.html">Security</a></li><li><a href="docs.html#status">Status</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="security.html#dpa">DPA</a></li><li><a href="privacy.html#subprocessors">Subprocessors</a></li></ul></div>
+    </div>
+    <hr class="divider">
+    <div class="footer-base">
+      <span>© 2026 Margin Labs Ltd. A fictional company, for design purposes.</span>
+      <span>hello@margin.ai</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

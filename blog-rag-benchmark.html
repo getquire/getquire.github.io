@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your RAG benchmark is measuring the wrong thing — Margin</title>
+<meta name="description" content="Answer quality on public corpora tells you almost nothing about behavior on a messy enterprise drive. We rebuilt our benchmark around attribution and permission leakage.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Margin</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="product.html">Product</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="docs.html">Docs</a>
+      <a href="customers.html">Customers</a>
+      <a href="blog.html" aria-current="page">Blog</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="contact.html">Sign in</a>
+      <a class="btn btn-sm" href="contact.html">Get a demo</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+<article class="section">
+  <div class="wrap article stack">
+    <a class="small ink-link" href="blog.html">← All posts</a>
+    <span class="pill">Engineering · 9 min read</span>
+    <h1 style="font-size:clamp(36px,5.5vw,56px)">Your RAG benchmark is measuring the wrong thing</h1>
+    <p class="lede">Scores on public corpora tell you almost nothing about how a system behaves on a shared drive with eleven years of accumulated mess in it. Here's what we measure instead.</p>
+    <div class="row"><span class="avatar">JM</span><span class="small">Joel Mensah · Co-founder, CTO<br><span class="muted">21 July 2026</span></span></div>
+  </div>
+
+  <div class="wrap article">
+    <p>Public retrieval benchmarks are built on clean corpora: Wikipedia, news archives, curated document sets. Every document is well-formed, none of them contradict each other, nothing is superseded, and every user can see everything. Real enterprise corpora have none of these properties, and the differences are not cosmetic — they're where systems actually fail.</p>
+
+    <p>We scored 0.81 on a well-known public benchmark and then watched our system confidently return a 2021 travel policy to someone asking about the current one. The benchmark had no notion of a superseded document, so it could not have caught that. It wasn't wrong; it was measuring a different thing than the one we cared about.</p>
+
+    <h2>Four properties public benchmarks don't have</h2>
+
+    <h3>Documents contradict each other</h3>
+    <p>A real corpus contains four versions of the same policy, two of which are drafts, one of which was never approved but got shared widely enough to look canonical. Ranking by relevance retrieves all four. The question of which one is <em>true</em> is not a retrieval question, and no amount of embedding quality answers it.</p>
+
+    <h3>Recency is a first-class signal, and it is not monotone</h3>
+    <p>Usually the newest document wins. But "what was our position in 2023" wants the old one, and a superseded policy is still the right answer to a question about history. Any system that hard-codes recency weighting gets the second class wrong; any system that ignores it gets the first class wrong most of the time.</p>
+
+    <h3>Not everyone can see everything</h3>
+    <p>This is the one that turns a bug into an incident. A benchmark with no access control cannot measure permission leakage, and permission leakage is the failure that ends a deployment. We wrote about the specific shape of this in <a class="ink-link" href="blog-refusal.html">an earlier post</a> — the short version is that filtering after retrieval leaks through ranking, latency and phrasing long before it leaks through the answer text.</p>
+
+    <h3>Half the corpus is barely parseable</h3>
+    <p>Scanned contracts, screenshots pasted into tickets, tables built out of merged cells and manual line breaks, a spreadsheet where the real data starts at row 14. Public benchmarks give you clean text. Real corpora give you a PDF someone printed and re-scanned at an angle.</p>
+
+    <h2>What we measure now</h2>
+    <div class="table-wrap" style="margin:32px 0">
+      <table>
+        <thead><tr><th>Metric</th><th>What it catches</th><th>Current</th></tr></thead>
+        <tbody>
+          <tr><td>Span-level attribution</td><td>Answer text that no cited span actually supports</td><td>99.2%</td></tr>
+          <tr><td>Correct refusal</td><td>Invention when the corpus has no answer</td><td>94%</td></tr>
+          <tr><td>Staleness error</td><td>Returning a superseded document as current</td><td>1.8%</td></tr>
+          <tr><td>Permission leakage</td><td>Any signal about a document the user can't open</td><td>0 in 50k adversarial queries</td></tr>
+          <tr><td>Conflict recall</td><td>Missing a genuine disagreement between sources</td><td>88%</td></tr>
+          <tr><td>Table fidelity</td><td>Numbers pulled from the wrong cell</td><td>96%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Note what isn't on that list: answer quality as judged by a model. We measured it for a year. It correlates with how much people like reading the output and not at all with whether they can rely on it, and optimizing for it quietly makes the system more confident and less correct.</p>
+
+    <blockquote>If your evaluation can't tell a confident wrong answer from a correct one, it will reward the confident wrong answer, because it reads better.</blockquote>
+
+    <h2>How to build the corpus you need</h2>
+    <p>You cannot buy this benchmark. It has to be built from a corpus that looks like your customers' corpora, which means you need design partners willing to let you evaluate against their real content under a narrow agreement. We have three, each with a different flavor of mess, and we run against all three before anything ships.</p>
+    <ul>
+      <li><b>Take a snapshot and freeze it.</b> A corpus that changes under you makes every comparison meaningless.</li>
+      <li><b>Label at the span level, not the answer level.</b> "This answer is good" is unactionable. "This claim is not in this span" is a bug report.</li>
+      <li><b>Include the questions people asked and gave up on.</b> Your logs contain them: reformulated three times, then abandoned. That's your hardest set and it's free.</li>
+      <li><b>Red-team permissions on every release.</b> Automated, adversarial, treated as a release blocker rather than a report.</li>
+    </ul>
+
+    <h2>The uncomfortable part</h2>
+    <p>Doing this properly means your headline numbers get worse, and they get worse right before you need to show them to someone. Our attribution score dropped 14 points the week we added the scanned-document set, and it dropped another 6 when we started counting table-cell errors as failures rather than parse warnings.</p>
+    <p>Both drops were the benchmark starting to tell the truth. The alternative is a number that goes up while your customers' trust goes down, and you find out from a renewal call.</p>
+
+    <p class="muted small" style="margin-top:48px">The harness is open source at <span class="mono">github.com/margin-ai/refusal-bench</span>. The corpora aren't ours to share, but the generators and the scoring run against anything you point them at.</p>
+  </div>
+
+  <div class="wrap article">
+    <hr class="divider">
+    <div class="grid g2" style="margin-top:32px">
+      <a class="card card-link card-sm" href="blog-refusal.html"><span class="pill">Read next</span><h4>Teaching a model to say "I don't know"</h4><p class="small">The benchmark, three failed approaches, and the boring one that worked.</p></a>
+      <div class="tile tile-solar"><h4>The Margin Note</h4><p class="small">One email a month, engineering-first.</p><form class="row" data-demo><input type="email" placeholder="you@company.com" required><button class="btn btn-sm" type="submit">Subscribe</button></form><p class="small muted" data-note></p></div>
+    </div>
+  </div>
+</article>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-cols">
+      <div class="stack" style="gap:16px">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Margin</a>
+        <p class="small" style="max-width:34ch">The AI workspace that reads everything you don't have time to. Built in Tel Aviv and Lisbon.</p>
+      </div>
+      <div><h5>Product</h5><ul><li><a href="product.html">Overview</a></li><li><a href="product.html#library">Library</a></li><li><a href="product.html#notebook">Notebook</a></li><li><a href="product.html#agents">Agents</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
+      <div><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="careers.html">Careers</a></li><li><a href="customers.html">Customers</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div><h5>Resources</h5><ul><li><a href="docs.html">Docs &amp; API</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="security.html">Security</a></li><li><a href="docs.html#status">Status</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="security.html#dpa">DPA</a></li><li><a href="privacy.html#subprocessors">Subprocessors</a></li></ul></div>
+    </div>
+    <hr class="divider">
+    <div class="footer-base">
+      <span>© 2026 Margin Labs Ltd. A fictional company, for design purposes.</span>
+      <span>hello@margin.ai</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

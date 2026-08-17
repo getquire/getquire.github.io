@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docs &amp; API — Margin</title>
+<meta name="description" content="Quickstart, REST API, agent definitions, webhooks and SDKs. Every response includes citations.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Margin</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="product.html">Product</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="docs.html" aria-current="page">Docs</a>
+      <a href="customers.html">Customers</a>
+      <a href="blog.html">Blog</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="contact.html">Sign in</a>
+      <a class="btn btn-sm" href="contact.html">Get a demo</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+<section class="section">
+  <div class="wrap center stack-lg">
+    <span class="pill">Docs &amp; API</span>
+    <h1>Everything Margin does,<br>you can do over HTTP.</h1>
+    <p class="lede measure">The product is a client of its own API. If the notebook can do it, the API can do it — including the citations, which are first-class objects, not text you have to parse back out.</p>
+    <div class="row row-center"><a class="btn" href="#quickstart">Quickstart</a><a class="btn btn-ghost" href="#reference">API reference</a></div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="wrap grid g4 reveal">
+    <a class="card card-link card-sm" href="#quickstart"><h4>Quickstart</h4><p class="small">Key to first cited answer in about four minutes.</p></a>
+    <a class="card card-link card-sm" href="#reference"><h4>API reference</h4><p class="small">Query, sources, agents, traces, webhooks.</p></a>
+    <a class="card card-link card-sm" href="#sdks"><h4>SDKs</h4><p class="small">TypeScript, Python, Go. Plus an MCP server.</p></a>
+    <a class="card card-link card-sm" href="#status"><h4>Status &amp; limits</h4><p class="small">Uptime, rate limits, versioning policy.</p></a>
+  </div>
+</section>
+
+<section class="section" id="quickstart">
+  <div class="wrap split" style="align-items:start">
+    <div class="stack">
+      <span class="pill pill-accent">Quickstart</span>
+      <h2>Four minutes, three calls.</h2>
+      <ol class="checks" style="list-style:none">
+        <li><b>1.</b> Create a workspace key in Settings → API. Keys are scoped to a workspace and inherit that workspace's permissions.</li>
+        <li><b>2.</b> Connect a source. OAuth connectors return a redirect URL; storage connectors take a role ARN.</li>
+        <li><b>3.</b> Ask a question. You get an answer plus a <code>citations</code> array with document, span and version.</li>
+      </ol>
+      <p class="small muted">Indexing is asynchronous. Poll <code>GET /v1/sources/:id</code> or subscribe to the <code>source.indexed</code> webhook — the first sync of 100k documents takes about 20 minutes.</p>
+    </div>
+    <div class="stack">
+      <div class="card">
+        <p class="caption">Ask a question</p>
+        <pre><code>curl https://api.margin.ai/v1/query \
+  -H "Authorization: Bearer $MARGIN_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "question": "Why did EU churn spike in Q2?",
+    "sources": ["src_drive_9f2", "src_zendesk_11a"],
+    "on_insufficient_evidence": "refuse"
+  }'</code></pre>
+      </div>
+      <div class="card">
+        <p class="caption">Response</p>
+        <pre><code>{
+  "answer": "Two causes. The May billing migration
+    failed for 340 SEPA customers [1], and German
+    residency landed before the feature shipped [2].",
+  "citations": [
+    {
+      "n": 1,
+      "document_id": "doc_8812",
+      "title": "Incident review — SEPA migration",
+      "span": { "page": 2, "start": 1180, "end": 1394 },
+      "version": "2026-05-14T09:22:00Z",
+      "author": "t.weiss@company.com"
+    }
+  ],
+  "conflicts": [
+    { "claim": "340 affected customers",
+      "alternative": "361", "source": "doc_9004" }
+  ],
+  "confidence": 0.91,
+  "trace_id": "tr_01J8Z3K"
+}</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="reference">
+  <div class="wrap stack-lg">
+    <div class="measure stack"><span class="pill">Reference</span><h2>Endpoints</h2><p class="lede">REST, JSON, cursor pagination. Streaming responses over SSE where it makes sense.</p></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Method</th><th>Path</th><th>Does</th></tr></thead>
+        <tbody>
+          <tr><td><code>POST</code></td><td><code>/v1/query</code></td><td>Ask a question. Returns answer, citations, conflicts, confidence.</td></tr>
+          <tr><td><code>POST</code></td><td><code>/v1/query/stream</code></td><td>Same, over SSE. Citations arrive as they are resolved.</td></tr>
+          <tr><td><code>GET</code></td><td><code>/v1/search</code></td><td>Retrieval without generation. Ranked spans, no model call.</td></tr>
+          <tr><td><code>GET</code></td><td><code>/v1/sources</code></td><td>List connected sources with sync state and document counts.</td></tr>
+          <tr><td><code>POST</code></td><td><code>/v1/sources</code></td><td>Connect a source. Returns an OAuth URL or validates credentials.</td></tr>
+          <tr><td><code>POST</code></td><td><code>/v1/documents</code></td><td>Push a document directly, for systems we have no connector for.</td></tr>
+          <tr><td><code>GET</code></td><td><code>/v1/documents/:id</code></td><td>Metadata, version history and parsed structure.</td></tr>
+          <tr><td><code>POST</code></td><td><code>/v1/agents</code></td><td>Create an agent from an instruction, a trigger and a destination.</td></tr>
+          <tr><td><code>POST</code></td><td><code>/v1/agents/:id/run</code></td><td>Run now, ignoring the schedule.</td></tr>
+          <tr><td><code>GET</code></td><td><code>/v1/traces/:id</code></td><td>Full trace: retrieval, reranking, model calls, cost.</td></tr>
+          <tr><td><code>POST</code></td><td><code>/v1/webhooks</code></td><td>Subscribe to <code>answer.created</code>, <code>agent.completed</code>, <code>source.indexed</code>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid g2">
+      <div class="card">
+        <h4>Agent definition</h4>
+        <pre><code>{
+  "name": "Monday competitor brief",
+  "instruction": "Summarize what changed for our
+     tracked competitors in the last 7 days.
+     Cite every claim. Max 400 words.",
+  "trigger": { "type": "schedule", "cron": "0 7 * * 1" },
+  "sources": ["src_drive_9f2", "src_web_track_2"],
+  "destination": { "type": "slack", "channel": "#market-intel" },
+  "approval": "first_10_runs"
+}</code></pre>
+      </div>
+      <div class="card">
+        <h4>Errors</h4>
+        <pre><code>{
+  "error": {
+    "type": "insufficient_evidence",
+    "message": "No source supports an answer.",
+    "nearest": ["doc_4410", "doc_7781"]
+  }
+}</code></pre>
+        <p class="small muted"><code>insufficient_evidence</code> is a 200 by default, because it's a valid answer. Set <code>on_insufficient_evidence: "error"</code> if you'd rather branch on a 422.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="sdks">
+  <div class="wrap stack-lg">
+    <div class="measure stack"><span class="pill">SDKs</span><h2>Four ways in.</h2></div>
+    <div class="grid g4 reveal">
+      <div class="card card-sm"><h4>TypeScript</h4><pre style="font-size:12px"><code>npm i @margin/sdk</code></pre><p class="small">Full types for citations and traces.</p></div>
+      <div class="card card-sm"><h4>Python</h4><pre style="font-size:12px"><code>pip install margin</code></pre><p class="small">Async client, pandas helper for traces.</p></div>
+      <div class="card card-sm"><h4>Go</h4><pre style="font-size:12px"><code>go get margin.ai/go</code></pre><p class="small">Thin, no reflection, context-aware.</p></div>
+      <div class="card card-sm"><h4>MCP server</h4><pre style="font-size:12px"><code>npx @margin/mcp</code></pre><p class="small">Expose your library to any MCP client as a tool.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="status">
+  <div class="wrap stack-lg">
+    <div class="measure stack"><span class="pill">Status &amp; limits</span><h2>What we commit to.</h2></div>
+    <div class="grid g3">
+      <div class="tile tile-mint"><h4>All systems operational</h4><p>99.98% over the last 90 days. Incidents are posted within 15 minutes and post-mortems within five business days.</p></div>
+      <div class="card"><h4>Rate limits</h4><ul class="checks"><li>Team: 60 queries/min</li><li>Business: 300 queries/min</li><li>Enterprise: negotiated</li><li>Bursts of 3× for 30 seconds</li></ul></div>
+      <div class="card"><h4>Versioning</h4><ul class="checks"><li>Date-pinned via <code>Margin-Version</code> header</li><li>Breaking changes get 12 months notice</li><li>Additive changes ship continuously</li><li>Deprecations announced in the changelog</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="tile tile-ink center stack" style="padding:clamp(40px,7vw,88px)">
+      <h2>Get a key.</h2>
+      <p class="lede" style="color:rgba(255,255,255,.7);max-width:44ch;margin-inline:auto">The free tier includes API access. Rate-limited, fully featured, no card.</p>
+      <div class="row row-center"><a class="btn btn-light" href="contact.html">Start free</a><a class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.25)" href="changelog.html">API changelog</a></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-cols">
+      <div class="stack" style="gap:16px">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Margin</a>
+        <p class="small" style="max-width:34ch">The AI workspace that reads everything you don't have time to. Built in Tel Aviv and Lisbon.</p>
+      </div>
+      <div><h5>Product</h5><ul><li><a href="product.html">Overview</a></li><li><a href="product.html#library">Library</a></li><li><a href="product.html#notebook">Notebook</a></li><li><a href="product.html#agents">Agents</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
+      <div><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="careers.html">Careers</a></li><li><a href="customers.html">Customers</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div><h5>Resources</h5><ul><li><a href="docs.html">Docs &amp; API</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="security.html">Security</a></li><li><a href="docs.html#status">Status</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="security.html#dpa">DPA</a></li><li><a href="privacy.html#subprocessors">Subprocessors</a></li></ul></div>
+    </div>
+    <hr class="divider">
+    <div class="footer-base">
+      <span>© 2026 Margin Labs Ltd. A fictional company, for design purposes.</span>
+      <span>hello@margin.ai</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

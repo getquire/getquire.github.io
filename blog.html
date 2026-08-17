@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blog — Margin</title>
+<meta name="description" content="Notes on retrieval, evaluation, refusal and building AI products people trust enough to open on a Tuesday.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Margin</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="product.html">Product</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="docs.html">Docs</a>
+      <a href="customers.html">Customers</a>
+      <a href="blog.html" aria-current="page">Blog</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="contact.html">Sign in</a>
+      <a class="btn btn-sm" href="contact.html">Get a demo</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+<section class="section">
+  <div class="wrap center stack-lg">
+    <span class="pill">Blog</span>
+    <h1>Notes from the index.</h1>
+    <p class="lede measure">Mostly engineering, occasionally opinion. We publish the benchmarks that made us look bad too, because otherwise the good ones don't mean anything.</p>
+  </div>
+</section>
+
+<!-- featured -->
+<section class="section-tight">
+  <div class="wrap">
+    <a class="card card-link" href="blog-refusal.html" style="padding:0;overflow:hidden">
+      <div class="tile tile-aqua" style="border-radius:0;padding:var(--s8)">
+        <span class="pill">Engineering · 12 min</span>
+        <h2 style="max-width:20ch">Teaching a model to say "I don't know" is harder than teaching it to answer</h2>
+        <p class="lede" style="max-width:60ch">Refusal calibration ate 40% of our evaluation budget for two quarters. Here's the benchmark we built, the three approaches that failed, and the boring one that worked.</p>
+        <p class="small muted">Joel Mensah · 4 August 2026</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="wrap grid g3 reveal">
+
+    <a class="card card-link" href="blog-rag-benchmark.html">
+      <span class="pill">Engineering · 9 min</span>
+      <h4>Your RAG benchmark is measuring the wrong thing</h4>
+      <p class="small">Answer quality on public corpora tells you almost nothing about behavior on a messy enterprise drive. We rebuilt ours around attribution and permission leakage instead.</p>
+      <p class="small muted">Joel Mensah · 21 July 2026</p>
+    </a>
+
+    <a class="card card-link" href="blog-refusal.html">
+      <span class="pill">Product · 6 min</span>
+      <h4>We deleted our chat interface</h4>
+      <p class="small">Usage tripled. A conversation is a bad container for work that has to be reviewed, shared and cited — the artifact should be the document, not the transcript.</p>
+      <p class="small muted">Anaïs Tremblay · 8 July 2026</p>
+    </a>
+
+    <a class="card card-link" href="blog-rag-benchmark.html">
+      <span class="pill">Security · 11 min</span>
+      <h4>How a permission bug hides in a vector index</h4>
+      <p class="small">Embeddings don't carry ACLs. If you filter after retrieval you have already leaked — through ranking, through latency, and eventually through the answer.</p>
+      <p class="small muted">Tal Weiss · 24 June 2026</p>
+    </a>
+
+    <a class="card card-link" href="blog-refusal.html">
+      <span class="pill">Opinion · 5 min</span>
+      <h4>Per-token pricing teaches people to use your product less</h4>
+      <p class="small">Every metered AI tool we've seen has the same usage curve: a spike, then a cliff, then a renewal conversation nobody enjoys.</p>
+      <p class="small muted">Rita Ben-Ari · 10 June 2026</p>
+    </a>
+
+    <a class="card card-link" href="blog-rag-benchmark.html">
+      <span class="pill">Engineering · 14 min</span>
+      <h4>Parsing PDFs is still the hardest part</h4>
+      <p class="small">Three years of model progress and a merged table cell can still destroy an answer. What we do about it, including the parts that are just heuristics.</p>
+      <p class="small muted">Sofia Duarte · 27 May 2026</p>
+    </a>
+
+    <a class="card card-link" href="blog-refusal.html">
+      <span class="pill">Company · 4 min</span>
+      <h4>What we tell customers who shouldn't buy from us</h4>
+      <p class="small">Thin corpus, no connector, or a mandate that came from above the people who'd use it. Three patterns that predict a failed pilot better than anything in the deal notes.</p>
+      <p class="small muted">Rita Ben-Ari · 13 May 2026</p>
+    </a>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="tile tile-solar" style="max-width:840px;margin-inline:auto;text-align:center">
+      <h3>The Margin Note</h3>
+      <p style="max-width:46ch;margin-inline:auto">One email a month. Whatever we learned about retrieval, evaluation or shipping AI people trust. No product news unless it's genuinely interesting.</p>
+      <form class="row row-center" data-demo style="max-width:460px;margin-inline:auto;flex-wrap:nowrap">
+        <label class="caption" for="nl" style="position:absolute;left:-9999px">Email</label>
+        <input id="nl" type="email" required placeholder="you@company.com">
+        <button class="btn" type="submit">Subscribe</button>
+      </form>
+      <p class="small muted" data-note>4,100 readers. Unsubscribe in one click.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-cols">
+      <div class="stack" style="gap:16px">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Margin</a>
+        <p class="small" style="max-width:34ch">The AI workspace that reads everything you don't have time to. Built in Tel Aviv and Lisbon.</p>
+      </div>
+      <div><h5>Product</h5><ul><li><a href="product.html">Overview</a></li><li><a href="product.html#library">Library</a></li><li><a href="product.html#notebook">Notebook</a></li><li><a href="product.html#agents">Agents</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
+      <div><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="careers.html">Careers</a></li><li><a href="customers.html">Customers</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div><h5>Resources</h5><ul><li><a href="docs.html">Docs &amp; API</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="security.html">Security</a></li><li><a href="docs.html#status">Status</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="security.html#dpa">DPA</a></li><li><a href="privacy.html#subprocessors">Subprocessors</a></li></ul></div>
+    </div>
+    <hr class="divider">
+    <div class="footer-base">
+      <span>© 2026 Margin Labs Ltd. A fictional company, for design purposes.</span>
+      <span>hello@margin.ai</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

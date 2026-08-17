@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Changelog — Margin</title>
+<meta name="description" content="What shipped, what broke, what we removed. Updated every release.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Margin</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="product.html">Product</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="docs.html">Docs</a>
+      <a href="customers.html">Customers</a>
+      <a href="blog.html">Blog</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="contact.html">Sign in</a>
+      <a class="btn btn-sm" href="contact.html">Get a demo</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+<section class="section">
+  <div class="wrap center stack-lg">
+    <span class="pill">Changelog</span>
+    <h1>Everything that changed.</h1>
+    <p class="lede measure">Including the removals and the regressions. A changelog that only lists additions is marketing with dates on it.</p>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="wrap stack-lg" style="max-width:840px">
+
+    <article class="card">
+      <div class="row" style="justify-content:space-between"><span class="pill pill-accent">3.0.0 · Major</span><span class="small muted">12 August 2026</span></div>
+      <h3>Margin 3.0 — disagreement detection</h3>
+      <p>The big one. Answers now flag when two sources support incompatible claims instead of silently picking the higher-ranked span.</p>
+      <ul class="checks">
+        <li><b>Added</b> — conflict objects in every answer and API response, with both sources shown</li>
+        <li><b>Added</b> — 8 connectors: Airtable, Linear, Miro, Figma, Intercom, Front, Coda, Dropbox Paper</li>
+        <li><b>Added</b> — sub-second first token on warm indexes (median 890ms, from 1.4s)</li>
+        <li><b>Changed</b> — confidence is now calibrated against held-out human labels rather than model self-report</li>
+        <li><b>Removed</b> — the "creative" answer mode. It was used by 0.4% of sessions and produced 60% of our complaints</li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <div class="row" style="justify-content:space-between"><span class="pill">2.8.0 · Minor</span><span class="small muted">29 July 2026</span></div>
+      <h3>Agent approval workflows</h3>
+      <ul class="checks">
+        <li><b>Added</b> — agents that act outside the workspace now require approval for their first ten runs by default</li>
+        <li><b>Added</b> — per-agent cost ceilings with a hard stop, not a warning email</li>
+        <li><b>Fixed</b> — scheduled agents in UTC+13 ran a day early. Affected two workspaces, both notified before we shipped the fix</li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <div class="row" style="justify-content:space-between"><span class="pill">2.7.2 · Patch</span><span class="small muted">15 July 2026</span></div>
+      <h3>SharePoint permission edge case</h3>
+      <p><b>This was a security-relevant fix.</b> Documents inheriting permissions from a deleted parent site could be retrieved by users who had lost access. No customer was affected — we found it in our own red-team suite — but the write-up is in the security portal.</p>
+      <ul class="checks">
+        <li><b>Fixed</b> — orphaned-inheritance documents are now excluded until re-resolved</li>
+        <li><b>Added</b> — a nightly permission reconciliation job across all sources</li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <div class="row" style="justify-content:space-between"><span class="pill">2.7.0 · Minor</span><span class="small muted">1 July 2026</span></div>
+      <h3>Table parsing rewrite</h3>
+      <ul class="checks">
+        <li><b>Changed</b> — merged cells, multi-row headers and footnote markers now survive parsing. Attribution accuracy on table questions went from 74% to 96%</li>
+        <li><b>Added</b> — <code>GET /v1/documents/:id</code> returns parsed structure so you can see what we saw</li>
+        <li><b>Known issue</b> — rotated tables in scanned PDFs still fail about one time in six. Working on it</li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <div class="row" style="justify-content:space-between"><span class="pill">2.6.0 · Minor</span><span class="small muted">10 June 2026</span></div>
+      <h3>MCP server, and a pricing change in your favor</h3>
+      <ul class="checks">
+        <li><b>Added</b> — <code>npx @margin/mcp</code> exposes your library as a tool to any MCP client</li>
+        <li><b>Changed</b> — removed the per-query overage on Team. It was small, but it changed how people used the product, which is worse than the revenue was good</li>
+        <li><b>Added</b> — Israel region (il-central-1)</li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <div class="row" style="justify-content:space-between"><span class="pill">2.5.0 · Minor</span><span class="small muted">20 May 2026</span></div>
+      <h3>Trace export</h3>
+      <ul class="checks">
+        <li><b>Added</b> — SIEM streaming to Splunk, Datadog and generic webhook</li>
+        <li><b>Added</b> — replay any agent run from any step</li>
+        <li><b>Fixed</b> — citations pointing at a superseded version when a document changed mid-query</li>
+      </ul>
+    </article>
+
+    <div class="tile tile-aqua">
+      <h4>Older releases</h4>
+      <p>Everything back to 1.0 lives in the in-app changelog, and the API-specific changes are mirrored in the <a class="ink-link" href="docs.html">docs</a>. Breaking API changes get 12 months notice and an email to every key owner.</p>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-cols">
+      <div class="stack" style="gap:16px">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Margin</a>
+        <p class="small" style="max-width:34ch">The AI workspace that reads everything you don't have time to. Built in Tel Aviv and Lisbon.</p>
+      </div>
+      <div><h5>Product</h5><ul><li><a href="product.html">Overview</a></li><li><a href="product.html#library">Library</a></li><li><a href="product.html#notebook">Notebook</a></li><li><a href="product.html#agents">Agents</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
+      <div><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="careers.html">Careers</a></li><li><a href="customers.html">Customers</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div><h5>Resources</h5><ul><li><a href="docs.html">Docs &amp; API</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="security.html">Security</a></li><li><a href="docs.html#status">Status</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="security.html#dpa">DPA</a></li><li><a href="privacy.html#subprocessors">Subprocessors</a></li></ul></div>
+    </div>
+    <hr class="divider">
+    <div class="footer-base">
+      <span>© 2026 Margin Labs Ltd. A fictional company, for design purposes.</span>
+      <span>hello@margin.ai</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>
