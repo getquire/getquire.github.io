@@ -71,8 +71,8 @@ Applied as specified:
 
 | Token | Value | Spec |
 |---|---|---|
-| Canvas | `#f3f9ff` | lightened from `#ebf5ff` |
-| Card surface | `#fdfeff` | lightened from `#fafdff` |
+| Canvas | `#ffffff` | inverted from `#ebf5ff` |
+| Card surface | `#f4f8fd` | inverted from `#fafdff` |
 | Ink / headings | `#0a0d12` | as specified |
 | Filled buttons | `#181d27` | as specified |
 | Accent | `#0069e0` | as specified |
@@ -85,6 +85,29 @@ Constraints the spec imposes and this site keeps: display type is weight 500
 only, never bold. No shadows on content cards. No sharp corners below 16px. No
 saturated blue as a button fill. Never more than two pastel washes in one
 section.
+
+**One deliberate departure.** The spec puts a blue canvas under near-white
+cards, and gets all its depth from that one step — no borders, no shadows. This
+site inverts it: white canvas, tinted cards. The step survives, so cards still
+read as surfaces, and the daylight tint moves into an ambient wash behind the
+hero rather than sitting under the whole page.
+
+## Motion
+
+All of it is CSS except the stat counters, and all of it is disabled under
+`prefers-reduced-motion`.
+
+| Where | What |
+|---|---|
+| Logo | Sheets fan apart on hover |
+| Hero | Six-step staggered entrance on load |
+| Nav links | Underline wipes in from the left |
+| Cards | Lift and tint on hover; icons scale and tilt |
+| Links | Underline grows from 0 to full width |
+| Stat numbers | Count up from zero when scrolled into view |
+| Sections | Fade and rise on scroll, via IntersectionObserver |
+| Logos, testimonials | Continuous marquee, pauses on hover |
+| FAQ | `grid-template-rows` expansion over 0.65s |
 
 Fonts: Geist loads from Google Fonts. Aeonik is commercial, so **Inter Tight**
 stands in for the display face. License Aeonik and swap the `--display` variable
