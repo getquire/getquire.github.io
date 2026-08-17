@@ -115,7 +115,7 @@ All of it is CSS except the stat counters, and all of it is disabled under
 
 | Where | What |
 |---|---|
-| Logo | Sheets fan apart on hover |
+| Logo | The cited line extends to full width on hover |
 | Hero | Six-step staggered entrance on load |
 | Nav links | Underline wipes in from the left |
 | Cards | Lift and tint on hover; icons scale and tilt |

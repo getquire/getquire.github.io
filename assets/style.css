@@ -214,31 +214,28 @@ p { margin: 0; color: var(--graphite); line-height: 1.5; }
 .nav-in { display: flex; align-items: center; gap: var(--s4); height: 72px; }
 .brand { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-size: 20px; letter-spacing: -0.02em; }
 
-/* Logo: a quire — sheets gathered and folded. ::before is the sheet underneath,
-   ::after is the top sheet, its folded corner cut in with a gradient stop.
-   The box itself stays transparent so neither layer needs a negative z-index,
-   which would drop it behind the nav's own background. */
+/* Logo: a cited span. Three lines of a document, the middle one in the
+   terminal's prompt green — the line an answer came from. On hover it extends
+   to full width, the way a citation resolves to its source.
+   ::before draws the two white lines (the second via a hard box-shadow) so the
+   green one stays alone on ::after and is the only thing that animates. */
 .brand-mark {
   position: relative; width: 28px; height: 28px; flex: none;
-  transition: transform .5s var(--ease-out);
+  border-radius: 9px; background: var(--iris-grad); overflow: hidden;
+  transition: transform .45s var(--ease-out);
 }
 .brand-mark::before,
 .brand-mark::after {
-  content: ""; position: absolute; inset: 0; border-radius: 9px;
-  transition: transform .5s var(--ease-out);
+  content: ""; position: absolute; left: 7px; height: 2.5px; border-radius: 2px;
+  transition: width .45s var(--ease-out);
 }
 .brand-mark::before {
-  background: var(--powder);
-  transform: rotate(-10deg) translate(-2px, -1px);
+  top: 7px; width: 14px; background: rgba(255, 255, 255, .95);
+  box-shadow: 0 13px 0 rgba(255, 255, 255, .55);
 }
-.brand-mark::after {
-  background:
-    linear-gradient(315deg, rgba(255, 255, 255, .96) 0 26%, transparent 26.5%),
-    var(--iris-grad);
-}
-.brand:hover .brand-mark { transform: rotate(3deg); }
-.brand:hover .brand-mark::before { transform: rotate(-20deg) translate(-4px, -2px); }
-.brand:hover .brand-mark::after { transform: translate(1px, -1px); }
+.brand-mark::after { top: 13.5px; width: 8px; background: var(--term-prompt); }
+.brand:hover .brand-mark { transform: rotate(-3deg); }
+.brand:hover .brand-mark::after { width: 14px; }
 
 .nav-links { display: flex; gap: var(--s3); margin-left: auto; }
 .nav-links a { position: relative; font-size: 14px; color: var(--graphite); padding: 6px 0; transition: color .25s var(--ease-out); }
