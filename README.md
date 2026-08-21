@@ -33,11 +33,11 @@ carries a section explaining exactly what's invented and what isn't.
 
 ## Stack
 
-Static HTML. One stylesheet. About 120 lines of JavaScript. No framework, no
+Static HTML. One stylesheet. Under 200 lines of JavaScript. No framework, no
 build step, no dependencies, no package.json.
 
 ```
-index.html            Home — install bar, terminal demo, community, promise
+index.html            Home — install bar, played-back demo cast, community
 product.html          How it works — the five-stage pipeline
 docs.html             Install, CLI reference, config, Python and HTTP APIs
 solutions.html        Recipes — five copy-paste configurations
@@ -55,7 +55,7 @@ privacy.html          Privacy — the software collects nothing
 terms.html            License — Apache-2.0 explained, plus trademark policy
 404.html              Styled as the tool's own insufficient_evidence state
 assets/style.css      Design tokens and every component
-assets/site.js        Nav, accordion, reveals, copy button, stat counters
+assets/site.js        Nav, accordion, reveals, copy button, counters, cast
 ```
 
 Filenames are deliberately unchanged from an earlier SaaS version of this site,
