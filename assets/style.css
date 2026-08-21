@@ -400,6 +400,31 @@ pre code { color: inherit; }
 .tree { font-family: var(--mono); font-size: 13px; color: var(--graphite); line-height: 1.9; }
 .tree b { color: var(--ink); font-weight: 500; }
 
+/* Terminal cast — a played-back session. The transcript lives in the markup,
+   so with JS off or reduced motion on you get the whole thing at once; the
+   player only hides what is already there and reveals it again in order. */
+.cast { display: grid; gap: 10px; }
+.cast .terminal-bar span { flex: 1; }
+.cast-btn {
+  flex: none; background: rgba(255, 255, 255, 0.1); color: #fff; border: 0;
+  font-family: var(--body); font-size: 12px; font-weight: 500;
+  padding: 5px 14px; border-radius: var(--r-pill);
+  transition: background-color .25s var(--ease-out);
+}
+.cast-btn:hover { background: rgba(255, 255, 255, 0.22); }
+.cast-screen { margin: 0; border-radius: 0; padding: var(--s3); font-size: 13.5px; }
+/* opacity rather than display, so revealing a line never shifts the layout */
+.cast-line { display: block; min-height: 1.55em; }
+.cast-armed .cast-line { opacity: 0; }
+.cast-armed .cast-line.on { opacity: 1; }
+.cast-line.typing::after {
+  content: "▋"; margin-left: 1px; animation: caret 1s steps(1) infinite;
+}
+@keyframes caret { 50% { opacity: 0; } }
+.cast-rail { height: 3px; border-radius: 2px; background: var(--bone-hover); overflow: hidden; }
+.cast-rail i { display: block; height: 100%; width: 0; background: var(--iris); transition: width .2s linear; }
+@media (max-width: 640px) { .cast-screen { font-size: 11px; } }
+
 /* ---------- misc bits ---------- */
 .stat { display: grid; gap: 4px; }
 .stat b { font-family: var(--display); font-weight: 500; font-size: 48px; line-height: 1.1; letter-spacing: -0.02em; }

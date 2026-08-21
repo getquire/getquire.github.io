@@ -112,3 +112,74 @@ document.querySelectorAll('form[data-demo]').forEach((form) => {
     if (note) note.textContent = 'Thanks — this is a demo site, so nothing was sent.';
   });
 });
+
+// Terminal cast. The transcript is already in the HTML — this hides it and
+// replays it line by line, typing the command lines. Under reduced motion the
+// player never runs and the controls are removed, leaving a plain transcript.
+const castRoot = document.querySelector('[data-cast]');
+
+if (castRoot && stillMotion) {
+  const control = castRoot.querySelector('[data-cast-toggle]');
+  const rail = castRoot.querySelector('.cast-rail');
+  if (control) control.remove();
+  if (rail) rail.remove();
+}
+
+if (castRoot && !stillMotion) {
+  const lines = Array.from(castRoot.querySelectorAll('.cast-line'));
+  const bar = castRoot.querySelector('[data-cast-progress]');
+  const control = castRoot.querySelector('[data-cast-toggle]');
+  const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  let run = 0;
+
+  function arm() {
+    castRoot.classList.add('cast-armed');
+    lines.forEach((line) => {
+      line.classList.remove('on', 'typing');
+      const cmd = line.querySelector('b');
+      if (cmd) {
+        if (cmd.dataset.text === undefined) cmd.dataset.text = cmd.textContent;
+        cmd.textContent = '';
+      }
+    });
+    if (bar) bar.style.width = '0%';
+  }
+
+  async function play() {
+    const token = ++run;
+    arm();
+    for (let i = 0; i < lines.length; i++) {
+      if (token !== run) return;
+      const line = lines[i];
+      line.classList.add('on');
+
+      const cmd = line.querySelector('b');
+      if (cmd) {
+        line.classList.add('typing');
+        for (const ch of cmd.dataset.text) {
+          if (token !== run) return;
+          cmd.textContent += ch;
+          await wait(26);
+        }
+        line.classList.remove('typing');
+        await wait(460);
+      } else {
+        await wait(line.textContent.trim() ? 95 : 55);
+      }
+
+      if (bar) bar.style.width = Math.round(((i + 1) / lines.length) * 100) + '%';
+    }
+  }
+
+  if (control) control.addEventListener('click', play);
+
+  const start = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        start.disconnect();
+        play();
+      }
+    });
+  }, { threshold: 0.3 });
+  start.observe(castRoot);
+}

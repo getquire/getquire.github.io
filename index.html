@@ -103,6 +103,51 @@
   </div>
 </section>
 
+<!-- demo cast -->
+<section class="section" id="demo">
+  <div class="wrap stack-lg">
+    <div class="center stack measure">
+      <span class="pill">Demo</span>
+      <h2>Ninety seconds, no narration.</h2>
+      <p class="lede">Index a folder, ask a real question, then watch it refuse one it can't source. This is a terminal cast rather than a video — it's text, so you can select it, it costs nothing to load, and it can't rot into a stale recording of an old release.</p>
+    </div>
+
+    <div class="cast" data-cast>
+      <div class="terminal">
+        <div class="terminal-bar">
+          <i></i><i></i><i></i>
+          <span>~/work/handbook</span>
+          <button class="cast-btn" data-cast-toggle type="button">Replay</button>
+        </div>
+        <pre class="cast-screen" data-cast-screen><code><span class="cast-line"><span class="t-prompt">$</span> <b>quire index ./docs</b></span>
+<span class="cast-line t-dim">  scanning ./docs</span>
+<span class="cast-line t-dim">  parsed 1,204 files · skipped 0 · 18,332 spans</span>
+<span class="cast-line t-dim">  index  .quire/index.db (14.2 MB) · 6.2s</span><span class="cast-line"> </span><span class="cast-line"><span class="t-prompt">$</span> <b>quire ask "why did we drop the v2 migration?"</b></span><span class="cast-line"> </span>
+<span class="cast-line t-out">Two reasons, and they were recorded separately. The rollback</span>
+<span class="cast-line t-out">plan was never finished<span class="t-cite">[1]</span>, and the team that owned</span>
+<span class="cast-line t-out">the write path moved to billing in March<span class="t-cite">[2]</span>.</span><span class="cast-line"> </span><span class="cast-line"><span class="t-cite">  [1]</span> <span class="t-dim">docs/rfc/012-v2-migration.md:88   (2026-02-11)</span></span><span class="cast-line"><span class="t-cite">  [2]</span> <span class="t-dim">notes/planning/q1-retro.md:14     (2026-03-02)</span></span><span class="cast-line"> </span>
+<span class="cast-line t-dim">  2 sources · grounded · 0.9s · llama3.1:8b via ollama</span><span class="cast-line"> </span><span class="cast-line"><span class="t-prompt">$</span> <b>quire ask "what was Q3 2019 headcount?" --strict</b></span><span class="cast-line"> </span>
+<span class="cast-line t-warn">  insufficient evidence</span>
+<span class="cast-line t-dim">  Nothing in this corpus supports an answer.</span>
+<span class="cast-line t-dim">  The index starts at 2021-04.</span><span class="cast-line"> </span>
+<span class="cast-line t-out">  Closest matches:</span>
+<span class="cast-line t-cite">    docs/people/headcount-2021.csv</span><span class="cast-line"> </span>
+<span class="cast-line t-dim">  exit 2</span><span class="cast-line"> </span><span class="cast-line"><span class="t-prompt">$</span> <b>quire serve</b></span>
+<span class="cast-line t-dim">  ui     http://127.0.0.1:7777</span>
+<span class="cast-line t-dim">  api    http://127.0.0.1:7777/v1</span>
+<span class="cast-line t-dim">  ready · 18,332 spans · nothing leaves this machine</span></code></pre>
+      </div>
+      <div class="cast-rail"><i data-cast-progress></i></div>
+    </div>
+
+    <div class="grid g3 reveal">
+      <div class="card card-sm"><h4>Nothing was cut</h4><p class="small">That's a full session at real speed. No jump cuts hiding a thirty-second wait, which is the usual trick in a product video.</p></div>
+      <div class="card card-sm"><h4>The refusal is the point</h4><p class="small">Most demos only show the question that works. The middle third of this one is the tool declining, because that's the behaviour worth trusting.</p></div>
+      <div class="card card-sm"><h4>Run it yourself</h4><p class="small">Same four commands, your own folder. If it doesn't do this on your corpus, that's a bug worth filing.</p></div>
+    </div>
+  </div>
+</section>
+
 <!-- three commands -->
 <section class="section">
   <div class="wrap stack-lg">
@@ -381,7 +426,7 @@ strict   = <span class="t-out">true</span>   <span class="t-dim"># refuse rather
     <hr class="divider">
     <div class="footer-base">
       <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
-      <span>maintainers@quire.dev</span>
+      <span>Maintained by 340 people across 41 countries</span>
     </div>
   </div>
 </footer>
