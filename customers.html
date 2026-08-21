@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Showcase — Quire</title>
 <meta name="description" content="What people built with Quire: a public records archive, a municipal search, a lab notebook, a fan wiki, and the ones that didn't work out.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -59,7 +61,7 @@
     <div class="stack">
       <span class="pill pill-accent">Public records · @archive-collective</span>
       <h2>Four million scanned pages, searchable offline.</h2>
-      <p class="lede">A volunteer group digitizing municipal records from 1948 onward. Everything is a scan, much of it typewritten, some of it handwritten in margins. They run Quire fully air-gapped on a donated workstation.</p>
+      <p class="lede">A volunteer group digitising municipal records from 1948 onward. Everything is a scan, much of it typewritten, some of it handwritten in margins. They run Quire fully air-gapped on a donated workstation.</p>
       <p><b>What broke first:</b> OCR confidence. Low-quality scans produced spans that read as plausible English but were wrong at the word level, and citations pointed at them confidently. They now index OCR confidence per span and refuse to cite anything under 0.7.</p>
       <div class="badge-row"><span class="badge">offline = true</span><span class="badge">OCR always</span><span class="badge">SQLite</span><span class="badge">70B local</span></div>
     </div>
@@ -73,14 +75,14 @@
 <section class="section">
   <div class="wrap split">
     <div class="tile tile-aqua">
-      <p style="font-family:var(--display);font-size:24px;line-height:1.3;letter-spacing:-0.02em;color:var(--ink)">"The refusal behavior is the only reason legal signed off. It can decline, and declining is logged."</p>
+      <p style="font-family:var(--display);font-size:24px;line-height:1.3;letter-spacing:-0.02em;color:var(--ink)">"The refusal behaviour is the only reason legal signed off. It can decline, and declining is logged."</p>
       <div class="row"><span class="avatar">HM</span><span class="small">Halden ops team<br><span class="muted">Contributed the CI recipe</span></span></div>
     </div>
     <div class="stack">
       <span class="pill pill-accent">Docs QA · @halden-ops</span>
       <h2>A build that fails when the handbook stops being true.</h2>
-      <p class="lede">Sixty questions their internal handbook is supposed to answer, checked on every merge with <code>--strict</code>. A page that quietly went stale now breaks CI rather than a new hire's first week.</p>
-      <p><b>What broke first:</b> flakiness. A local model gave slightly different answers run to run, and the check failed randomly. Fixing it meant pinning temperature to zero and asserting on grounding rather than on answer text — assert that it <em>can</em> answer, not <em>what</em> it answers.</p>
+      <p class="lede">Sixty questions their internal handbook is supposed to answer, checked on every merge with <code>--strict</code>. A page that quietly went stale now breaks CI instead of a new hire's first week.</p>
+      <p><b>What broke first:</b> flakiness. A local model gave slightly different answers run to run, and the check failed randomly. Fixing it meant pinning temperature to zero and asserting on grounding instead of answer text. Assert that it <em>can</em> answer, not <em>what</em> it answers.</p>
       <div class="badge-row"><span class="badge">GitHub Actions</span><span class="badge">strict</span><span class="badge">temp 0</span></div>
     </div>
   </div>
@@ -107,7 +109,7 @@
     <div class="measure stack"><span class="pill">Also in the list</span><h2>Fifty-eight more.</h2></div>
     <div class="grid g3 reveal">
       <div class="card card-sm"><h4>Municipal meeting search</h4><p class="small">Council minutes and agendas for a city of 90,000, with a public web UI behind a read-only proxy.</p><span class="badge">serve</span></div>
-      <div class="card card-sm"><h4>Personal wiki</h4><p class="small">Ten years of Obsidian notes. The most-used deployment shape by a wide margin — one person, one folder.</p><span class="badge">local</span></div>
+      <div class="card card-sm"><h4>Personal wiki</h4><p class="small">Ten years of Obsidian notes. The most-used deployment shape by a wide margin: one person, one folder.</p><span class="badge">local</span></div>
       <div class="card card-sm"><h4>Fan wiki archive</h4><p class="small">A 40,000-page wiki that went read-only. Preserved and made answerable, with citations to the last live revision.</p><span class="badge">html parser</span></div>
       <div class="card card-sm"><h4>Open-source triage</h4><p class="small">Answers "has this been reported?" against ten years of issues before a maintainer reads the new one.</p><span class="badge">agents</span></div>
       <div class="card card-sm"><h4>Course materials</h4><p class="small">A university department serving cited answers to students, with refusal turned all the way up.</p><span class="badge">strict</span></div>

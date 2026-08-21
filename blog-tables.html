@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>One merged cell, one wrong number — Quire</title>
 <meta name="description" content="Table extraction is an assignment problem, not a detection problem. Header paths, spans as ambiguity, and the footnote bug we shipped for four months.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -40,31 +42,31 @@
     <a class="small ink-link" href="/blog">← All posts</a>
     <span class="pill">Engineering · 10 min read</span>
     <h1 style="font-size:clamp(36px,5.5vw,56px)">One merged cell, one wrong number</h1>
-    <p class="lede">Table extraction is usually described as a detection problem. It is really an assignment problem: every number has to be attached to the right row label and the right column header, and a spanned cell is a genuine ambiguity rather than a bug to be fixed.</p>
+    <p class="lede">Table extraction gets described as a detection problem. Assignment is the harder half. Every number has to be attached to the right row label and the right column header, and a spanned cell is a genuine ambiguity, and we keep it that way.</p>
     <div class="row"><span class="avatar">SD</span><span class="small">Sofia Duarte · Maintainer, document parsing<br><span class="muted">28 July 2026</span></span></div>
   </div>
 
   <div class="wrap article">
-    <p>Ask a system what the Q3 figure for the northern region was, and the work is not finding the table. Finding the table is easy. The work is establishing that this particular number, at these coordinates, belongs to that row and that column — and that the column header two rows up, spanning four columns, also applies to it.</p>
+    <p>Ask a system what the Q3 figure for the northern region was. Finding the table is the easy half. The work is establishing that this particular number, at these coordinates, belongs to that row and that column, and that the column header two rows up, spanning four columns, applies to it too.</p>
 
     <p>Get the assignment wrong and the failure has a specific character: the answer is a real number, from the right document, on the right page, with a citation that points at a real cell. It is simply the wrong cell. Nothing about it looks like an error.</p>
 
     <h2>The grid is not in the file</h2>
-    <p>An HTML table has rows and cells declared. A PDF table has, at best, some lines drawn, and often not even that — many are held together by whitespace alone. So the grid gets reconstructed from geometry: cluster text by vertical position into rows, by horizontal position into columns, then decide which apparent gaps are column boundaries and which are just a short value.</p>
+    <p>An HTML table has rows and cells declared. A PDF table has, at best, some lines drawn, and often not even that; many are held together by whitespace alone. So the grid gets reconstructed from geometry: cluster text by vertical position into rows, by horizontal position into columns, then decide which apparent gaps are column boundaries and which are just a short value.</p>
 
     <p>Every step there has a failure mode, and they compose. A single right-aligned numeric column next to a left-aligned one produces a wide whitespace channel in the middle that looks exactly like a column boundary, and a long description that runs into the next column looks exactly like the absence of one.</p>
 
     <h2>Spans are ambiguity, not damage</h2>
-    <p>A cell spanning three rows is not a broken table. It is a table saying something the grid model cannot represent: this value applies to a group. There are two readings — the value belongs to all three rows, or it belongs to the group as an aggregate — and which is correct depends on what the column means. A quantity spanning three rows is usually per-group. A currency code spanning three rows is per-row.</p>
+    <p>A cell spanning three rows is the table saying something the grid model cannot represent: this value applies to a group. Two readings follow. The value belongs to all three rows, or it belongs to the group as an aggregate, and which one is right depends on what the column means. A quantity spanning three rows is usually per-group. A currency code spanning three rows is per-row.</p>
 
-    <blockquote>The parser's job with a spanned cell is not to resolve the ambiguity. It is to record that there is one, and to carry it into the answer.</blockquote>
+    <blockquote>The parser's job with a spanned cell is to record the ambiguity and carry it into the answer, not to resolve it.</blockquote>
 
-    <p>We store spans explicitly. A cell knows its row range and its column range, and a value inherited from a spanned cell is tagged as inherited. When an answer depends on an inherited value, the citation says so — one line, in the source panel, next to the highlighted region.</p>
+    <p>We store spans explicitly. A cell knows its row range and its column range, and a value inherited from a spanned cell is tagged as inherited. When an answer depends on an inherited value, the citation says so, in one line in the source panel next to the highlighted region.</p>
 
     <h2>Headers are a path, not a string</h2>
     <p>Real tables nest headers two or three deep: a top row of years, under it a row of quarters, under that a row of units. The meaning of a cell is the whole path, not the nearest label. So we serialise every cell as a record carrying its full header path and its row label chain, and index that record as its own retrievable unit.</p>
 
-    <p>This makes the retrievable text for a single cell look like <span class="mono">Northern region &gt; 2026 &gt; Q3 &gt; EUR thousands: 1,284</span>, which is verbose, ugly, and matches how people ask questions almost exactly. Chunking tables by row-group rather than by token window came out of the same observation, and is <a class="ink-link" href="/blog-chunking">its own post</a>.</p>
+    <p>This makes the retrievable text for a single cell look like <span class="mono">Northern region &gt; 2026 &gt; Q3 &gt; EUR thousands: 1,284</span>, which is verbose, ugly, and matches how people ask questions almost exactly. Chunking tables by row-group instead of token window came out of the same observation, and is <a class="ink-link" href="/blog-chunking">its own post</a>.</p>
 
     <h2>What we measure</h2>
     <div class="table-wrap" style="margin:32px 0">
@@ -83,11 +85,11 @@
     <p>That last row deserves a note, because it is the most embarrassing bug we have shipped. A superscript footnote marker sits at the same baseline cluster as the digits next to it. For four months, some tables produced numbers an order of magnitude too large, in a way that looked entirely plausible in isolation. It was found by a user whose reconciliation totals stopped matching, not by us.</p>
 
     <h2>Continuation is the underrated one</h2>
-    <p>91.2% on continuation stitching is our weakest table number and the one we are actively working on. A table that continues on the next page, with or without a repeated header, is extremely common in financial appendices and extremely easy to get wrong — and when it goes wrong the second half is not lost, it is simply orphaned, retrievable but with no header path and no row context. Orphaned rows produce confidently wrong answers about the wrong dimension.</p>
+    <p>91.2% on continuation stitching is our weakest table number and the one we are actively working on. A table that continues on the next page, with or without a repeated header, is extremely common in financial appendices and extremely easy to get wrong. When it goes wrong the second half is not lost, just orphaned: retrievable, with no header path and no row context. Orphaned rows produce confidently wrong answers about the wrong dimension.</p>
 
     <p>The current approach is unglamorous: compare column boundaries and column types across a page break, and if they match within tolerance and the first row of page two is not a header, stitch. It fails on tables that change column widths mid-flow, and on documents where an unrelated table starts immediately at the top of the following page. Both are in the regression corpus. Neither is solved.</p>
 
-    <p class="muted small" style="margin-top:48px">Table reconstruction is in <span class="mono">quire/ingest/table</span>. If you have a table it gets wrong, the most useful bug report is the page as a file plus the cell you expected — the coordinates in the citation tell us the rest.</p>
+    <p class="muted small" style="margin-top:48px">Table reconstruction is in <span class="mono">quire/ingest/table</span>. If you have a table it gets wrong, the most useful bug report is the page as a file plus the cell you expected. The coordinates in the citation tell us the rest.</p>
   </div>
 
   <div class="wrap article">

@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Releases — Quire</title>
 <meta name="description" content="Every release, including the removals, the regressions and the security fixes. Semantic versioning, no surprise breakage.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -77,7 +79,7 @@
         <li><b>Added</b> — sub-second first token on a warm index with a local 8B model</li>
         <li><b>Changed</b> — confidence is calibrated against held-out human labels rather than model self-report</li>
         <li><b>Removed</b> — the <code>--creative</code> flag. Used in 0.4% of invocations and responsible for most of the "it made something up" reports</li>
-        <li><b>Breaking</b> — <code>ask()</code> returns an <code>Answer</code> object rather than a string. <code>.text</code> for the old behaviour; announced in March</li>
+        <li><b>Breaking</b> — <code>ask()</code> returns an <code>Answer</code> object instead of a string. <code>.text</code> for the old behaviour; announced in March</li>
       </ul>
     </article>
 
@@ -96,9 +98,9 @@
       <div class="row" style="justify-content:space-between"><span class="badge">v2.9.0 · minor</span><span class="small muted mono">2026-06-28</span></div>
       <h3>Offline mode, and a regression we shipped</h3>
       <ul class="checks">
-        <li><b>Added</b> — <code>offline = true</code> makes any outbound call a hard error rather than a silent fallback</li>
+        <li><b>Added</b> — <code>offline = true</code> makes any outbound call a hard error instead of a silent fallback</li>
         <li><b>Added</b> — SBOM available from the CLI with <code>--sbom</code></li>
-        <li><b>Regressed</b> — reranking got 4× slower on ARM because we shipped a wheel without the right SIMD path. Nobody noticed for eleven days. Fixed in 2.9.1; we now benchmark on ARM in CI, which is what should have happened first</li>
+        <li><b>Regressed</b> — reranking got 4× slower on ARM because we shipped a wheel without the right SIMD path. Nobody noticed for eleven days. Fixed in 2.9.1; we now benchmark on ARM in CI, as should have happened first</li>
       </ul>
     </article>
 

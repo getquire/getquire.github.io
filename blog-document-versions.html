@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Which version is true — Quire</title>
 <meta name="description" content="File dates lie, newest is not always right, and supersession is written in prose. How we rank versions without hiding the fact that there are several.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -45,14 +47,14 @@
   </div>
 
   <div class="wrap article">
-    <p>The single most common serious complaint about document search is not that it failed to find anything. It is that it found the wrong version — a superseded policy, a draft that was never signed, a rate card from two price changes ago — and presented it with the same confidence as the current one.</p>
+    <p>Ask people what goes wrong with document search and almost nobody says it found nothing. They say it found the wrong version: a superseded policy, a draft nobody signed, a rate card from two price changes ago, all of it presented with the same confidence as the current one.</p>
 
-    <p>This is a hard problem dressed as an easy one. It looks like sorting by date. It is not, for three reasons: file dates lie, the newest document is not always the answer, and supersession is a claim documents make about each other in prose rather than in metadata.</p>
+    <p>This is a hard problem dressed as an easy one. Sorting by date gets you maybe half way, and then three things break it. File dates lie. The newest document often isn't the answer. And supersession is a claim documents make about each other in prose. Metadata never carries it.</p>
 
     <h2>File dates lie routinely</h2>
-    <p>Modification time is a property of the copy, not the content. A file copied to a new drive, restored from backup, or synced by a tool that rewrites timestamps carries a date that says nothing about the document. In one donated corpus, 34% of files had a modification time in a three-day window — the migration.</p>
+    <p>Modification time is a property of the copy, not the content. A file copied to a new drive, restored from backup, or synced by a tool that rewrites timestamps carries a date that says nothing about the document. In one donated corpus, 34% of files had a modification time inside one three-day window, which is when the migration ran.</p>
     <p>Creation dates inside a PDF are better and are still the date of the file's generation, so a scanned copy of a 2019 contract is dated the day someone put it on the glass.</p>
-    <p>What is reliable is the date written in the document by the person who wrote it: an effective date, a version line, a signature block, a revision table. Those are content, and content survives copying. So we extract dates from text and treat filesystem metadata as a weak fallback rather than the primary signal.</p>
+    <p>What is reliable is the date written in the document by the person who wrote it: an effective date, a version line, a signature block, a revision table. Those are content, and content survives copying. So we extract dates from text and treat filesystem metadata as a weak fallback, never the primary signal.</p>
 
     <div class="table-wrap" style="margin:32px 0">
       <table>
@@ -68,24 +70,24 @@
       </table>
     </div>
 
-    <p>Note the shape: the signals with the best coverage are the worst, and the best signals are present less than half the time. There is no single field to sort on. What works is combining several with their reliabilities, and keeping the uncertainty when they disagree instead of picking a winner and forgetting there was a question.</p>
+    <p>Note the shape: the signals with the best coverage are the worst, and the best signals are present less than half the time. There is no single field to sort on. What works is combining several with their reliabilities, and keeping the uncertainty when they disagree rather than picking a winner and forgetting there was a question.</p>
 
     <h2>Newest is usually right and sometimes exactly wrong</h2>
-    <p>"What is our parental leave policy" wants the current version. "What was our policy in 2023" wants the superseded one. "When did we change it" wants both, and the change between them. A recency prior that is hard-coded gets the second and third classes wrong; no prior at all gets the first class wrong, which is most questions.</p>
-    <p>So recency is a query-conditional signal. Questions carrying a time expression, an explicit past-tense frame, or a comparison suppress the prior. Everything else applies it. This is a classifier, it is not perfect, and when it is unsure the answer covers both — which is worse to read and much harder to be wrong with.</p>
+    <p>"What is our parental leave policy" wants the current version. "What was our policy in 2023" wants the superseded one. "When did we change it" wants both, and the change between them. A recency prior that is hard-coded gets the second and third classes wrong; no prior at all gets the first class wrong — most questions.</p>
+    <p>So recency is a query-conditional signal. Questions carrying a time expression, an explicit past-tense frame, or a comparison suppress the prior. Everything else applies it. This is a classifier, it is not perfect, and when it is unsure the answer covers both. Worse to read, and much harder to be wrong with.</p>
 
     <h2>Supersession is written in prose</h2>
     <p>Documents announce their own obsolescence, in text: "supersedes the version dated", "replaces policy 4.2", "draft — not for circulation", "this agreement amends". These statements are extremely reliable when present, because nobody writes them by accident.</p>
-    <p>We extract them and build a supersession graph over the corpus. A document superseded by another is not deleted or hidden — it is still retrievable, and still correct for historical questions — but it will not be offered as current without the answer saying that a later version exists and naming it.</p>
+    <p>We extract them and build a supersession graph over the corpus. A superseded document isn't deleted or hidden. It stays retrievable, and stays correct for historical questions. But it won't be offered as current unless the answer says a later version exists and names it.</p>
 
     <blockquote>The failure is not retrieving an old document. It is retrieving an old document without mentioning that it is old.</blockquote>
 
     <h2>Drafts are a separate axis</h2>
-    <p>Draft status and recency are independent, and conflating them is a mistake we made for a while. The newest document in a set is frequently a draft, and a draft is often the version most people have seen, because it was the one that got emailed around. Draft markers — watermarks, filename conventions, status fields, an unsigned signature block — are extracted separately and never resolved by date.</p>
+    <p>Draft status and recency are independent, and conflating them is a mistake we made for a while. The newest document in a set is frequently a draft, and a draft is often the version most people have seen, because it was the one that got emailed around. Draft markers (watermarks, filename conventions, status fields, an unsigned signature block) are extracted separately and never resolved by date.</p>
     <p>Filenames are worth their own note. <span class="mono">final_v3_FINAL_reviewed.docx</span> is a joke because it is universal, and the convention actually carries signal: v-numbers, dates, and the words final and draft do correlate with reality, at 88% agreement. That is high enough to use as a tiebreaker and far too low to use as an authority.</p>
 
     <h2>What the answer looks like</h2>
-    <p>When several versions are relevant, the answer states the position of the current version, cites it, and says how many other versions exist and what changed if the change is extractable. When the versions genuinely conflict and none is clearly current — which happens in about 3% of version clusters in our corpora — the answer presents the conflict rather than resolving it.</p>
+    <p>When several versions are relevant, the answer states the position of the current version, cites it, and says how many other versions exist and what changed if the change is extractable. When the versions genuinely conflict and none is clearly current, the answer presents the conflict instead of resolving it. That is about 3% of version clusters in our corpora.</p>
     <p>That last behaviour is the one people initially dislike and then come to rely on. A tool that always produces one confident answer over a corpus containing four contradictory documents is not doing the work. It is hiding it.</p>
 
     <p class="muted small" style="margin-top:48px">Version and supersession logic is in <span class="mono">quire/index/versions</span>. The date extractors are locale-aware and the locale list is incomplete; contributions there are always welcome.</p>
@@ -94,7 +96,7 @@
   <div class="wrap article">
     <hr class="divider">
     <div class="grid g2" style="margin-top:32px">
-      <a class="card card-link card-sm" href="/blog-rag-benchmark"><span class="pill">Read next</span><h4>Your RAG benchmark is measuring the wrong thing</h4><p class="small">Staleness, permissions and conflict recall — the properties public corpora do not have.</p></a>
+      <a class="card card-link card-sm" href="/blog-rag-benchmark"><span class="pill">Read next</span><h4>Your RAG benchmark is measuring the wrong thing</h4><p class="small">Staleness, permissions and conflict recall: the properties public corpora do not have.</p></a>
       <div class="tile tile-solar"><h4>The Quire Note</h4><p class="small">One email a month, engineering-first.</p><form class="row" data-demo><input type="email" placeholder="you@company.com" required><button class="btn btn-sm" type="submit">Subscribe</button></form><p class="small muted" data-note></p></div>
     </div>
   </div>

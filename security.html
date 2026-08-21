@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security — Quire</title>
 <meta name="description" content="Threat model, supply chain, how to report a vulnerability, and the honest limits of what a self-hosted tool can promise.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -40,7 +42,7 @@
   <div class="wrap center stack-lg">
     <span class="pill">Security</span>
     <h1>What we can promise,<br>and what we can't.</h1>
-    <p class="lede measure">Quire runs on your machine, which removes whole categories of risk and creates others. This page is the threat model rather than a compliance badge wall — there is no vendor here to be trusted or audited.</p>
+    <p class="lede measure">Quire runs on your machine, which removes whole categories of risk and creates others. This page is the threat model, with no compliance badge wall attached. There is no vendor here to be trusted or audited.</p>
     <div class="row row-center"><a class="btn" href="#report">Report a vulnerability</a><a class="btn btn-ghost" href="#supply">Supply chain</a></div>
   </div>
 </section>
@@ -53,7 +55,7 @@
     </div>
     <div class="tile tile-aqua">
       <h4>No telemetry, verifiably</h4>
-      <p>No analytics dependency and no phone-home path. Not an opt-out you have to trust — <code>grep</code> the repo. Network egress in the default config is zero.</p>
+      <p>No analytics dependency and no phone-home path. Not an opt-out you have to trust. <code>grep</code> the repo. Network egress in the default config is zero.</p>
     </div>
     <div class="tile tile-peach">
       <h4>But you're the operator now</h4>
@@ -69,13 +71,13 @@
       <table>
         <thead><tr><th>Risk</th><th>Who handles it</th><th>What we do</th></tr></thead>
         <tbody>
-          <tr><td>Documents leaving your machine</td><td>Shared</td><td>Local model by default. <code>offline = true</code> makes any outbound call a hard error rather than a silent fallback.</td></tr>
+          <tr><td>Documents leaving your machine</td><td>Shared</td><td>Local model by default. <code>offline = true</code> makes any outbound call a hard error, not a silent fallback.</td></tr>
           <tr><td>Index file readable by other users</td><td>You</td><td>Created 0600. We can't stop you moving it somewhere world-readable, and people do.</td></tr>
-          <tr><td><code>quire serve</code> exposed to a network</td><td>You</td><td>Binds to localhost; <code>--host 0.0.0.0</code> prints a warning. There is no auth layer — see below.</td></tr>
+          <tr><td><code>quire serve</code> exposed to a network</td><td>You</td><td>Binds to localhost; <code>--host 0.0.0.0</code> prints a warning. There is no auth layer, see below.</td></tr>
           <tr><td>Prompt injection from indexed content</td><td>Us, partially</td><td>Retrieved spans are passed as data, never as instructions, and the verifier rejects claims unsupported by the span. Not a solved problem; see the limits section.</td></tr>
           <tr><td>Malicious plugin from PyPI</td><td>You</td><td>Plugins run in-process with full privileges. We don't vendor or endorse third-party plugins. Read them.</td></tr>
           <tr><td>Compromised release artifact</td><td>Us</td><td>Signed, reproducible builds with attestations. Verification steps below.</td></tr>
-          <tr><td>Your model provider retaining prompts</td><td>You</td><td>Their terms, not ours. If this matters, stay local — that's the default for a reason.</td></tr>
+          <tr><td>Your model provider retaining prompts</td><td>You</td><td>Their terms, not ours. If this matters, stay local. It's the default for a reason.</td></tr>
         </tbody>
       </table>
     </div>
@@ -88,7 +90,7 @@
       <span class="pill pill-accent">On authentication</span>
       <h2>There isn't any, and that's deliberate.</h2>
       <p class="lede"><code>quire serve</code> has no login, no tokens and no user model. Half-built auth in a self-hosted tool is worse than none, because it invites people to expose the port believing they're protected.</p>
-      <p>If you need to expose it, put it behind something that does this properly — a reverse proxy with OIDC, a VPN, an SSH tunnel. The docs show all three. We would rather be visibly missing a feature than quietly bad at a security-critical one.</p>
+      <p>If you need to expose it, put it behind something that does this properly: a reverse proxy with OIDC, a VPN, an SSH tunnel. The docs show all three. We would rather be visibly missing a feature than quietly bad at a security-critical one.</p>
       <div class="badge-row"><span class="badge">binds 127.0.0.1</span><span class="badge">warns on 0.0.0.0</span><span class="badge">no session state</span></div>
     </div>
     <div class="terminal">
@@ -143,7 +145,7 @@
     <div class="grid g2 reveal">
       <div class="card">
         <h4>Prompt injection isn't fully solved</h4>
-        <p>If an attacker can put a document into your corpus, they can attempt to influence an answer. Spans are passed as data and verification rejects unsupported claims, which blocks the crude version. It does not block a document that is <em>itself</em> a plausible-looking lie — nothing does, short of you trusting your sources.</p>
+        <p>If an attacker can put a document into your corpus, they can attempt to influence an answer. Spans are passed as data and verification rejects unsupported claims, which blocks the crude version. It does not block a document that is <em>itself</em> a plausible-looking lie. Nothing does, short of you trusting your sources.</p>
       </div>
       <div class="card">
         <h4>Plugins are unsandboxed</h4>
@@ -151,7 +153,7 @@
       </div>
       <div class="card">
         <h4>The index is not encrypted at rest</h4>
-        <p>It's a SQLite file with 0600 permissions. If your threat model includes someone with your filesystem, use full-disk encryption — we'd add nothing by implementing a weaker layer on top.</p>
+        <p>It's a SQLite file with 0600 permissions. If your threat model includes someone with your filesystem, use full-disk encryption. We'd add nothing by implementing a weaker layer on top.</p>
       </div>
       <div class="card">
         <h4>We are five people</h4>
@@ -178,7 +180,7 @@
     <div class="stack">
       <div class="tile tile-solar">
         <h4>Safe harbour</h4>
-        <p>Test against your own installation as much as you like. We will not pursue anyone acting in good faith against their own instance. Don't test against someone else's deployment — that's their machine, not ours to authorise.</p>
+        <p>Test against your own installation as much as you like. We will not pursue anyone acting in good faith against their own instance. Don't test against someone else's deployment. That's their machine, not ours to authorise.</p>
       </div>
       <div class="card">
         <h4>Past advisories</h4>

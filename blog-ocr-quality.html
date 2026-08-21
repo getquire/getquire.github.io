@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>OCR does not fail loudly, and that is the problem — Quire</title>
 <meta name="description" content="Error rates are not uniform and confidence scores are not calibrated. Why a wrong digit in an amount field is a different failure to a typo in prose.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -40,19 +42,19 @@
     <a class="small ink-link" href="/blog">← All posts</a>
     <span class="pill">Engineering · 9 min read</span>
     <h1 style="font-size:clamp(36px,5.5vw,56px)">OCR does not fail loudly, and that is the problem</h1>
-    <p class="lede">A recogniser that returns garbage is easy to handle. A recogniser that returns a plausible wrong digit with 94% confidence is how a scanned invoice becomes a different invoice.</p>
+    <p class="lede">A recogniser that returns garbage is easy to handle; a recogniser that returns a plausible wrong digit at 94% confidence is how a scanned invoice quietly becomes a different invoice, and how the difference reaches an approval queue without anybody noticing.</p>
     <div class="row"><span class="avatar">TW</span><span class="small">Tal Weiss · Maintainer, ingestion<br><span class="muted">11 August 2026</span></span></div>
   </div>
 
   <div class="wrap article">
-    <p>Roughly 11% of the documents our users index have no text layer at all, and another 6% have one that is worse than nothing. For those, recognition is the whole pipeline: whatever OCR produces <em>is</em> the document, and every later stage inherits its mistakes without being able to see them.</p>
+    <p>Roughly 11% of the documents our users index have no text layer at all, and another 6% carry one that is worse than nothing, which means that for close to a fifth of a real corpus recognition is not a preprocessing step but the entire pipeline: whatever OCR produces <em>is</em> the document, and every later stage inherits its mistakes without any way of seeing that they are mistakes.</p>
 
-    <p>Modern recognisers are good. Character error rates on clean office scans sit under half a percent, which sounds like a solved problem and is not, for two reasons: errors are not uniformly distributed, and confidence scores are not calibrated.</p>
+    <p>Modern recognisers are good, with character error rates on clean office scans sitting under half a percent, and that number sounds like a solved problem for exactly as long as it takes to notice two things about it: the errors are not uniformly distributed across the fields you care about, and the confidence scores attached to them are not calibrated against anything.</p>
 
     <h2>Prose is protected, numbers are not</h2>
-    <p>An OCR error in a sentence is usually survivable. Context does the repair — a reader, a retriever and a language model all reconstruct "recieve" or "1nvoice" without effort, because the surrounding words constrain what the token could have been.</p>
+    <p>An OCR error inside a sentence is usually survivable, because context does the repair for you: a reader, a retriever and a language model all reconstruct "recieve" or "1nvoice" without effort, since the surrounding words constrain what the token could plausibly have been.</p>
 
-    <p>Digits have no such context. In an amount field, any digit is as plausible as any other. There is nothing in the string that says 7 is unlikely here. So the exact same recogniser, at the exact same quality, has a benign error rate in prose and a dangerous one in a number.</p>
+    <p>Digits have no such context, and in an amount field any digit is exactly as plausible as any other, so nothing in the string suggests that a 7 is unlikely in that position. The same recogniser, working at the same quality on the same page, therefore carries a benign error rate through the prose and a dangerous one through every number on it.</p>
 
     <blockquote>In prose an OCR error is a typo. In an amount field it is a different invoice, and nothing downstream will notice.</blockquote>
 
@@ -72,12 +74,12 @@
       </table>
     </div>
 
-    <p>A 5.2% field-level error rate on amounts means one invoice in twenty has a wrong number in it, presented with no visible sign that anything went wrong. That is the number that should decide your architecture.</p>
+    <p>A 5.2% field-level error rate on amounts means that one invoice in twenty carries a wrong number, presented with no visible sign that anything went wrong anywhere in the chain, and that is the figure which ought to decide your architecture rather than the character error rate everybody quotes.</p>
 
     <h2>Confidence scores are a genre of fiction</h2>
-    <p>Every recogniser will tell you how sure it is. We plotted reported confidence against measured accuracy across 300,000 recognised numeric fields, and the relationship is real but weak: within the 90-to-99 band, which is where most output lands, reported confidence carries almost no information about whether the field is right.</p>
+    <p>Every recogniser will tell you how sure it is. We plotted reported confidence against measured accuracy across 300,000 recognised numeric fields, and while the relationship is real it is weak enough to be useless exactly where it matters: inside the 90-to-99 band, where most output lands, reported confidence carries almost no information about whether the field is actually right.</p>
 
-    <p>The systematic confusions are the familiar ones — 0 and 8, 1 and 7, 3 and 8, 5 and 6, and on European handwriting the 1 that has a serif long enough to be a 7. In every case the recogniser is confident, because the glyph genuinely does look like the thing it decided on.</p>
+    <p>The systematic confusions are the familiar ones, 0 and 8, 1 and 7, 3 and 8, 5 and 6, along with the European handwritten 1 whose serif runs long enough to pass for a 7, and in every one of those cases the recogniser is confident for a defensible reason, since the glyph genuinely does look like the thing it decided on.</p>
 
     <h2>What we do instead</h2>
     <ul>
@@ -89,11 +91,11 @@
     </ul>
 
     <h2>The cost, stated honestly</h2>
-    <p>Running two recognisers roughly doubles ingestion CPU time on the scanned subset. On a 40,000-document corpus with 11% scans, that is about 25 minutes of extra work on a laptop-class machine, once, at index time. Nobody who has watched a wrong amount get quoted back to them with full confidence has argued about the 25 minutes.</p>
+    <p>Running two recognisers roughly doubles ingestion CPU time on the scanned subset, which on a 40,000-document corpus with 11% scans works out to about 25 minutes of extra work on a laptop-class machine, once, at index time. Nobody who has watched a wrong amount get quoted back to them with full confidence has ever argued with us about the 25 minutes.</p>
 
-    <p>Refusing on illegible spans also lowers coverage: about 1.4% of questions against heavily scanned corpora return "not legible" instead of an answer. We consider that the correct number to be non-zero. A system that answers every question about a smudged fax is not better at reading, it is better at guessing.</p>
+    <p>Refusing on illegible spans also costs coverage, in that about 1.4% of questions against heavily scanned corpora come back "not legible" instead of an answer, and we consider the correct value for that number to be greater than zero. A system that answers every question about a smudged fax is not better at reading than one that declines; it is better at guessing.</p>
 
-    <p class="muted small" style="margin-top:48px">Engine selection is configurable in <span class="mono">quire.toml</span>; the default pair is chosen for licence compatibility rather than benchmark scores, and both run fully offline.</p>
+    <p class="muted small" style="margin-top:48px">Engine selection is configurable in <span class="mono">quire.toml</span>; the default pair is chosen for licence compatibility ahead of benchmark scores, and both run fully offline.</p>
   </div>
 
   <div class="wrap article">

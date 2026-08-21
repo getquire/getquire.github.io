@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Every duplicate invoice is a near-duplicate — Quire</title>
 <meta name="description" content="Byte-identical files are the case nobody worries about. Blocking keys, an asymmetric cost function, and why we surface pairs instead of verdicts.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -40,17 +42,17 @@
     <a class="small ink-link" href="/blog">← All posts</a>
     <span class="pill">Engineering · 10 min read</span>
     <h1 style="font-size:clamp(36px,5.5vw,56px)">Every duplicate invoice is a near-duplicate</h1>
-    <p class="lede">Exact duplicates are rare and already handled by a hash. The ones that cost money are the same invoice arriving twice in different clothes, and finding those is a blocking-and-scoring problem with an asymmetric cost function.</p>
+    <p class="lede">A hash catches exact duplicates. Those are rare, and cheap. The expensive ones are the same invoice arriving twice in different clothes. Finding those means blocking, then scoring, against a cost function that is not symmetric.</p>
     <div class="row"><span class="avatar">TW</span><span class="small">Tal Weiss · Maintainer, ingestion<br><span class="muted">15 July 2026</span></span></div>
   </div>
 
   <div class="wrap article">
-    <p>The first version of our duplicate detection hashed file bytes. It found 340 duplicates in a 40,000-document corpus and everyone was pleased for about a day, until someone pointed out that byte-identical files are the case nobody is worried about. They are the same attachment saved twice. They cost storage, not money.</p>
+    <p>Our first duplicate detector hashed file bytes. It found 340 duplicates in a 40,000-document corpus. Everyone was pleased for about a day. Then someone pointed out that byte-identical files are the case nobody worries about. They are the same attachment, saved twice. They cost storage. They do not cost money.</p>
 
-    <p>The expensive case looks like this: an invoice arrives as a PDF in January, is paid, and arrives again in March as a scan of a printout, with a different filename, a reminder stamp across the top, and a slightly different total because a late fee was added. Two documents. Zero shared bytes. One obligation.</p>
+    <p>Here is the expensive case. An invoice arrives as a PDF in January. It gets paid. In March it arrives again, this time a scan of a printout. Different filename. A reminder stamp across the top. A slightly different total, because someone added a late fee. Two documents. Zero shared bytes. One obligation.</p>
 
     <h2>What "same invoice" means</h2>
-    <p>There is no single definition, which is why this cannot be a boolean. The useful framing is a small set of relations, each of which a person handles differently:</p>
+    <p>There is no single definition. So this cannot be a boolean. Think in relations instead. A person handles each one differently:</p>
 
     <div class="table-wrap" style="margin:32px 0">
       <table>
@@ -66,23 +68,23 @@
       </table>
     </div>
 
-    <p>That last row is why a naive rule fails immediately. A monthly retainer produces twelve invoices a year from the same vendor for the same amount, and every one of them is legitimate. Any matcher that keys on vendor and amount without periodicity awareness produces a flood of false positives, gets ignored, and is then worse than nothing because people stop reading it.</p>
+    <p>That last row breaks a naive rule immediately. A monthly retainer produces twelve invoices a year. Same vendor. Same amount. All twelve legitimate. Key on vendor and amount without periodicity awareness and you get a flood of false positives. The flood gets ignored. Then the matcher is worse than nothing, because people have stopped reading it.</p>
 
     <h2>Blocking, then scoring</h2>
-    <p>Comparing every pair in a 40,000-invoice corpus is 800 million comparisons. So it is the standard two-stage shape: cheap blocking keys to generate candidate pairs, expensive scoring only inside blocks.</p>
+    <p>Every pair in a 40,000-invoice corpus is 800 million comparisons. So: the standard two-stage shape. Cheap blocking keys generate candidate pairs. Expensive scoring runs only inside a block.</p>
     <p>Our blocking keys, all of which run and are unioned:</p>
     <ul>
       <li><b>Normalised vendor plus rounded total.</b> Catches most resends and format variants.</li>
       <li><b>Invoice number stem.</b> The number with separators stripped and suffixes removed, which links amendments to originals.</li>
-      <li><b>Total plus date window.</b> Amount equal within a cent, issue dates within 45 days, no vendor requirement — catches the case where the vendor name was recognised differently on a scan.</li>
+      <li><b>Total plus date window.</b> Amount equal within a cent, issue dates within 45 days, no vendor requirement. Catches the case where the vendor name was recognised differently on a scan.</li>
       <li><b>Purchase order reference.</b> Where present, the strongest key we have, and the only one that catches split deliveries.</li>
     </ul>
-    <p>Scoring inside a block is deliberately simple: field-level similarity on vendor, number, dates, total and line-item structure, combined with fixed weights that live in a config file where someone can read them. We tried a learned scorer. It performed about the same on our corpora and nobody could explain any individual decision to a finance team, which turned out to be the deciding factor.</p>
+    <p>Scoring inside a block stays deliberately simple. Field-level similarity on vendor, number, dates, total and line-item structure. Fixed weights, in a config file, where someone can read them. We tried a learned scorer. It scored about the same on our corpora. Nobody could explain a single one of its decisions to a finance team. That decided it.</p>
 
     <blockquote>A duplicate flag someone cannot justify to their auditor is not a feature, it is an argument waiting to happen.</blockquote>
 
     <h2>The costs are not symmetric</h2>
-    <p>A false negative is a payment made twice. A false positive is thirty seconds of someone's attention. Those are not the same size, and the threshold should reflect that — but only up to the point where the reviewer's attention runs out, because a queue nobody works is exactly equivalent to no detection at all.</p>
+    <p>A false negative is a payment made twice. A false positive is thirty seconds of attention. Those are not the same size, and the threshold should say so. Only up to a point, though. Push it too far and the reviewer's attention runs out. A queue nobody works detects nothing.</p>
 
     <div class="table-wrap" style="margin:32px 0">
       <table>
@@ -97,11 +99,11 @@
       </table>
     </div>
 
-    <p>We default to 0.70 because thirteen pairs per thousand invoices is a few minutes of review, and 96% recall is worth it. Below that, precision collapses faster than recall improves — the classic shape, and the reason the last percent of recall is usually not worth buying.</p>
+    <p>We default to 0.70. Thirteen pairs per thousand invoices is a few minutes of review, and 96% recall buys that easily. Go below and precision collapses faster than recall improves. Familiar shape. It is why the last percent of recall rarely pays for itself.</p>
 
     <h2>Present pairs, not verdicts</h2>
-    <p>The output is not a list of duplicates. It is a list of pairs, each rendered side by side with the differing fields highlighted and both source regions visible, and a one-line statement of why they were matched: same vendor and total, invoice numbers differ by a suffix, 61 days apart.</p>
-    <p>Reviewers resolve those in a few seconds each, and the resolution is recorded so the pair never resurfaces. That record is also the only labelled data anyone has for this problem, which is what makes it possible to tune thresholds against a corpus rather than against a hunch.</p>
+    <p>The output is a list of pairs. Each one renders side by side. Differing fields highlighted, both source regions visible, and a one-line statement of why they matched: same vendor and total, invoice numbers differ by a suffix, 61 days apart.</p>
+    <p>Reviewers clear those in seconds. The resolution is recorded, so the pair never resurfaces. That record is also the only labelled data anyone has for this problem. It is what lets you tune a threshold against a corpus instead of a hunch.</p>
 
     <p class="muted small" style="margin-top:48px">Matching lives in <span class="mono">quire/analysis/dedupe</span>. The weights are in <span class="mono">quire.toml</span> and are meant to be edited; the defaults come from three corpora and will not be right for yours.</p>
   </div>
@@ -109,7 +111,7 @@
   <div class="wrap article">
     <hr class="divider">
     <div class="grid g2" style="margin-top:32px">
-      <a class="card card-link card-sm" href="/blog-three-way-match"><span class="pill">Read next</span><h4>Three-way match is a retrieval problem</h4><p class="small">Purchase order, goods receipt, invoice — joined by evidence rather than by a key.</p></a>
+      <a class="card card-link card-sm" href="/blog-three-way-match"><span class="pill">Read next</span><h4>Three-way match is a retrieval problem</h4><p class="small">Purchase order, goods receipt, invoice, joined by evidence and not by a key.</p></a>
       <div class="tile tile-solar"><h4>The Quire Note</h4><p class="small">One email a month, engineering-first.</p><form class="row" data-demo><input type="email" placeholder="you@company.com" required><button class="btn btn-sm" type="submit">Subscribe</button></form><p class="small muted" data-note></p></div>
     </div>
   </div>

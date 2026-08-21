@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Quire — an open-source answer engine for your own documents</title>
 <meta name="description" content="Point Quire at a folder, ask a question, get an answer where every claim links to the line it came from. Runs locally, works with local models, Apache-2.0.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -57,7 +59,7 @@
 
     <h1>Ask your documents.<br>Check every answer.</h1>
 
-    <p class="lede measure">Quire is an open-source answer engine you run yourself. Point it at a folder, ask in plain language, and get an answer where every claim links to the line it came from — or an honest "not in your corpus" when there's nothing to cite.</p>
+    <p class="lede measure">Quire is an open-source answer engine you run yourself. Point it at a folder, ask in plain language, and get an answer where every claim links to the line it came from, or an honest "not in your corpus" when there's nothing to cite.</p>
 
     <div class="row row-center">
       <div class="install">
@@ -65,7 +67,7 @@
         <button data-copy="pipx install quire">Copy</button>
       </div>
     </div>
-    <p class="small muted">Also on Homebrew, npm and Docker. Runs offline against a local model — no key, no account, no cloud.</p>
+    <p class="small muted">Also on Homebrew, npm and Docker. Runs offline against a local model. No key, no account, no cloud.</p>
 
     <div class="terminal" style="max-width:820px;margin-inline:auto;text-align:left">
       <div class="terminal-bar"><i></i><i></i><i></i><span>~/work/handbook</span></div>
@@ -115,7 +117,7 @@
     <div class="center stack measure">
       <span class="pill">Demo</span>
       <h2>Ninety seconds, no narration.</h2>
-      <p class="lede">Index a folder, ask a real question, then watch it refuse one it can't source. This is a terminal cast rather than a video — it's text, so you can select it, it costs nothing to load, and it can't rot into a stale recording of an old release.</p>
+      <p class="lede">Index a folder, ask a real question, then watch it refuse one it can't source. This is a terminal cast, so not a video. It's text, so you can select it, it costs nothing to load, and it can't rot into a stale recording of an old release.</p>
     </div>
 
     <div class="cast" data-cast>
@@ -131,7 +133,7 @@
     </div>
 
     <div class="grid g3 reveal">
-      <div class="card card-sm"><h4>Nothing was cut</h4><p class="small">That's a full session at real speed. No jump cuts hiding a thirty-second wait, which is the usual trick in a product video.</p></div>
+      <div class="card card-sm"><h4>Nothing was cut</h4><p class="small">That's a full session at real speed. No jump cuts hiding a thirty-second wait — the usual trick in a product video.</p></div>
       <div class="card card-sm"><h4>The refusal is the point</h4><p class="small">Most demos only show the question that works. The middle third of this one is the tool declining, because that's the behaviour worth trusting.</p></div>
       <div class="card card-sm"><h4>Run it yourself</h4><p class="small">Same four commands, your own folder. If it doesn't do this on your corpus, that's a bug worth filing.</p></div>
     </div>
@@ -205,7 +207,7 @@
   <div class="wrap split">
     <div class="stack">
       <span class="pill pill-accent">The part we care most about</span>
-      <h2>It exits non-zero rather than making something up.</h2>
+      <h2>It exits non-zero and makes nothing up.</h2>
       <p class="lede">Quire decomposes every draft answer into atomic claims and checks each one against its cited span before you see it. Unsupported claims get cut. If cutting leaves nothing, you get a refusal and the nearest files it found.</p>
       <ul class="checks">
         <li>Span-level citations with file, line and commit date</li>
@@ -245,7 +247,7 @@
     <div class="stack">
       <span class="pill">Local first, not local only</span>
       <h2>Your documents never leave unless you say so.</h2>
-      <p class="lede">Point it at a hosted model when you want the quality, keep it local when the content is sensitive, or split the two — local extraction and classification, hosted synthesis. It's a config line either way.</p>
+      <p class="lede">Point it at a hosted model when you want the quality, keep it local when the content is sensitive, or split the two: local extraction and classification, hosted synthesis. It's a config line either way.</p>
       <div class="terminal">
         <div class="terminal-bar"><i></i><i></i><i></i><span>quire.toml</span></div>
 <pre><code><span class="t-dim">[model]</span>
@@ -279,7 +281,7 @@ strict   = <span class="t-out">true</span>   <span class="t-dim"># refuse rather
     <div class="grid g3 reveal">
       <a class="card card-link" href="/careers"><h4>Good first issues</h4><p>62 open and labelled, each with a pointer to the file and a maintainer who agreed to review it.</p><span class="ink-link small">Start here →</span></a>
       <a class="card card-link" href="/contact"><h4>Discussions &amp; Discord</h4><p>2,100 people. Questions get answered, usually within a few hours, usually by someone who isn't a maintainer.</p><span class="ink-link small">Join →</span></a>
-      <a class="card card-link" href="/customers"><h4>Showcase</h4><p>What people built with it — a legal archive, a municipal records search, a lab notebook, a fanwiki.</p><span class="ink-link small">Browse →</span></a>
+      <a class="card card-link" href="/customers"><h4>Showcase</h4><p>What people built with it: a legal archive, a municipal records search, a lab notebook, a fanwiki.</p><span class="ink-link small">Browse →</span></a>
     </div>
   </div>
 </section>
@@ -312,19 +314,19 @@ strict   = <span class="t-out">true</span>   <span class="t-dim"># refuse rather
         <button class="faq-q" aria-expanded="false">Is this actually free, or free-until-Series-A?
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14M5 12h14"/></svg>
         </button>
-        <div class="faq-a"><div><p>Apache-2.0 with no CLA, which means we don't hold the rights needed to relicense contributed code even if we wanted to. There's no venture money and no equity to service. The honest risk isn't a rug pull, it's abandonment — so the governance page names who has commit access and what happens if the maintainers stop.</p></div></div>
+        <div class="faq-a"><div><p>Apache-2.0 with no CLA, which means we don't hold the rights needed to relicense contributed code even if we wanted to. There's no venture money and no equity to service. The honest risk isn't a rug pull, it's abandonment, so the governance page names who has commit access and what happens if the maintainers stop.</p></div></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">Does it work with a local model, honestly?
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14M5 12h14"/></svg>
         </button>
-        <div class="faq-a"><div><p>Yes, and it's the default. An 8B model handles extraction, verification and short synthesis well. Long multi-document synthesis is visibly better on a frontier model — the benchmark page publishes both numbers rather than making you find out yourself.</p></div></div>
+        <div class="faq-a"><div><p>Yes, and it's the default. An 8B model handles extraction, verification and short synthesis well. Long multi-document synthesis is visibly better on a frontier model. The benchmark page publishes both numbers so you don't have to find out yourself.</p></div></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">Why not just use LangChain or LlamaIndex?
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14M5 12h14"/></svg>
         </button>
-        <div class="faq-a"><div><p>Use them if you're building a framework's worth of things. Quire is opinionated and narrow: one job, one config file, a CLI you can pipe. It also works as a library alongside either of them — several people index with LlamaIndex and answer with Quire.</p></div></div>
+        <div class="faq-a"><div><p>Use them if you're building a framework's worth of things. Quire is opinionated and narrow: one job, one config file, a CLI you can pipe. It also works as a library alongside either of them. Several people index with LlamaIndex and answer with Quire.</p></div></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">How big a corpus does it handle?
@@ -359,8 +361,8 @@ strict   = <span class="t-out">true</span>   <span class="t-dim"># refuse rather
       </div>
       <div class="card">
         <h4>What's real</h4>
-        <p>The design system, the markup, and the page structure. The visual language follows a published style spec — a "soft daylight notebook" aesthetic — kept where it counts: charcoal as the only dense element, display type at weight 500 only, 32px card radius, no shadows on content.</p>
-        <p>One departure. The spec puts a <span class="mark">#ebf5ff</span> canvas under near-white cards. Here it's inverted — white canvas, <span class="mark">#f4f8fd</span> cards — so the depth step survives and the blue moves into the wash behind the hero.</p>
+        <p>The design system, the markup, and the page structure. The visual language follows a published style spec (a "soft daylight notebook" aesthetic) kept where it counts: charcoal as the only dense element, display type at weight 500 only, 32px card radius, no shadows on content.</p>
+        <p>One departure. The spec puts a <span class="mark">#ebf5ff</span> canvas under near-white cards. Here it's inverted (white canvas, <span class="mark">#f4f8fd</span> cards) so the depth step survives and the blue moves into the wash behind the hero.</p>
       </div>
       <div class="card">
         <h4>How it's built</h4>
@@ -371,7 +373,7 @@ strict   = <span class="t-out">true</span>   <span class="t-dim"># refuse rather
 
     <div class="tile tile-solar">
       <h4>Take it</h4>
-      <p>MIT licensed. Rename the project, replace the copy, keep the system. If you reuse the structure, delete the fabricated signals first — the star count, the contributor numbers, the benchmark tables, the sponsor list. Inflated community metrics are the open-source version of a fake logo wall.</p>
+      <p>MIT licensed. Rename the project, replace the copy, keep the system. If you reuse the structure, delete the fabricated signals first: the star count, the contributor numbers, the benchmark tables, the sponsor list. Inflated community metrics are the open-source version of a fake logo wall.</p>
       <div class="row" style="margin-top:8px">
         <a class="btn" href="https://github.com/getquire/getquire.github.io">Source on GitHub</a>
         <a class="btn btn-ghost" href="https://github.com/getquire/getquire.github.io/blob/main/README.md">Read the README</a>
@@ -419,13 +421,17 @@ strict   = <span class="t-out">true</span>   <span class="t-dim"># refuse rather
     <div class="marquee badge-strip" aria-label="Directory listings">
       <div class="marquee-track">
         <a href="https://lemonlaunch.dev/dev-tools/quire" target="_blank" rel="noopener"><img src="https://lemonlaunch.dev/badge/lemonlaunch-badge-light.svg" alt="Featured on LemonLaunch" width="188" height="56" loading="lazy"></a>
-        <a href="https://thesaasdir.com/product/quire?ref=badge" rel="dofollow"><img src="https://thesaasdir.com/badge/quire.svg" alt="Featured on TheSaaSDir" width="160" height="44" loading="lazy"></a>
+        <a href="https://thesaasdir.com/product/quire?ref=badge" rel="dofollow"><img src="https://thesaasdir.com/badge/quire.svg" alt="Featured on TheSaaSDir" width="182" height="46" loading="lazy"></a>
         <a href="https://easylaunch.dev/dev-tools/quire" target="_blank" rel="noopener"><img src="https://easylaunch.dev/badge/easylaunch-badge-light.svg" alt="Featured on EasyLaunch" width="188" height="56" loading="lazy"></a>
-        <a href="https://twelve.tools" target="_blank" rel="noopener"><img src="https://twelve.tools/badge0-white.svg" alt="Featured on Twelve Tools" width="148" height="40" loading="lazy"></a>
+        <a href="https://twelve.tools" target="_blank" rel="noopener"><img src="https://twelve.tools/badge0-white.svg" alt="Featured on Twelve Tools" width="200" height="54" loading="lazy"></a>
+        <a href="https://wired.business" target="_blank" rel="noopener"><img src="https://wired.business/badge0-white.svg" alt="Featured on Wired Business" width="200" height="54" loading="lazy"></a>
+        <a href="https://theaitoolsdir.com/product/quire?ref=badge" rel="dofollow"><img src="https://theaitoolsdir.com/badge/quire.svg" alt="Featured on TheAIToolsDir" width="182" height="46" loading="lazy"></a>
         <a aria-hidden="true" tabindex="-1" href="https://lemonlaunch.dev/dev-tools/quire" target="_blank" rel="noopener"><img src="https://lemonlaunch.dev/badge/lemonlaunch-badge-light.svg" alt="" width="188" height="56" loading="lazy"></a>
-        <a aria-hidden="true" tabindex="-1" href="https://thesaasdir.com/product/quire?ref=badge" rel="dofollow"><img src="https://thesaasdir.com/badge/quire.svg" alt="" width="160" height="44" loading="lazy"></a>
+        <a aria-hidden="true" tabindex="-1" href="https://thesaasdir.com/product/quire?ref=badge" rel="dofollow"><img src="https://thesaasdir.com/badge/quire.svg" alt="" width="182" height="46" loading="lazy"></a>
         <a aria-hidden="true" tabindex="-1" href="https://easylaunch.dev/dev-tools/quire" target="_blank" rel="noopener"><img src="https://easylaunch.dev/badge/easylaunch-badge-light.svg" alt="" width="188" height="56" loading="lazy"></a>
-        <a aria-hidden="true" tabindex="-1" href="https://twelve.tools" target="_blank" rel="noopener"><img src="https://twelve.tools/badge0-white.svg" alt="" width="148" height="40" loading="lazy"></a>
+        <a aria-hidden="true" tabindex="-1" href="https://twelve.tools" target="_blank" rel="noopener"><img src="https://twelve.tools/badge0-white.svg" alt="" width="200" height="54" loading="lazy"></a>
+        <a aria-hidden="true" tabindex="-1" href="https://wired.business" target="_blank" rel="noopener"><img src="https://wired.business/badge0-white.svg" alt="" width="200" height="54" loading="lazy"></a>
+        <a aria-hidden="true" tabindex="-1" href="https://theaitoolsdir.com/product/quire?ref=badge" rel="dofollow"><img src="https://theaitoolsdir.com/badge/quire.svg" alt="" width="182" height="46" loading="lazy"></a>
       </div>
     </div>
     <hr class="divider">

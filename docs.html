@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Docs — Quire</title>
 <meta name="description" content="Install, index, ask. CLI reference, configuration, the Python and HTTP APIs, and how to write a plugin.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -61,7 +63,7 @@
     <div class="stack">
       <span class="pill pill-accent">Install</span>
       <h2>Pick a package manager.</h2>
-      <p class="lede">Python 3.10 or newer. The default install pulls a small embedding model and nothing else — no model weights until you ask for them.</p>
+      <p class="lede">Python 3.10 or newer. The default install pulls a small embedding model and nothing else. No model weights until you ask for them.</p>
       <ul class="checks">
         <li>Local models need <a class="ink-link" href="https://ollama.com">Ollama</a> or any OpenAI-compatible endpoint</li>
         <li>OCR is optional; install the <code>[ocr]</code> extra if you have scans</li>
@@ -139,7 +141,7 @@
       <p class="lede"><code>quire.toml</code> sits next to your documents. Every key has a default that works, so the shortest useful config is an empty file.</p>
       <ul class="checks">
         <li>Environment variables override file values: <code>QUIRE_MODEL_ANSWER</code></li>
-        <li>Secrets are read from the environment only — never from the file</li>
+        <li>Secrets are read from the environment only, never from the file</li>
         <li><code>quire config --explain</code> prints the resolved config and where each value came from</li>
       </ul>
       <div class="tile tile-solar" style="margin-top:8px">
@@ -210,7 +212,7 @@ spans = idx.search(<span class="t-out">"rollback plan"</span>, k=<span class="t-
         </div>
         <div class="tile tile-aqua">
           <h4>There is no auth layer</h4>
-          <p>By design. <code>quire serve</code> binds to localhost and assumes the network boundary is yours. If you expose it, put it behind something that does authentication properly — we'd rather ship no auth than bad auth.</p>
+          <p>By design. <code>quire serve</code> binds to localhost and assumes the network boundary is yours. If you expose it, put it behind something that does authentication properly. We'd rather ship no auth than bad auth.</p>
         </div>
       </div>
     </div>
@@ -226,7 +228,7 @@ spans = idx.search(<span class="t-out">"rollback plan"</span>, k=<span class="t-
       <div class="card card-sm"><h4><code>quire.models</code></h4><p class="small">Model backends. Anything OpenAI-compatible already works without one.</p></div>
       <div class="card card-sm"><h4><code>quire.outputs</code></h4><p class="small">Where agent results go. Slack, webhook, file, issue tracker.</p></div>
     </div>
-    <p class="small muted">Each is a documented protocol with a reference implementation under 100 lines. If your plugin is useful, open a PR to list it in the <a class="ink-link" href="/solutions">recipes</a> — we don't vendor plugins into core.</p>
+    <p class="small muted">Each is a documented protocol with a reference implementation under 100 lines. If your plugin is useful, open a PR to list it in the <a class="ink-link" href="/solutions">recipes</a>. We don't vendor plugins into core.</p>
   </div>
 </section>
 

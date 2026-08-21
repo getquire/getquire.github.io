@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Chunking is a layout problem, not a token problem — Quire</title>
 <meta name="description" content="Fixed token windows cut tables in half and strip the context that made a fragment interpretable. Layout boundaries, heading paths, and removing overlap.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -40,7 +42,7 @@
     <a class="small ink-link" href="/blog">← All posts</a>
     <span class="pill">Engineering · 8 min read</span>
     <h1 style="font-size:clamp(36px,5.5vw,56px)">Chunking is a layout problem, not a token problem</h1>
-    <p class="lede">Almost every tutorial chunks by token count with an overlap. That is a reasonable default for prose and an actively bad one for documents with structure, which is most of the documents anyone cares about.</p>
+    <p class="lede">Almost every tutorial chunks by token count with an overlap. That is a reasonable default for prose and an actively bad one for documents with structure — most of the documents anyone cares about.</p>
     <div class="row"><span class="avatar">JM</span><span class="small">Joel Mensah · Maintainer, retrieval<br><span class="muted">3 June 2026</span></span></div>
   </div>
 
@@ -50,14 +52,14 @@
     <p>A window boundary landing in the middle of a table produces two chunks, neither of which contains both the header row and the number. The chunk with the number is retrievable and meaningless. The chunk with the header is meaningful and has no number. Overlap does not fix it, it just moves the boundary.</p>
 
     <h2>Cut where the document already cuts</h2>
-    <p>Documents come with boundaries. Headings, clause numbers, list items, table row groups, page breaks in some formats, sections in others. Those boundaries were placed by the author to mark where one idea ends and another begins, which is exactly the judgement a chunker is trying to make and consistently worse at.</p>
+    <p>Documents come with boundaries. Headings, clause numbers, list items, table row groups, page breaks in some formats, sections in others. Those boundaries were placed by the author to mark where one idea ends and another begins. That is exactly the judgement a chunker is trying to make and consistently worse at.</p>
 
-    <p>So the rule is: cut at the strongest structural boundary within a size band, never in the middle of a table or a numbered clause, and treat the token count as a constraint rather than an objective. Chunks come out uneven — some 90 tokens, some 800 — and that unevenness is the point. A three-line clause is a complete unit of meaning and padding it to 512 tokens with its neighbours makes it less retrievable, not more.</p>
+    <p>So the rule is: cut at the strongest structural boundary within a size band, never in the middle of a table or a numbered clause, and treat the token count as a constraint on the cut, never the thing being optimised. Chunks come out uneven, some 90 tokens, some 800, and that unevenness is the point. A three-line clause is a complete unit of meaning and padding it to 512 tokens with its neighbours makes it less retrievable, not more.</p>
 
     <h2>Carry the path down</h2>
     <p>Every chunk gets a prefix built from its position in the document: the title, the heading chain above it, the clause number, and for tables the column header path described in <a class="ink-link" href="/blog-tables">the tables post</a>. The prefix is indexed and shown, not hidden metadata.</p>
 
-    <p>This is unglamorous and it is the single highest-value thing in this post. A fragment reading "must be submitted within 30 days" matches almost nothing useful. The same fragment prefixed with "Supplier Agreement 2026 &gt; 7. Invoicing &gt; 7.3 Late submission" matches the way people ask, and it makes the retrieved snippet interpretable on its own — which matters more, because the person reading the answer has to judge whether the citation supports the claim.</p>
+    <p>This is unglamorous and it is the single highest-value thing in this post. A fragment reading "must be submitted within 30 days" matches almost nothing useful. The same fragment prefixed with "Supplier Agreement 2026 &gt; 7. Invoicing &gt; 7.3 Late submission" matches the way people ask, and it makes the retrieved snippet interpretable on its own, which matters more, because the person reading the answer has to judge whether the citation supports the claim.</p>
 
     <blockquote>A chunk that a person cannot evaluate without opening the document is not a citation, it is a promise.</blockquote>
 
@@ -77,7 +79,7 @@
       </table>
     </div>
 
-    <p>The table column is where the difference is dramatic, which makes sense — that is the failure the fixed window causes most directly. The heading path is worth seven points of overall accuracy for what is, in implementation terms, string concatenation.</p>
+    <p>The table column is where the difference is dramatic, which makes sense. That is the failure the fixed window causes most directly. The heading path is worth seven points of overall accuracy for what is, in implementation terms, string concatenation.</p>
 
     <h2>What it costs</h2>
     <p>Honest list, because layout chunking is not free:</p>
@@ -89,7 +91,7 @@
     </ul>
 
     <h2>The thing we removed</h2>
-    <p>Overlap. Once chunks align with structure, overlap buys nothing measurable and costs index size and duplicate retrieval hits — the same passage arriving twice in the context under two chunk identities, which makes an answer look better supported than it is. Removing it shrank the index by 11% and improved deduplication of citations. It was in there because everyone else has it, which is a bad reason that survives a long time.</p>
+    <p>Overlap. Once chunks align with structure, overlap buys nothing measurable and costs index size and duplicate retrieval hits: the same passage arriving twice in the context under two chunk identities, which makes an answer look better supported than it is. Removing it shrank the index by 11% and improved deduplication of citations. It was in there because everyone else has it. Bad reason. It survives a long time.</p>
 
     <p class="muted small" style="margin-top:48px">Chunking is in <span class="mono">quire/index/chunk</span> and the strategy is selectable per source. If you index code or logs, the layout chunker is the wrong tool and there is a separate one.</p>
   </div>

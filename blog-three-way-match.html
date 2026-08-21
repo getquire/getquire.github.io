@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Three-way match is a retrieval problem with a paper trail — Quire</title>
 <meta name="description" content="No join key in a folder of PDFs, so the join is made from evidence and then shown. Tolerances, the evidence sheet, and four places the recipe is wrong.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -40,24 +42,24 @@
     <a class="small ink-link" href="/blog">← All posts</a>
     <span class="pill">Recipes · 9 min read</span>
     <h1 style="font-size:clamp(36px,5.5vw,56px)">Three-way match is a retrieval problem with a paper trail</h1>
-    <p class="lede">Purchase order, goods receipt, invoice. In an ERP they are joined on a key. In a folder of PDFs there is no key, so the join has to be made from evidence — and then shown, because nobody approves a payment on the word of a program.</p>
+    <p class="lede">Purchase order, goods receipt, invoice. In an ERP they are joined on a key. In a folder of PDFs there is no key, so the join has to be made from evidence, and then shown, because nobody approves a payment on the word of a program.</p>
     <div class="row"><span class="avatar">AT</span><span class="small">Anaïs Tremblay · Maintainer, product<br><span class="muted">18 June 2026</span></span></div>
   </div>
 
   <div class="wrap article">
-    <p>A three-way match asks a simple question: did we order this, did we receive it, and is the invoice consistent with both. In a well-run procurement system it is a database join, and the interesting part is the tolerance rules. In the situation most small teams are actually in — a shared drive, some email threads, PDFs — there is no join key, and half the work is establishing that these three documents are about the same thing at all.</p>
+    <p>A three-way match asks a simple question: did we order this, did we receive it, and is the invoice consistent with both. In a well-run procurement system it is a database join, and the interesting part is the tolerance rules. In the situation most small teams are actually in (a shared drive, some email threads, PDFs) there is no join key, and half the work is establishing that these three documents are about the same thing at all.</p>
 
     <p>This is the most requested recipe in our tracker, so this post is what the community recipe does, why it stops where it stops, and where it will be wrong.</p>
 
     <h2>Stage one: find the candidates</h2>
     <p>Start from the invoice, because that is the document with a deadline attached. Retrieve candidate purchase orders and receipts using every signal available, in decreasing order of strength:</p>
     <ul>
-      <li><b>An explicit PO reference on the invoice.</b> Present about 60% of the time in our sample corpora, and nearly always correct when present. Watch for references that are close but not exact — a truncated number, a missing prefix, a transposed pair of digits on a scan.</li>
+      <li><b>An explicit PO reference on the invoice.</b> Present about 60% of the time in our sample corpora, and nearly always correct when present. Watch for references that are close but not exact: a truncated number, a missing prefix, a transposed pair of digits on a scan.</li>
       <li><b>Vendor plus date window plus amount proximity.</b> The workhorse when there is no reference.</li>
       <li><b>Line-item description similarity.</b> Slow, and the only signal that works for split deliveries where amounts do not match anything.</li>
       <li><b>Delivery note numbers</b> appearing in both a receipt and the invoice text, which is common and almost never in a structured field.</li>
     </ul>
-    <p>Candidates come back ranked, not resolved. A single-candidate result at high confidence is the common case and it still goes through the same path as a five-candidate result — because the moment a program starts treating high confidence as certainty, the failure mode changes from "a person picked wrong" to "nobody knows why this was approved".</p>
+    <p>Candidates come back ranked, not resolved. A single-candidate result at high confidence is the common case and it still goes through the same path as a five-candidate result, because the moment a program starts treating high confidence as certainty, the failure mode changes from "a person picked wrong" to "nobody knows why this was approved".</p>
 
     <h2>Stage two: compare, with tolerances</h2>
     <p>Once a triple is proposed, the comparison is arithmetic. Ordered quantity against received against invoiced, unit price against agreed price, totals against each other, dates in a plausible sequence.</p>
@@ -69,7 +71,7 @@
           <tr><td>Invoiced quantity vs received</td><td>0</td><td>Partial delivery, later shipment against the same PO</td></tr>
           <tr><td>Unit price vs PO price</td><td>2%</td><td>Agreed price change not reflected in an old PO</td></tr>
           <tr><td>Invoice total vs PO total</td><td>2% or 25 units of currency</td><td>Shipping or handling not on the order</td></tr>
-          <tr><td>Invoice date vs receipt date</td><td>invoice not before receipt, 60 day window</td><td>Invoice issued on dispatch rather than delivery</td></tr>
+          <tr><td>Invoice date vs receipt date</td><td>invoice not before receipt, 60 day window</td><td>Invoice issued on dispatch, before delivery</td></tr>
           <tr><td>Currency</td><td>exact</td><td>Almost never legitimate. Investigate every one</td></tr>
         </tbody>
       </table>
@@ -82,18 +84,18 @@
 
     <blockquote>Approval is a human act with a signature attached to it. The tool's job is to make that act take ninety seconds instead of twenty minutes, not to perform it.</blockquote>
 
-    <p>Groups who have run this report the time per exception dropping from roughly fifteen minutes to two, which is the whole value. The matching itself is not the hard part and never was — the hard part is assembling the evidence from three documents that live in three different places, which is precisely what a retrieval system with span-level citations is for.</p>
+    <p>Groups who have run this report the time per exception dropping from roughly fifteen minutes to two. That is the whole value. The matching itself is not the hard part and never was. The hard part is assembling the evidence from three documents that live in three different places — precisely what a retrieval system with span-level citations is for.</p>
 
     <h2>Where this recipe is wrong</h2>
     <p>Stated plainly, because a recipe that only lists its successes is marketing:</p>
     <ul>
-      <li><b>Split deliveries against one PO.</b> Handled poorly. Partial matching across several invoices summing to one order is a set-cover problem and the recipe currently proposes candidates rather than solving it.</li>
+      <li><b>Split deliveries against one PO.</b> Handled poorly. Partial matching across several invoices summing to one order is a set-cover problem and the recipe currently proposes candidates instead of solving it.</li>
       <li><b>Blanket orders.</b> A standing order drawn against for a year matches everything, weakly. Needs a running consumed-total the recipe does not maintain.</li>
-      <li><b>Services without receipts.</b> A two-way match with no delivery evidence at all. The recipe says so rather than pretending, but it is a real gap.</li>
+      <li><b>Services without receipts.</b> A two-way match with no delivery evidence at all. The recipe says so instead of pretending, but it is a real gap.</li>
       <li><b>Credit notes.</b> Handled as ordinary negative-amount documents, which is wrong in enough edge cases that we would not rely on it for a period close.</li>
     </ul>
 
-    <p>All four are open issues with a named file and a done condition, which is our standard for something we would like help with. The blanket-order one is a good first issue for anybody who has actually worked in procurement, because the hard part is knowing the rules rather than writing the code.</p>
+    <p>All four are open issues with a named file and a done condition, our standard for anything we would like help with. The blanket-order one is a good first issue for anybody who has actually worked in procurement, because the hard part is knowing the rules; the code is the easy half.</p>
 
     <p class="muted small" style="margin-top:48px">Recipe and configuration live in <span class="mono">github.com/getquire/recipes</span> under <span class="mono">three-way-match</span>. It runs entirely offline, like everything else here.</p>
   </div>

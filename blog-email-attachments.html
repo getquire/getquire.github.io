@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The inbox is the ingestion pipeline — Quire</title>
 <meta name="description" content="Most documents that matter arrive as an attachment, forwarded twice, inside a zip. What mailbox ingestion has to do that directory ingestion does not.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -47,16 +49,16 @@
   <div class="wrap article">
     <p>Ask where a small team's invoices live and the honest answer is a mailbox. There may be a folder on a drive as well, and it will be incomplete, because the folder is a copy someone maintains by hand and the mailbox is where the documents actually arrive.</p>
 
-    <p>So mailbox ingestion is not a side feature. It is the main path for a lot of people, and it brings a specific set of problems that do not exist when you point a tool at a directory.</p>
+    <p>So mailbox ingestion turns out to be the main path for a lot of people, and it brings a specific set of problems that do not exist when you point a tool at a directory.</p>
 
     <h2>Multiplicity is the default</h2>
     <p>One invoice generates, in a typical thread: the original message with the attachment, a forward to accounts with the same attachment re-encoded, a reply with the attachment quoted back, a reminder with a fresh copy, and someone's copy saved to the drive and re-attached later. Five arrivals. One document.</p>
 
-    <p>Content hashing catches the identical ones and misses the rest, because re-encoding changes bytes without changing content. So attachments are deduplicated after extraction, on normalised text plus structure, and the surviving record keeps every arrival as provenance: which message, which sender, which date, which thread. That provenance is what answers "when did we first receive this", which is a question people ask constantly and no folder can answer.</p>
+    <p>Content hashing catches the identical ones and misses the rest, because re-encoding changes bytes without changing content. So attachments are deduplicated after extraction, on normalised text plus structure, and the surviving record keeps every arrival as provenance: which message, which sender, which date, which thread. That provenance is what answers "when did we first receive this", a question people ask constantly and no folder can answer.</p>
 
     <h2>The body is a document too</h2>
     <p>A lot of information exists only in the message body: the approval, the disputed line, the promise to pay next week, the correction that means the attached invoice is not the one to use. Ingesting only attachments loses all of it, and the loss is invisible.</p>
-    <p>Bodies are indexed as documents in their own right, linked to their thread and to any attachments in the same message. Quoted history is stripped — badly, because quoting has no standard and every client marks it differently, and the failure mode is either duplicating a whole thread into every reply or dropping something someone wrote inline in the quote.</p>
+    <p>Bodies are indexed as documents in their own right, linked to their thread and to any attachments in the same message. Quoted history is stripped, badly, because quoting has no standard and every client marks it differently, and the failure mode is either duplicating a whole thread into every reply or dropping something someone wrote inline in the quote.</p>
 
     <blockquote>Every mail parser is a pile of heuristics standing in a trench coat. Ours is too. The difference is whether the heuristics are visible.</blockquote>
 
@@ -88,10 +90,10 @@
       </table>
     </div>
 
-    <p>The line worth staring at is 38,900 to 7,100. Over 80% of what arrives is noise or repetition, and a system that indexes it all does not just waste storage — it fills every retrieval result with five copies of the same thing and pushes the useful document off the page.</p>
+    <p>The line worth staring at is 38,900 to 7,100. Over 80% of what arrives is noise or repetition, and a system that indexes it all wastes more than storage. It fills every retrieval result with five copies of the same thing and pushes the useful document off the page.</p>
 
     <h2>Privacy, since this is a mailbox</h2>
-    <p>Everything here runs locally. Nothing leaves the machine, there is no telemetry, and the ingest process has no network access at all — a property that is easy to state, easy to verify with a packet capture, and worth verifying rather than believing. A mailbox is the most sensitive corpus most people own, and it is the one where "trust us" is least appropriate.</p>
+    <p>Everything here runs locally. Nothing leaves the machine, there is no telemetry, and the ingest process has no network access at all. That property is easy to state, easy to verify with a packet capture, and worth verifying instead of believing. A mailbox is the most sensitive corpus most people own, and it is the one where "trust us" is least appropriate.</p>
 
     <p>Deletion is honoured properly, too. Removing a source removes derived text, embeddings, thumbnails and cached regions, not just the row that points at them. Deletion that leaves derivatives behind is not deletion, and it is a surprisingly common bug in systems that grew an index before they grew a delete path.</p>
 

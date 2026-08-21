@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>What a good first issue actually looks like — Quire</title>
 <meta name="description" content="Most are unscoped work nobody wanted. A file, a done condition, a named reviewer who agreed in advance, and an honest size.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -40,27 +42,27 @@
     <a class="small ink-link" href="/blog">← All posts</a>
     <span class="pill">Community · 4 min read</span>
     <h1 style="font-size:clamp(36px,5.5vw,56px)">What a good first issue actually looks like</h1>
-    <p class="lede">Most issues labelled good first issue are unscoped work nobody wanted. We rewrote all 62 of ours to name a file, a done condition, and a reviewer who agreed in advance.</p>
+    <p class="lede">Most issues carrying a good first issue label turn out to be unscoped work that nobody on the project actually wanted to do, which is a thing you can verify on almost any repository in an afternoon, so we went through all 62 of ours and rewrote every one to name a file, a done condition, and a reviewer who had agreed in advance to look at the result.</p>
     <div class="row"><span class="avatar">RB</span><span class="small">Rita Ben-Ari · Maintainer, core<br><span class="muted">13 May 2026</span></span></div>
   </div>
 
   <div class="wrap article">
-    <p>We had 62 issues labelled good first issue. Eleven had been open for over a year. Four had a first-time contributor start work and go quiet, which is the outcome that should bother a project most, because that person tried once and will not try again.</p>
+    <p>We had 62 issues labelled good first issue, of which eleven had been sitting open for more than a year, and four had a first-time contributor start work and then go quiet, which is the outcome that ought to bother a project more than any of the others, because that person tried once and is not going to try again.</p>
 
-    <p>Reading them together, the pattern was obvious and slightly embarrassing: most were not first issues at all. They were things a maintainer did not want to do, labelled optimistically. "Improve error messages" is not a task. It is a research project with a friendly name.</p>
+    <p>Reading them together, the pattern was obvious and a little embarrassing: most of them had never been first issues, they were things a maintainer did not want to do and had labelled optimistically on the way past. "Improve error messages" is not a task, whatever the label says; it is a research project with a friendly name.</p>
 
     <h2>The four things a first issue needs</h2>
     <ul>
-      <li><b>A file.</b> Naming the file, ideally the function, removes the single largest cost for a newcomer, which is not writing the code — it is finding where the code lives in a repository they have never seen.</li>
+      <li><b>A file.</b> Naming the file, ideally the function, removes the single largest cost for a newcomer. That cost is not writing the code, it is finding where the code lives in a repository they have never seen.</li>
       <li><b>A done condition.</b> Something checkable. "This test passes", "this command prints X", "this parse warning appears for the attached document". If the maintainer cannot state it, the issue is not ready for anybody, first-timer or not.</li>
       <li><b>A named reviewer who has already agreed.</b> Not a rota, not a team. A person who said yes before the issue was labelled. Waiting two weeks for a review on your first contribution is how a contributor stops being one.</li>
       <li><b>An honest size.</b> We write the number of lines we think it is. Being wrong about that is fine and useful; being silent about it means the contributor discovers the scope halfway through an evening they had set aside.</li>
     </ul>
 
-    <blockquote>An issue that only makes sense to somebody who already knows the codebase is not a first issue. It is a note to yourself with a label on it.</blockquote>
+    <blockquote>An issue that only makes sense to somebody who already knows the codebase is a note to yourself with a label on it.</blockquote>
 
     <h2>What the rewrite did</h2>
-    <p>Of 62 issues: 24 were rewritten and kept, 31 were closed or relabelled as ordinary work, and 7 turned out to be already fixed. The label went from a graveyard to a list of two dozen real tasks, which is a smaller number that means something.</p>
+    <p>Of the 62, we rewrote and kept 24, closed or relabelled 31 as ordinary work, and found that 7 had already been fixed by somebody who never went back to close the issue. The label went from a graveyard to a list of two dozen real tasks. Much smaller, and it has the advantage of meaning something.</p>
 
     <div class="table-wrap" style="margin:32px 0">
       <table>
@@ -75,12 +77,12 @@
       </table>
     </div>
 
-    <p>The review-time row is doing most of the work in that table. Everything else we changed was about the issue text; the change that moved contribution volume most was a person agreeing in advance to look at the result quickly.</p>
+    <p>The review-time row is doing most of the work in that table, and it is worth sitting with that for a moment, because everything else we changed was about the wording of the issue itself, while the single change that moved contribution volume most was a named person agreeing in advance to look at the result quickly.</p>
 
     <h2>The kinds of task that work</h2>
     <p>Concrete, bounded, and touching a part of the system where being wrong is visible immediately:</p>
     <ul>
-      <li>A date format for a locale we do not parse yet — a table entry, a test case, and a document in the fixtures.</li>
+      <li>A date format for a locale we do not parse yet: a table entry, a test case, and a document in the fixtures.</li>
       <li>A parser failing on one attached document, with the expected output stated.</li>
       <li>A flag that exists in one command and not its sibling.</li>
       <li>A documentation page that is wrong in a specific way, with the correct behaviour described.</li>
@@ -88,8 +90,8 @@
     <p>The kinds that never work, no matter how well-meant: anything touching the retrieval ranking, anything requiring a judgement call about output format, anything whose test would take longer to write than the fix, and anything phrased as "investigate".</p>
 
     <h2>The part that is not about issues</h2>
-    <p>A first contribution is mostly a social event and only partly a technical one. The commit is small. What decides whether the person comes back is whether anything happened afterwards: a review within a day, a merge, a line in the release notes with their name in it, and someone saying which bug it fixed for real users.</p>
-    <p>That is not scalable if a project treats it as a chore. It is entirely sustainable at twenty-four issues, which is the other argument for having fewer of them.</p>
+    <p>A first contribution is mostly a social event and only partly a technical one, since the commit itself is usually small, and what actually decides whether the person comes back is whether anything happened afterwards: a review inside a day, a merge, a line in the release notes with their name on it, and somebody telling them which bug it fixed for real users.</p>
+    <p>None of that scales if a project treats it as a chore, though it is entirely sustainable at twenty-four issues, which is the other and less obvious argument for having fewer of them.</p>
 
     <p class="muted small" style="margin-top:48px">The labelled issues live in <span class="mono">github.com/getquire/quire</span>. If one of them is missing a file, a done condition or a reviewer, that is a bug in the issue and worth saying so.</p>
   </div>

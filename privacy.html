@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Privacy — Quire</title>
 <meta name="description" content="The software collects nothing. This page explains what that means, what the website does, and where data can still leave your machine.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -49,8 +51,8 @@
   <div class="wrap article">
 
     <div class="tile tile-mint" style="margin-bottom:40px">
-      <h4>Verify it rather than believe it</h4>
-      <p>This is the advantage of open source over a privacy policy: you don't have to take our word for it. There is no analytics dependency in the SBOM, no telemetry module in the codebase, and no opt-out flag — because there's nothing to opt out of.</p>
+      <h4>Verify it, don't believe it</h4>
+      <p>This is the advantage of open source over a privacy policy: you don't have to take our word for it. There is no analytics dependency in the SBOM, no telemetry module in the codebase, and no opt-out flag, because there's nothing to opt out of.</p>
       <div class="terminal" style="margin-top:16px">
         <div class="terminal-bar"><i></i><i></i><i></i><span>check for yourself</span></div>
 <pre><code><span class="t-prompt">$</span> quire --sbom | jq <span class="t-out">'.components[].name'</span>
@@ -67,22 +69,22 @@
     <h2>2. Where data <em>can</em> leave your machine</h2>
     <p>Three places, all of which you configure and none of which are on by default:</p>
     <ul>
-      <li><b>A hosted model.</b> If you set <code>answer = "anthropic/…"</code> or any other hosted endpoint, the selected spans and your question go to that provider under their terms. Only the retrieved spans are sent — never your whole corpus. Their retention policy is theirs, and you should read it.</li>
+      <li><b>A hosted model.</b> If you set <code>answer = "anthropic/…"</code> or any other hosted endpoint, the selected spans and your question go to that provider under their terms. Only the retrieved spans are sent, never your whole corpus. Their retention policy is theirs, and you should read it.</li>
       <li><b>Connectors.</b> If you index a remote source, Quire talks to that source with credentials you supplied.</li>
       <li><b>Agent outputs.</b> If you configure an agent to post to Slack or a webhook, it posts to Slack or that webhook.</li>
     </ul>
-    <p>Setting <code>offline = true</code> makes all three a hard error rather than a silent fallback, which is the setting to use when the guarantee needs to be provable rather than assumed.</p>
+    <p>Setting <code>offline = true</code> makes all three a hard error where it would otherwise fall back silently, which is the setting to use when the guarantee needs to be provable instead of assumed.</p>
 
     <h2>3. Package registries</h2>
-    <p>When you <code>pipx install quire</code>, PyPI sees the download — an IP address and a user agent, as with any package. That's PyPI's logging, not ours, and we don't have access to it. The same applies to Homebrew, npm and the container registry. Download counts are the only usage signal that exists, and they're public.</p>
+    <p>When you <code>pipx install quire</code>, PyPI sees the download: an IP address and a user agent, as with any package. That's PyPI's logging, not ours, and we don't have access to it. The same applies to Homebrew, npm and the container registry. Download counts are the only usage signal that exists, and they're public.</p>
 
     <h2>4. This website</h2>
-    <p>Static HTML on GitHub Pages. No cookies, no analytics, no tag manager, no consent banner — because there is nothing to consent to. GitHub serves the files and keeps its own server logs, which are subject to <a class="ink-link" href="https://docs.github.com/site-policy/privacy-policies/github-privacy-statement">GitHub's privacy statement</a>.</p>
+    <p>Static HTML on GitHub Pages. No cookies, no analytics, no tag manager, no consent banner, because there is nothing to consent to. GitHub serves the files and keeps its own server logs, which are subject to <a class="ink-link" href="https://docs.github.com/site-policy/privacy-policies/github-privacy-statement">GitHub's privacy statement</a>.</p>
     <p>One caveat we'd rather state than hide: the pages load Geist from Google Fonts, so your browser makes a request to <code>fonts.gstatic.com</code>. Self-hosting the font would remove that, and it's an open issue.</p>
 
     <h2>5. Community spaces</h2>
     <p>GitHub, Discord and the mailing list are third-party services with their own policies. If you file an issue, your username and what you wrote are public forever. If you join Discord, Discord's terms apply to you. We can delete things we host; we can't delete you from someone else's platform.</p>
-    <p>The mailing list is the only place we hold an email address. It's stored with a European provider, used to send that list and nothing else, never shared, and unsubscribing deletes the record rather than flagging it.</p>
+    <p>The mailing list is the only place we hold an email address. It's stored with a European provider, used to send that list and nothing else, never shared, and unsubscribing deletes the record instead of flagging it.</p>
 
     <h2>6. Security reports</h2>
     <p>If you mail <code>security@quire.dev</code>, we keep the thread until the issue is fixed and disclosed, then archive it for the advisory record. Tell us if you want to be credited anonymously and we'll honour that permanently.</p>
@@ -91,7 +93,7 @@
     <p>For the software, there is no controller and no processing, because there is no data collection. For the mailing list and security correspondence, the maintainers are joint controllers and the legal basis is consent, withdrawable at any time by replying. Requests to <a class="ink-link" href="mailto:privacy@quire.dev">privacy@quire.dev</a>, answered within 30 days and usually within three.</p>
 
     <h2>8. Changes</h2>
-    <p>If this page ever changes materially, it changes in a commit with a message explaining why, and it's noted in the release notes. The git history of this file is the change log — there's no "we may update this policy from time to time" clause, because you can watch the file.</p>
+    <p>If this page ever changes materially, it changes in a commit with a message explaining why, and it's noted in the release notes. The git history of this file is the change log. There's no "we may update this policy from time to time" clause, because you can watch the file.</p>
 
     <hr class="divider" style="margin-block:40px">
     <p class="small muted">This is a demonstration site for a fictional project. The text above is illustrative and is not legal advice or an actual privacy policy.</p>

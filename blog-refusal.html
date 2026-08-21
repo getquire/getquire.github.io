@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Teaching a model to say "I don't know" — Quire</title>
 <meta name="description" content="Refusal calibration ate 40% of our evaluation budget for two quarters. The benchmark we built, three approaches that failed, and the boring one that worked.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -48,7 +50,7 @@
   <div class="wrap article">
     <p>Every retrieval system has a failure mode that doesn't show up in the demo: the question whose answer isn't in the corpus. The user asks it anyway, because they have no way of knowing what's in there. A well-behaved system says so. Most systems produce a fluent paragraph assembled from the nearest three documents, and the user has no way to tell the difference.</p>
 
-    <p>We shipped that failure for eight months. Our internal question set was built from questions our early users actually asked, which means it was built almost entirely from questions that <em>had</em> answers — because people ask about things they believe exist. Our attribution numbers looked great. Our refusal rate was 12%, and we told ourselves that was because the corpus was good.</p>
+    <p>We shipped that failure for eight months. Our internal question set was built from questions our early users actually asked, which means it was built almost entirely from questions that <em>had</em> answers , because people ask about things they believe exist. Our attribution numbers looked great. Our refusal rate was 12%, and we told ourselves that was because the corpus was good.</p>
 
     <blockquote>A benchmark made only of answerable questions measures fluency, not honesty.</blockquote>
 
@@ -57,10 +59,10 @@
     <ul>
       <li><b>Absent facts.</b> Plausible questions about topics genuinely not in the corpus. "What was the Q3 2019 headcount?" against a corpus starting in 2021.</li>
       <li><b>Superseded facts.</b> Questions whose only support is a document that has been explicitly replaced. The trap here is that the old document is still highly relevant by any embedding measure.</li>
-      <li><b>Adjacent facts.</b> Questions where the corpus contains something close enough to be dangerous — the EU number when you asked about EMEA.</li>
+      <li><b>Adjacent facts.</b> Questions where the corpus contains something close enough to be dangerous: the EU number when you asked about EMEA.</li>
       <li><b>Composed facts.</b> Questions requiring a join the corpus doesn't support. Two documents, each with half an answer, and no basis for connecting them.</li>
     </ul>
-    <p>Against that set, our 12% refusal rate turned into a 12% <em>correct</em>-refusal rate. The system was inventing an answer roughly seven times out of eight when it had no business producing one. Adjacent facts were the worst category, which surprised nobody once we looked at it — high retrieval scores, plausible text, wrong scope.</p>
+    <p>Against that set, our 12% refusal rate turned into a 12% <em>correct</em>-refusal rate. The system was inventing an answer roughly seven times out of eight when it had no business producing one. Adjacent facts were the worst category. Nobody was surprised once we looked: high retrieval scores, plausible text, wrong scope.</p>
 
     <h2>Three things that didn't work</h2>
 
@@ -68,10 +70,10 @@
     <p>The obvious first attempt: instruct the model to answer only from the provided context and to say "I don't know" otherwise. This moved correct refusal from 12% to about 34%, and it cost us 9 points of recall on answerable questions because the model started declining things it could in fact support. Prompting trades one error for the other along a single axis. You can slide the point; you can't move the curve.</p>
 
     <h3>2. Retrieval score thresholds</h3>
-    <p>If the top-ranked span scores below <em>x</em>, refuse. This is appealing because it's cheap and it's a single number. It also doesn't work, because retrieval scores are not calibrated across queries. A well-phrased question about an absent topic pulls high-scoring irrelevant spans; a badly-phrased question about a well-covered topic pulls low-scoring correct ones. We spent three weeks on per-query normalization and got the correct-refusal rate to 51% at the cost of 6 points of recall. Better than prompting, still not a product.</p>
+    <p>If the top-ranked span scores below <em>x</em>, refuse. This is appealing because it's cheap and it's a single number. It also doesn't work, because retrieval scores are not calibrated across queries. A well-phrased question about an absent topic pulls high-scoring irrelevant spans; a badly-phrased question about a well-covered topic pulls low-scoring correct ones. We spent three weeks on per-query normalisation and got the correct-refusal rate to 51% at the cost of 6 points of recall. Better than prompting, still not a product.</p>
 
     <h3>3. Model self-reported confidence</h3>
-    <p>We asked the model to score its own confidence and refused below a threshold. The scores were fluent, well-formatted, and almost uncorrelated with correctness — a Spearman coefficient of 0.31 against human labels. Self-reported confidence measures how confident the <em>text</em> sounds. Our conflict-detection feature was built on the wreckage of this attempt, so it wasn't wasted, but as a refusal signal it was noise with good manners.</p>
+    <p>We asked the model to score its own confidence and refused below a threshold. The scores were fluent, well-formatted, and almost uncorrelated with correctness, a Spearman coefficient of 0.31 against human labels. Self-reported confidence measures how confident the <em>text</em> sounds. Our conflict-detection feature was built on the wreckage of this attempt, so it wasn't wasted, but as a refusal signal it was noise with good manners.</p>
 
     <h2>What worked, and it's boring</h2>
     <p>An entailment check. After generation, every sentence in the draft answer is decomposed into atomic claims, and each claim is checked against its cited span by a small model doing one job: does this span support this claim, yes or no. Unsupported claims are cut. If cutting leaves nothing, the answer becomes a refusal that shows the nearest documents.</p>
@@ -89,12 +91,12 @@ if not remaining_claims:
     <p>Three things made it work that we didn't expect going in:</p>
     <ul>
       <li><b>Claim decomposition matters more than the entailment model.</b> Swapping the checker for a frontier model gained 1.4 points. Improving how we split sentences into atomic claims gained 11.</li>
-      <li><b>The checker must not see the question.</b> Given the question, it starts reasoning about whether the answer is plausible instead of whether the span says it. We pass the span and the claim, nothing else.</li>
+      <li><b>The checker must not see the question.</b> Given the question, it starts reasoning about whether the answer is plausible rather than whether the span says it. We pass the span and the claim, nothing else.</li>
       <li><b>Numbers need special handling.</b> "Roughly 340" entails "340" in one direction and not the other, and a checker without an explicit numeric rule gets this wrong about a third of the time.</li>
     </ul>
 
     <h2>The part we still don't handle well</h2>
-    <p>Composed facts. If the corpus has EU revenue in one document and UK revenue in another, and you ask for EMEA, we now correctly decline to invent a total. But the genuinely useful behavior is to say "I can give you EU and UK, and here's what's missing" — and our decomposition currently isn't good enough to produce that reliably. We ship the refusal with both documents attached and let the human do the join. It's honest and it's unsatisfying.</p>
+    <p>Composed facts. If the corpus has EU revenue in one document and UK revenue in another, and you ask for EMEA, we now correctly decline to invent a total. But the genuinely useful behaviour is to say "I can give you EU and UK, and here's what's missing", and our decomposition currently isn't good enough to produce that reliably. We ship the refusal with both documents attached and let the human do the join. It's honest and it's unsatisfying.</p>
 
     <h2>If you're building this</h2>
     <ul>

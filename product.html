@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>How it works — Quire</title>
 <meta name="description" content="The Quire pipeline: parse, index, retrieve, generate, verify. What each stage does, where it fails, and how to swap any of it out.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -49,7 +51,7 @@
   <div class="wrap">
     <div class="timeline">
       <div class="timeline-row"><span class="small muted mono">1 · parse</span><span class="small">Files become spans with structure intact. Tables stay tables, footnotes stay attached to their claim, headings become hierarchy.</span></div>
-      <div class="timeline-row"><span class="small muted mono">2 · index</span><span class="small">Spans get embedded and written to SQLite alongside a BM25 table and a document graph. Incremental — a changed file re-indexes in milliseconds.</span></div>
+      <div class="timeline-row"><span class="small muted mono">2 · index</span><span class="small">Spans get embedded and written to SQLite alongside a BM25 table and a document graph. Incremental: a changed file re-indexes in milliseconds.</span></div>
       <div class="timeline-row"><span class="small muted mono">3 · retrieve</span><span class="small">Hybrid dense plus lexical, fused with reciprocal rank, then reranked. Recency and supersession applied here, not in the prompt.</span></div>
       <div class="timeline-row"><span class="small muted mono">4 · generate</span><span class="small">Only the selected spans go to the model, with a fixed instruction to cite by span id. Nothing else about your corpus is sent.</span></div>
       <div class="timeline-row"><span class="small muted mono">5 · verify</span><span class="small">Claims decomposed and checked against their cited spans. Unsupported ones are cut before you see the answer.</span></div>
@@ -64,11 +66,11 @@
       <h2>The stage nobody writes blog posts about.</h2>
       <p class="lede">Roughly 60% of the parsing code exists because of PDFs, and most of the rest exists because of spreadsheets where the real data starts at row 14.</p>
       <ul class="checks">
-        <li>Layout-aware PDF extraction — merged cells, multi-row headers, rotated tables</li>
+        <li>Layout-aware PDF extraction: merged cells, multi-row headers, rotated tables</li>
         <li>OCR fallback for scans and screenshots, via Tesseract or a vision model</li>
         <li>Markdown, HTML, docx, xlsx, pptx, epub, mbox, plus 30 community formats</li>
         <li>Code-aware chunking that respects function and class boundaries</li>
-        <li>Parsers register through <code>quire.parsers</code> entry points — adding one is a small file</li>
+        <li>Parsers register through <code>quire.parsers</code> entry points. Adding one is a small file</li>
       </ul>
     </div>
     <div class="terminal">
@@ -98,22 +100,22 @@ jupyter = <span class="t-out">"my_plugin:NotebookParser"</span>
     <div class="stack">
       <div class="tile tile-aqua">
         <h4>Why hybrid, still</h4>
-        <p>Pure vector search fails on exact tokens — error codes, ticket numbers, a person's surname. Pure lexical fails on paraphrase. Fusing them costs about 40ms and removes an entire class of "why didn't it find that" issues.</p>
+        <p>Pure vector search fails on exact tokens: error codes, ticket numbers, a person's surname. Pure lexical fails on paraphrase. Fusing them costs about 40ms and removes an entire class of "why didn't it find that" issues.</p>
       </div>
       <div class="tile tile-violet">
         <h4>Supersession is a retrieval problem</h4>
-        <p>Quire builds a document graph from links, filenames, frontmatter and git history, so a policy that was replaced ranks below the one replacing it — unless you ask a question about history, which is detected separately.</p>
+        <p>Quire builds a document graph from links, filenames, frontmatter and git history, so a policy that was replaced ranks below the one replacing it, unless you ask a question about history, detected separately.</p>
       </div>
     </div>
     <div class="stack">
       <span class="pill pill-accent">02–03 — index &amp; retrieve</span>
       <h2>SQLite until it hurts.</h2>
-      <p class="lede">The default store is a single file next to your documents. It handles about 500k documents on a laptop, which is more than most people have, and it means there's no service to stand up before you can try the tool.</p>
+      <p class="lede">The default store is a single file next to your documents. It handles about 500k documents on a laptop, more than most people have, and it means there's no service to stand up before you can try the tool.</p>
       <ul class="checks">
         <li>Dense vectors plus BM25, fused with reciprocal rank fusion</li>
         <li>Cross-encoder rerank on the top 50, locally by default</li>
         <li>Document graph for supersession, authorship and thread context</li>
-        <li>Postgres with pgvector for anything larger — one config line</li>
+        <li>Postgres with pgvector for anything larger: one config line</li>
         <li>Index format is documented and stable; it's just SQL you can query</li>
       </ul>
     </div>
@@ -125,12 +127,12 @@ jupyter = <span class="t-out">"my_plugin:NotebookParser"</span>
     <div class="stack">
       <span class="pill pill-accent">04–05 — generate &amp; verify</span>
       <h2>Generation writes. Verification decides.</h2>
-      <p class="lede">These want different objectives, so Quire runs them as different models. A big model drafts; a small cheap one checks each claim against its span and never sees the question — given the question it starts reasoning about plausibility instead of support.</p>
+      <p class="lede">These want different objectives, so Quire runs them as different models. A big model drafts; a small cheap one checks each claim against its span and never sees the question. Given the question it starts reasoning about plausibility instead of support.</p>
       <ul class="checks">
         <li>Claims decomposed to atomic statements before checking</li>
         <li>Verifier sees the span and the claim, nothing else</li>
-        <li>Explicit numeric rules — "roughly 340" entails "340" one way only</li>
-        <li>Conflicts surfaced rather than resolved: you get both numbers</li>
+        <li>Explicit numeric rules: "roughly 340" entails "340" one way only</li>
+        <li>Conflicts surfaced, not resolved: you get both numbers</li>
         <li>Every stage logged to a trace you can replay with <code>quire trace</code></li>
       </ul>
       <div class="row"><a class="btn" href="/blog-refusal">The full write-up</a></div>
@@ -190,7 +192,7 @@ jupyter = <span class="t-out">"my_plugin:NotebookParser"</span>
       <div class="stack">
         <div class="tile tile-solar">
           <h4>Agents never act on their own</h4>
-          <p>The only outputs are stdout, a file, a webhook you configured, or an exit code. There is no browser, no shell access, no "do the thing" step. If you want it to open a pull request, you pipe it into something that does — visibly, in your own CI.</p>
+          <p>The only outputs are stdout, a file, a webhook you configured, or an exit code. There is no browser, no shell access, no "do the thing" step. If you want it to open a pull request, you pipe it into something that does, visibly, in your own CI.</p>
         </div>
         <div class="tile tile-peach">
           <h4>They run where you run them</h4>

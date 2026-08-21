@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Three ways your totals disagree: rounding, currency, tax — Quire</title>
 <meta name="description" content="When an extracted invoice does not add up, the parser is the likely culprit but not the only one. Tolerances, decimals, and never repairing a number.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -50,11 +52,11 @@
     <h2>Rounding, and where it was applied</h2>
     <p>A line of 3 units at 4.995 each is 14.985. Printed, it is 14.99 or 14.98 depending on the rule, and the invoice total may be built from the rounded line values or from the unrounded ones. Both are defensible. They differ by a cent per line, and on a 200-line invoice they differ by enough to fail an exact-match check.</p>
     <p>Add to that the rounding mode itself. Half-up is the common default. Half-even shows up in anything built on certain accounting libraries. Some jurisdictions specify rounding direction for tax specifically, in a way that does not match the rounding used everywhere else on the same document.</p>
-    <p>So the reconciliation is not an equality, it is an equality with a tolerance derived from the line count — a few cents on a short invoice, more on a long one. A discrepancy inside tolerance is recorded and not flagged. A discrepancy outside it is flagged and never silently corrected.</p>
+    <p>So the reconciliation is an equality with a tolerance, derived from the line count: a few cents on a short invoice, more on a long one. A discrepancy inside tolerance is recorded and not flagged. A discrepancy outside it is flagged and never silently corrected.</p>
 
     <h2>Currency, and the rate that is not on the page</h2>
-    <p>Multi-currency invoices carry at least two failure modes. The first is representational: the same symbol means different currencies in different countries, a bare dollar sign being the obvious case, and the disambiguating information is usually in the vendor address rather than next to the number.</p>
-    <p>The second is that a converted total depends on a rate and a date that may not be printed anywhere. An invoice showing a foreign-currency subtotal and a local-currency total implies a rate; that rate is derivable by division, but which date it corresponds to — invoice date, delivery date, payment date — is a policy question the document does not answer.</p>
+    <p>Multi-currency invoices carry at least two failure modes. The first is representational: the same symbol means different currencies in different countries, a bare dollar sign being the obvious case, and the disambiguating information is usually in the vendor address, some distance from the number.</p>
+    <p>The second is that a converted total depends on a rate and a date that may not be printed anywhere. An invoice showing a foreign-currency subtotal and a local-currency total implies a rate; that rate is derivable by division, but which date it corresponds to (invoice date, delivery date, payment date) is a policy question the document does not answer.</p>
     <p>We store the currency as extracted, per amount, never converted. Conversion is a query-time concern with an explicit rate source, and an answer involving conversion states the rate it used. An indexed amount that has been silently converted is a number with no provenance, and it is very hard to get that back.</p>
 
     <blockquote>Store what the document says. Compute the rest at question time, where the assumptions can be stated out loud.</blockquote>
@@ -65,22 +67,22 @@
       <li><b>Mixed rates.</b> Some lines standard-rated, some reduced, some exempt, with a single tax figure at the bottom that only reconciles if you know which line is which.</li>
       <li><b>Reverse charge.</b> Tax shown as zero with a note in the text, and a total that is correct precisely because the tax is the recipient's problem.</li>
       <li><b>Tax on shipping, sometimes.</b> Depends on jurisdiction and on whether shipping is a separate supply, and the invoice rarely explains its choice.</li>
-      <li><b>Rounding at the tax-code level.</b> Tax computed per rate group and rounded per group, rather than per line or per invoice, which produces small differences from every other method.</li>
+      <li><b>Rounding at the tax-code level.</b> Tax computed per rate group and rounded per group, never per line or per invoice, which produces small differences from every other method.</li>
       <li><b>Withholding.</b> An amount deducted at the bottom so that the payable total is intentionally less than the sum plus tax.</li>
     </ul>
-    <p>Across the flagged set, tax accounts for 46% of genuine mismatches, rounding 31%, currency 12%, and the remainder are invoices with an actual mistake on them — a line that does not belong, a total typed rather than computed, a discount applied twice.</p>
+    <p>Across the flagged set, tax accounts for 46% of genuine mismatches, rounding 31%, currency 12%, and the remainder are invoices with an actual mistake on them: a line that does not belong, a total typed instead of computed, a discount applied twice.</p>
 
     <h2>Implementation notes that are not optional</h2>
     <ul>
       <li><b>Never a binary float for money.</b> Decimal arithmetic with explicit scale, or integer minor units. This is old advice and it is still routinely ignored.</li>
       <li><b>Keep both numbers.</b> The value as printed, and the value as computed. Never overwrite one with the other. The pair is the evidence.</li>
       <li><b>Attach a currency to every amount at parse time.</b> An amount without a currency is not a number, it is half of one, and the missing half gets guessed later by something with less context.</li>
-      <li><b>Tolerances are configuration, not constants.</b> Different finance teams have different thresholds for caring, and the difference between them is a config value, not a code change.</li>
+      <li><b>Tolerances live in configuration.</b> Different finance teams have different thresholds for caring, and the difference between them is a config value, not a code change.</li>
     </ul>
 
     <h2>What the user sees</h2>
     <p>An unreconciled invoice answers questions normally, with one addition: the answer says the document does not reconcile, by how much, and which of the three categories the difference most resembles. That last part is a heuristic and is labelled as one.</p>
-    <p>The alternative — repairing the total so everything looks clean — was in an early prototype for exactly one week. It made the demo better. It also meant that a document with a real error on it became indistinguishable from a correct one, which is the specific outcome an answer engine over financial documents exists to prevent.</p>
+    <p>The alternative, repairing the total so everything looks clean, was in an early prototype for exactly one week. It made the demo better. It also meant that a document with a real error on it became indistinguishable from a correct one — the specific outcome an answer engine over financial documents exists to prevent.</p>
 
     <p class="muted small" style="margin-top:48px">Money handling is in <span class="mono">quire/money.py</span>, roughly 300 lines with a property-based test suite that is considerably longer. If you find a rounding case it gets wrong, that is a bug report we will act on quickly.</p>
   </div>

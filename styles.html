@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Quire — palettes</title>
 <meta name="description" content="Five alternate palettes for the Quire site. Pick one and the whole site re-skins from the same token set.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -48,7 +50,7 @@
   <div class="wrap stack">
     <span class="pill pill-dot">Design</span>
     <h1 class="measure">Five palettes, one token set.</h1>
-    <p class="lede measure">Every colour on this site resolves through a custom property. Swap the tokens and the whole thing re-skins — same markup, same components, a different main colour driving all of it. Pick one and browse; it sticks until you reset.</p>
+    <p class="lede measure">Every colour on this site resolves through a custom property. Swap the tokens and the whole thing re-skins: same markup, same components, a different main colour driving all of it. Pick one and browse; it sticks until you reset.</p>
   </div>
 </section>
 
@@ -78,7 +80,7 @@
         <i style="background:#15803d"></i><i style="background:#dcefdf"></i><i style="background:#f1f2ea"></i><i style="background:#18241c"></i>
       </div>
       <h3>Moss</h3>
-      <p>Editorial. Deep forest green reads as ink rather than as a link, and the cards trade their curves for corners.</p>
+      <p>Editorial. Deep forest green reads as ink more than as a link, and the cards trade their curves for corners.</p>
       <div class="row"><a class="btn btn-sm" href="/?theme=moss">Use Moss</a><span class="badge">#15803d</span></div>
     </article>
 
@@ -87,7 +89,7 @@
         <i style="background:#7c3aed"></i><i style="background:#e9ddff"></i><i style="background:#f5f0fd"></i><i style="background:#241236"></i>
       </div>
       <h3>Plum</h3>
-      <p>The saturated one. Every surface leans toward the accent, so the page is violet rather than neutral-with-a-violet-button.</p>
+      <p>The saturated one. Every surface leans toward the accent, so the page goes violet all the way through instead of neutral with a violet button.</p>
       <div class="row"><a class="btn btn-sm" href="/?theme=plum">Use Plum</a><span class="badge">#7c3aed</span></div>
     </article>
 
@@ -116,7 +118,7 @@
   <div class="wrap">
     <div class="tile tile-ink">
       <h3>How the swap works</h3>
-      <p>Each palette is one small sheet of <code>:root</code> overrides loaded after the base stylesheet — roughly forty lines, no component rules duplicated. Midnight and Carbon add a handful of extra rules, because the base sheet hardcodes a few light values (divider rules, table borders, input outlines) that a full inversion has to restate.</p>
+      <p>Each palette is one small sheet of <code>:root</code> overrides loaded after the base stylesheet, roughly forty lines, no component rules duplicated. Midnight and Carbon add a handful of extra rules, because the base sheet hardcodes a few light values (divider rules, table borders, input outlines) that a full inversion has to restate.</p>
       <div class="row"><a class="btn btn-light btn-sm" href="/?theme=default">Back to Daylight</a></div>
     </div>
   </div>

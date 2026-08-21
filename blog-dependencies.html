@@ -4,8 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The 31 dependencies we argued about — Quire</title>
-<meta name="description" content="A dependency is a permanent obligation, not free code. The five-question test, the four we removed, and the one that fails our own rules.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<meta name="description" content="A dependency is a permanent obligation, never free code. The five-question test, the four we removed, and the one that fails our own rules.">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -55,7 +57,7 @@
       <li><b>Is this the standard library's job?</b> A surprising share of proposed dependencies are a nicer interface over something already present. Nicer is not a sufficient reason.</li>
       <li><b>How much of it would we use?</b> Pulling a framework for one function is the classic bad trade. If we use under 10% of the surface, we usually vendor the part we need, with attribution and the licence header intact.</li>
       <li><b>What is the transitive tree?</b> One direct dependency with forty transitives is forty obligations. We count them, and the number goes in the pull request.</li>
-      <li><b>What happens if it is abandoned?</b> Could we fork and maintain it with the people we have? For a 500-line library, yes. For a numerical runtime, no — which is not disqualifying, but it does change what we are agreeing to.</li>
+      <li><b>What happens if it is abandoned?</b> Could we fork and maintain it with the people we have? For a 500-line library, yes. For a numerical runtime, no, which is not disqualifying, but it does change what we are agreeing to.</li>
       <li><b>Does it phone home?</b> Any network access at import or at runtime that is not the explicit purpose of the library is disqualifying, with no discussion. This has removed more candidates than every other rule combined.</li>
     </ul>
 
@@ -74,11 +76,11 @@
       </table>
     </div>
 
-    <p>The date one is the interesting case, because we added code to remove a dependency and we would do it again. Explicit per-locale parsers are more code and they fail loudly on formats we have not handled, where the library silently guessed — and a silent guess about a date is exactly the class of bug that ends up in an answer nobody can trace.</p>
+    <p>The date one is the interesting case, because we added code to remove a dependency and we would do it again. Explicit per-locale parsers are more code and they fail loudly on formats we have not handled, where the library silently guessed. And a silent guess about a date is exactly the class of bug that ends up in an answer nobody can trace.</p>
 
     <h2>The one that fails our rules and stays</h2>
     <p>The OCR engine. It is enormous, its transitive tree is not something we could maintain, and if it were abandoned tomorrow we would have a serious problem. It stays because 11% of user documents are scans and the alternative is telling those users the tool does not work on their corpus.</p>
-    <p>What we did instead of pretending the risk away: it is optional, the build works without it, the interface it sits behind is small enough to swap, and there is a second supported engine so that neither one is load-bearing alone. That is not risk elimination. It is risk with a stated plan, which is the most that is available here.</p>
+    <p>What we did instead of pretending the risk away: it is optional, the build works without it, the interface it sits behind is small enough to swap, and there is a second supported engine so that neither one is load-bearing alone. That is not risk elimination. It is risk with a stated plan, and a stated plan is the most that is available here.</p>
 
     <h2>Things we do not count as savings</h2>
     <p>Two arguments that sound good and are not:</p>
@@ -88,7 +90,7 @@
     </ul>
 
     <h2>What this buys</h2>
-    <p>A full install is 31 direct and 58 transitive packages, and it audits clean at the time of writing. Median time from an advisory in a dependency to a released patch here is under two days, which is only possible because the tree is small enough for one person to hold in their head on a Saturday.</p>
+    <p>A full install is 31 direct and 58 transitive packages, and it audits clean at the time of writing. Median time from an advisory in a dependency to a released patch here is under two days, only possible because the tree is small enough for one person to hold in their head on a Saturday.</p>
     <p>None of this is virtue. It is the cheapest way we found to keep a small maintainer group from drowning in other people's release notes.</p>
 
     <p class="muted small" style="margin-top:48px">The dependency policy is in <span class="mono">CONTRIBUTING.md</span> and the checklist is a pull request template. If you propose an addition, filling it in honestly is most of the review.</p>

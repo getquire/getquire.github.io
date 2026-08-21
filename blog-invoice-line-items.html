@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>An invoice is a table wearing a document costume — Quire</title>
 <meta name="description" content="Header fields are easy and nobody cares. Line items are where the money is, and an invoice reconciles its own arithmetic, which is free labelled data.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -45,9 +47,9 @@
   </div>
 
   <div class="wrap article">
-    <p>Vendor name, invoice number, issue date, due date, total. Every extraction demo shows those five fields, because those five fields are easy — they sit in predictable places, they are short, and a regex plus a bit of layout sense gets you to 97% without much thought.</p>
+    <p>Vendor name, invoice number, issue date, due date, total. Every extraction demo shows those five fields, because those five fields are easy. They sit in predictable places, they are short, and a regex plus a bit of layout sense gets you to 97% without much thought.</p>
 
-    <p>They are also the fields nobody had a problem with. The questions people actually bring to a pile of invoices are about the middle of the page: what did we pay for this line, how many of them, which of these charges is the recurring one, why is this month 12% higher than last month. All of that lives in the line-item table, which is the least reliably extracted structure in the entire document.</p>
+    <p>They are also the fields nobody had a problem with. The questions people actually bring to a pile of invoices are about the middle of the page: what did we pay for this line, how many of them, which of these charges is the recurring one, why is this month 12% higher than last month. All of that lives in the line-item table, the least reliably extracted structure in the entire document.</p>
 
     <h2>Eight ways the line-item table lies</h2>
     <ul>
@@ -61,7 +63,7 @@
       <li><b>Tax per line.</b> Some invoices carry a rate column per line, some apply one rate at the bottom, some do both and expect you to notice that the bottom one only covers the untaxed lines.</li>
     </ul>
 
-    <p>None of these are exotic. Across a sample of 40,000 invoices from three donated corpora, 31% contained at least one of them, and vendors are remarkably consistent — if a vendor's template does one of these, every invoice from that vendor does it.</p>
+    <p>None of these are exotic. Across a sample of 40,000 invoices from three donated corpora, 31% contained at least one of them, and vendors are remarkably consistent. If a vendor's template does one of these, every invoice from that vendor does it.</p>
 
     <h2>The arithmetic is free ground truth</h2>
     <p>Here is the property that makes invoices better than almost every other document type: they carry their own check digit. The line amounts, the discounts, the tax and the total are supposed to agree. When your extraction is wrong, they usually stop agreeing.</p>
@@ -83,20 +85,20 @@
           <tr><td>Missing continuation page</td><td>Yes</td><td>Sum undershoots. The most valuable single check we run</td></tr>
           <tr><td>OCR digit error in a line amount</td><td>Usually</td><td>Unless the same error also appears in the total, which happens on regenerated scans</td></tr>
           <tr><td>Per-100 unit pricing</td><td>No</td><td>Arithmetic is internally consistent, the meaning is still wrong. Needs the description read</td></tr>
-          <tr><td>Rate applied to the wrong lines</td><td>Sometimes</td><td>Only when the tax total is itemised rather than a single figure</td></tr>
+          <tr><td>Rate applied to the wrong lines</td><td>Sometimes</td><td>Only when the tax total is itemised and not a single figure</td></tr>
         </tbody>
       </table>
     </div>
 
     <h2>What we do when it does not reconcile</h2>
-    <p>The tempting move is to repair the number — adjust the line that makes the sum work out. We do not do that, ever, and the reasoning is the same one that runs through everything here: a silently repaired invoice is indistinguishable from a correct one, and the day the repair is wrong nobody can tell.</p>
-    <p>Instead the document is indexed with an unreconciled flag, both the printed total and the computed total are stored, and any answer touching that invoice says so. In practice around 4% of invoices land in that state. Of those, roughly two thirds are our parsing and one third is a genuinely inconsistent invoice — which the finance people involved were, in every case we followed up on, quite pleased to be told about.</p>
+    <p>The tempting move is to repair the number: adjust the line that makes the sum work out. We do not do that, ever, and the reasoning is the same one that runs through everything here: a silently repaired invoice is indistinguishable from a correct one, and the day the repair is wrong nobody can tell.</p>
+    <p>Instead the document is indexed with an unreconciled flag, both the printed total and the computed total are stored, and any answer touching that invoice says so. In practice around 4% of invoices land in that state. Of those, roughly two thirds are our parsing and one third is a genuinely inconsistent invoice, which the finance people involved were, in every case we followed up on, quite pleased to be told about.</p>
 
     <h2>Vendor templates are the cheap win</h2>
-    <p>Invoices are not arbitrary documents. They come from a small number of templates, repeatedly, for years. Once a vendor's layout has reconciled ten times, the column mapping for that vendor is known, and new invoices from it can be checked against the known shape rather than inferred from scratch.</p>
-    <p>This is not machine learning, it is a lookup table keyed on a layout fingerprint, and it moved line-item accuracy from 91% to 98.6% on repeat vendors. The remaining errors concentrate almost entirely in first-time vendors and in the month after a vendor changes their template — which is exactly the moment the reconciliation check starts failing and tells you to look.</p>
+    <p>Invoices are not arbitrary documents. They come from a small number of templates, repeatedly, for years. Once a vendor's layout has reconciled ten times, the column mapping for that vendor is known, and new invoices from it can be checked against the known shape instead of inferred from scratch.</p>
+    <p>It is a lookup table keyed on a layout fingerprint, nothing cleverer, and it moved line-item accuracy from 91% to 98.6% on repeat vendors. The remaining errors concentrate almost entirely in first-time vendors and in the month after a vendor changes their template — exactly the moment the reconciliation check starts failing and tells you to look.</p>
 
-    <p class="muted small" style="margin-top:48px">The reconciliation rules are in <span class="mono">quire/ingest/invoice/reconcile.py</span>, and they are about 200 lines. The tests are longer than the implementation, which is correct for money code.</p>
+    <p class="muted small" style="margin-top:48px">The reconciliation rules are in <span class="mono">quire/ingest/invoice/reconcile.py</span>, and they are about 200 lines. The tests are longer than the implementation. Correct, for money code.</p>
   </div>
 
   <div class="wrap article">

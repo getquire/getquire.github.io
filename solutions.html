@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Recipes — Quire</title>
 <meta name="description" content="Copy-paste configurations for common jobs: docs QA in CI, a research archive, contract review, an offline knowledge base, a Slack answerer.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -52,7 +54,7 @@
     <div class="stack">
       <span class="pill pill-accent">Recipe 01 · contributed by @halden-ops</span>
       <h2>Fail the build when the docs go stale.</h2>
-      <p class="lede">A GitHub Action that asks a set of questions your documentation is supposed to answer. <code>--strict</code> means an ungrounded answer exits non-zero, so a doc that quietly stopped being true breaks CI instead of a customer.</p>
+      <p class="lede">A GitHub Action that asks a set of questions your documentation is supposed to answer. <code>--strict</code> means an ungrounded answer exits non-zero, so a doc that quietly stopped being true fails the build before a customer finds it.</p>
       <ul class="checks">
         <li>Runs on a local model, so no API key in your Actions secrets</li>
         <li>About 40 seconds for a 1,200-file docs tree, cached index</li>
@@ -92,7 +94,7 @@
     <div class="stack">
       <span class="pill pill-accent">Recipe 02 · contributed by @rume-o</span>
       <h2>A Monday brief from six years of notes.</h2>
-      <p class="lede">Point it at interview transcripts, call notes and old decks. The agent writes a diff — what moved, and what contradicts something written earlier.</p>
+      <p class="lede">Point it at interview transcripts, call notes and old decks. The agent writes a diff: what moved, and what contradicts something written earlier.</p>
       <p><b>The tuning that mattered:</b> the first version had no word cap and nobody read it. <code>max_words: 400</code> and "lead with contradictions" were the two changes that made it stick.</p>
       <div class="badge-row"><span class="badge">agents</span><span class="badge">conflicts: show</span><span class="badge">local model</span></div>
     </div>
@@ -106,8 +108,8 @@
       <h2>Compare a contract to your own precedent.</h2>
       <p class="lede">Index your executed agreements and your playbook, then ask about a new one clause by clause. Quire compares against what you have actually signed, not a generic idea of what a contract should say.</p>
       <ul class="checks">
-        <li>Runs fully local — this is content you don't send anywhere</li>
-        <li>Conflicts shown rather than resolved: two precedents, both quoted</li>
+        <li>Runs fully local: this is content you don't send anywhere</li>
+        <li>Conflicts shown and left unresolved: two precedents, both quoted</li>
         <li>Output is Markdown a human reads, not an automated redline</li>
       </ul>
       <div class="tile tile-peach" style="margin-top:8px">
@@ -154,9 +156,9 @@ ocr     = <span class="t-out">"always"</span>
     <div class="stack">
       <span class="pill pill-accent">Recipe 04 · contributed by @archive-collective</span>
       <h2>Four million scanned pages, no network.</h2>
-      <p class="lede">A public records archive running entirely offline. <code>offline = true</code> makes any outbound call a hard error rather than a silent fallback, which is the setting you want when the guarantee has to be provable.</p>
+      <p class="lede">A public records archive running entirely offline. <code>offline = true</code> makes any outbound call a hard error where it used to fall back silently, which is the setting you want when the guarantee has to be provable.</p>
       <ul class="checks">
-        <li>OCR forced on — everything is a scan</li>
+        <li>OCR forced on: everything is a scan</li>
         <li>Indexing is resumable; it ran over three weekends</li>
         <li>Postgres would be the usual advice at this size; SQLite held</li>
       </ul>
@@ -170,10 +172,10 @@ ocr     = <span class="t-out">"always"</span>
     <div class="stack">
       <span class="pill pill-accent">Recipe 05 · contributed by @sam-p</span>
       <h2>Answer in Slack, with the source attached.</h2>
-      <p class="lede">A small bot that calls <code>quire serve</code> and posts the answer with its citations as a thread reply. It never posts when the answer is ungrounded — it says it doesn't know and tags the channel owner.</p>
+      <p class="lede">A small bot that calls <code>quire serve</code> and posts the answer with its citations as a thread reply. It never posts when the answer is ungrounded. It says it doesn't know and tags the channel owner.</p>
       <ul class="checks">
         <li>Roughly 60 lines against the HTTP API</li>
-        <li>Silence is the designed behavior for low confidence</li>
+        <li>Silence is the designed behaviour for low confidence</li>
         <li>Runs on the same machine as the index; nothing is exposed</li>
       </ul>
     </div>

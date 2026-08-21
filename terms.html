@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>License — Quire</title>
 <meta name="description" content="Apache-2.0, what it lets you do, why we picked it, the contribution terms, and the trademark policy.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -59,27 +61,27 @@
     </div>
 
     <h2>1. Why Apache-2.0 and not MIT</h2>
-    <p>Versions 0.1 through 0.3 were MIT and remain MIT — that grant can't be withdrawn. From 0.4 onward we moved to Apache-2.0, for one reason: the explicit patent grant. Three organisations told us their legal review couldn't clear MIT for a tool doing inference, because MIT is silent on patents. Apache-2.0 says out loud that contributors licence their patents to users, and it says what happens if someone starts patent litigation.</p>
-    <p>We considered AGPL and rejected it. Copyleft on a tool people embed in internal workflows mostly produces legal review, not contributions — and the thing we want back is patches, which people send when it's easy rather than when they're compelled.</p>
+    <p>Versions 0.1 through 0.3 were MIT and remain MIT. That grant can't be withdrawn. From 0.4 onward we moved to Apache-2.0, for one reason: the explicit patent grant. Three organisations told us their legal review couldn't clear MIT for a tool doing inference, because MIT is silent on patents. Apache-2.0 says out loud that contributors licence their patents to users, and it says what happens if someone starts patent litigation.</p>
+    <p>We considered AGPL and rejected it. Copyleft on a tool people embed in internal workflows mostly produces legal review instead of contributions. And the thing we want back is patches, which people send when it's easy and withhold when they're compelled.</p>
 
     <h2>2. Contributions</h2>
     <p>There is no contributor licence agreement. You keep your copyright. By opening a pull request you licence that contribution under Apache-2.0, exactly as section 5 of the licence describes.</p>
-    <p>This is deliberate and it's the strongest guarantee on this site. Without a CLA we don't hold the rights that would let us relicense the project. About 40% of the code is contributed, so making Quire proprietary would require finding and getting agreement from hundreds of people. That's not a promise about our intentions — it's a structural fact about what we're able to do.</p>
+    <p>This is deliberate and it's the strongest guarantee on this site. Without a CLA we don't hold the rights that would let us relicense the project. About 40% of the code is contributed, so making Quire proprietary would require finding and getting agreement from hundreds of people. That's not a promise about our intentions; it's a structural fact about what we're able to do.</p>
 
     <h2>3. What "no warranty" actually means</h2>
-    <p>Section 7 of the licence disclaims warranties, and we mean it literally rather than as boilerplate. Quire produces answers from a language model. It can be wrong. Verification reduces how often, and it will never reduce it to zero.</p>
+    <p>Section 7 of the licence disclaims warranties, and we mean it literally and not as boilerplate. Quire produces answers from a language model. It can be wrong. Verification reduces how often, and it will never reduce it to zero.</p>
     <p>Do not use output as legal, medical, financial or safety advice. A citation is evidence that a source says something, not proof the source is correct. If an answer is going to be relied on, a person reads the cited span first. This is the same standard we hold ourselves to.</p>
 
     <h2>4. Third-party components</h2>
-    <p>31 runtime dependencies, all permissively licensed — MIT, BSD, Apache-2.0. No GPL or AGPL anywhere in the default dependency tree, which is checked in CI and fails the build if it changes. The full list with licences ships in the SBOM with every release, or run <code>quire --sbom</code>.</p>
+    <p>31 runtime dependencies, all permissively licensed: MIT, BSD, Apache-2.0. No GPL or AGPL anywhere in the default dependency tree. CI checks it and fails the build if it changes. The full list with licences ships in the SBOM with every release, or run <code>quire --sbom</code>.</p>
     <p>Model weights are not ours and are not covered by this licence. If you use Llama, Qwen, or any hosted model, that model's terms apply to your use of it and you should read them.</p>
 
     <h2 id="trademark">5. Trademark</h2>
-    <p>The name Quire and the logo are not covered by the Apache licence — section 6 excludes trademarks specifically. The policy is short:</p>
+    <p>The name Quire and the logo are not covered by the Apache licence . Section 6 excludes trademarks specifically. The policy is short:</p>
     <ul>
       <li><b>Fine, no permission needed:</b> saying your project uses Quire, writing tutorials, giving talks, naming a plugin <code>quire-something</code>, forking and keeping the name in the fork's history and attribution.</li>
       <li><b>Ask first:</b> naming a product or company Quire-something, using the logo as your own branding, or anything that suggests we built or endorsed your thing.</li>
-      <li><b>Not fine:</b> distributing a modified build under the name Quire. Rename it — that's what the licence lets you do, and it keeps "Quire" meaning one specific thing.</li>
+      <li><b>Not fine:</b> distributing a modified build under the name Quire. Rename it. That's what the licence lets you do, and it keeps "Quire" meaning one specific thing.</li>
     </ul>
     <p>If you're unsure, mail <a class="ink-link" href="mailto:hello@quire.dev">hello@quire.dev</a>. We have never said no to anyone acting in good faith.</p>
 
@@ -87,7 +89,7 @@
     <p>The licence survives us. Every release published is licensed permanently, forks are permitted without asking, and publishing keys are held by three parties including one outside the project so a security release is still possible. See <a class="ink-link" href="/about">governance</a>.</p>
 
     <h2>7. Full text</h2>
-    <p>The complete Apache License 2.0 is in <code>LICENSE</code> at the repository root and at <a class="ink-link" href="https://www.apache.org/licenses/LICENSE-2.0">apache.org/licenses/LICENSE-2.0</a>. Where anything on this page differs from that text, that text governs — this page is a plain-language summary, not the licence.</p>
+    <p>The complete Apache License 2.0 is in <code>LICENSE</code> at the repository root and at <a class="ink-link" href="https://www.apache.org/licenses/LICENSE-2.0">apache.org/licenses/LICENSE-2.0</a>. Where anything on this page differs from that text, that text governs. This page is a plain-language summary and has no legal force.</p>
 
     <hr class="divider" style="margin-block:40px">
     <p class="small muted">This is a demonstration site for a fictional project. The summary above is illustrative and is not legal advice. Apache-2.0 itself is a real licence; how it applies to your situation is a question for your own counsel.</p>

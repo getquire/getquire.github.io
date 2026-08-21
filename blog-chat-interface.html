@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>We deleted our chat interface — Quire</title>
 <meta name="description" content="Usage tripled. A conversation is a bad container for work that has to be reviewed, cited and repeated. What we replaced it with, and what we lost.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -40,14 +42,14 @@
     <a class="small ink-link" href="/blog">← All posts</a>
     <span class="pill">Product · 6 min read</span>
     <h1 style="font-size:clamp(36px,5.5vw,56px)">We deleted our chat interface</h1>
-    <p class="lede">Usage tripled in the quarter after we removed it. A conversation is a bad container for work that has to be reviewed, cited and repeated — and a terminal turns out to be a very good one.</p>
+    <p class="lede">We deleted the chat box. Usage tripled that quarter. Work that gets reviewed, cited and repeated needs a container. A conversation is a bad one. A terminal, it turns out, is a good one.</p>
     <div class="row"><span class="avatar">AT</span><span class="small">Anaïs Tremblay · Maintainer, product<br><span class="muted">8 July 2026</span></span></div>
   </div>
 
   <div class="wrap article">
-    <p>For eighteen months the first thing you saw after indexing a corpus was a message box. It was the obvious design, it demoed beautifully, and the numbers underneath it were bad in a way that took us a long time to read correctly.</p>
+    <p>For eighteen months, indexing a corpus dropped you into a message box. Obvious design. Demoed beautifully. The numbers underneath were bad, and it took us far too long to read them right.</p>
 
-    <p>Sessions were short. Most were a single question, one answer, no follow-up — which we initially read as success. It was not. The follow-ups were happening; they were just happening in a fresh session, with the question retyped from scratch, because nobody could find the earlier one again.</p>
+    <p>Sessions were short. One question, one answer, no follow-up. We read that as success. Wrong. The follow-ups were happening. They were just happening in a fresh session, question retyped from scratch, because nobody could find the old one.</p>
 
     <h2>What a conversation is bad at</h2>
     <ul>
@@ -55,15 +57,15 @@
       <li><b>Reviewing.</b> A colleague needs to check whether the answer is supported. A transcript containing eleven exchanges, four of which were dead ends, is a bad artefact to hand someone.</li>
       <li><b>Diffing.</b> "Has this changed since last quarter" is the question underneath half of all the others, and two chat sessions cannot be compared.</li>
       <li><b>Scripting.</b> Nobody can put a chat box in a Makefile.</li>
-      <li><b>Being wrong usefully.</b> When an answer is wrong, the useful next step is inspecting the retrieval, not rephrasing the question. A message box only offers rephrasing, so that is what people did — three times on average, and then they gave up.</li>
+      <li><b>Being wrong usefully.</b> When an answer is wrong, the useful next step is inspecting the retrieval, not rephrasing the question. A message box only offers rephrasing, so that is what people did, three times on average, and then they gave up.</li>
     </ul>
 
     <blockquote>The interface taught people that a bad answer was their fault for asking badly. It almost never was.</blockquote>
 
     <h2>What replaced it</h2>
-    <p>A command. One question in, one answer out, with citations, exit code zero or non-zero depending on whether the system was willing to answer at all. Queries live in files. Files live in the repository next to everything else, get reviewed in pull requests, get run on a schedule, and produce output that can be diffed against the last run.</p>
+    <p>A command. One question in, one answer out. Citations attached. Exit code zero, or non-zero if the system wouldn't answer. Queries live in files. Files live in the repo with everything else. They get reviewed in pull requests. They run on a schedule. Their output diffs against the last run.</p>
 
-    <p>The change was not really about the terminal. It was about making a question a durable object rather than an event. Once the question is a file, everything people were trying to do awkwardly in chat becomes ordinary: version it, share it, parameterise it, run it over a different corpus, put it in CI and fail the build when the answer changes.</p>
+    <p>The terminal was never the point. A durable object was. Once a question is a file, the awkward things people kept attempting in chat go ordinary. Version it. Share it. Parameterise it. Run it over another corpus. Put it in CI and fail the build when the answer moves.</p>
 
     <h2>Numbers</h2>
     <div class="table-wrap" style="margin:32px 0">
@@ -79,15 +81,15 @@
       </table>
     </div>
 
-    <p>The re-run figure is the one that mattered. Two thirds of all usage is asking a question that was asked before, which is a workload a conversation actively obstructs and a file makes trivial.</p>
+    <p>Watch the re-run figure. Two thirds of all usage is a question somebody already asked. A conversation obstructs that workload. A file makes it trivial.</p>
 
     <h2>What we lost</h2>
-    <p>Real costs, stated plainly. Exploration got worse: chat was better for poking at an unfamiliar corpus with vague questions, and we have not fully replaced that. Onboarding is harder, because a message box needs no explanation and a command has flags. And a small group of users left, which is the honest cost of removing something people were using.</p>
+    <p>Real costs. Exploration got worse. Chat was better for poking at a strange corpus with vague questions, and we have not replaced that. Onboarding is harder too. A message box needs no explanation. A command has flags. And some users left. That is what removing a thing people used costs you.</p>
 
-    <p>We kept one piece of the old design: an interactive mode that is explicitly a scratchpad, and every question asked in it can be written out to a file with one key. Exploration happens there; anything worth keeping graduates into the repository.</p>
+    <p>One piece of the old design survived. An interactive mode, explicitly a scratchpad. One key writes any question in it out to a file. Explore there. Anything worth keeping graduates to the repo.</p>
 
     <h2>The general version</h2>
-    <p>Chat is a default rather than a decision. It is what an interface becomes when nobody has decided what the work actually is. For work that gets reviewed, repeated and cited, the durable artefact is the point, and the conversation was the wrapping paper we kept mistaking for the gift.</p>
+    <p>Chat is a default. It is what an interface becomes when nobody has decided what the work actually is. For work that gets reviewed, repeated and cited, the durable artefact is the point. The conversation was wrapping paper. We kept mistaking it for the gift.</p>
 
     <p class="muted small" style="margin-top:48px">The interactive scratchpad is <span class="mono">quire ask -i</span>. Everything it does, the non-interactive form does too, which is deliberate: nothing is reachable only by typing at a prompt.</p>
   </div>
