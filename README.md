@@ -62,13 +62,21 @@ Filenames are deliberately unchanged from an earlier SaaS version of this site,
 so `pricing.html` serves the "why it's free" page and `careers.html` serves
 "contribute". Renaming them would have broken every inbound link for no gain.
 
+Links are written extensionless and root-absolute — `/pricing`, `/docs`,
+`/` for home. GitHub Pages resolves `/pricing` to `pricing.html` on its own,
+so the files stay flat and the old `.html` URLs keep working.
+
 ## Run it
 
-Open `index.html` in a browser. That's the whole setup. For a local server:
+Open `index.html` in a browser. That's the whole setup. For a local server that
+resolves the extensionless links the same way GitHub Pages does:
 
 ```bash
-python -m http.server 8000
+npx serve .
 ```
+
+`python -m http.server` also works, but it serves files literally, so every
+`/pricing`-style link 404s locally.
 
 ## Design source
 
