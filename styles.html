@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quire — palettes</title>
+<meta name="description" content="Five alternate palettes for the Quire site. Pick one and the whole site re-skins from the same token set.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+<style>
+  /* Swatch chips are painted from literal hex, not tokens — the sheet they
+     advertise is not the sheet this page is wearing. */
+  .swatch { display: flex; height: 96px; border-radius: var(--r-card-sm); overflow: hidden; }
+  .swatch i { flex: 1; }
+  .swatch i:first-child { flex: 2.2; }
+  .theme-card { align-content: start; }
+  .theme-card .row { margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="docs.html">Docs</a>
+      <a href="product.html">How it works</a>
+      <a href="solutions.html">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html">Community</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="index.html?theme=default">Reset</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+<section class="section">
+  <div class="wrap stack">
+    <span class="pill pill-dot">Design</span>
+    <h1 class="measure">Five palettes, one token set.</h1>
+    <p class="lede measure">Every colour on this site resolves through a custom property. Swap the tokens and the whole thing re-skins — same markup, same components, a different main colour driving all of it. Pick one and browse; it sticks until you reset.</p>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="wrap grid g2">
+
+    <article class="card theme-card">
+      <div class="swatch" aria-hidden="true">
+        <i style="background:#0069e0"></i><i style="background:#cce7ff"></i><i style="background:#f4f8fd"></i><i style="background:#181d27"></i>
+      </div>
+      <h3>Daylight</h3>
+      <p>The original. Cobalt on white, mint and powder washes, charcoal pills as the only dense weight.</p>
+      <div class="row"><a class="btn btn-sm" href="index.html?theme=default">Use Daylight</a><span class="badge">#0069e0</span></div>
+    </article>
+
+    <article class="card theme-card">
+      <div class="swatch" aria-hidden="true">
+        <i style="background:#c2410c"></i><i style="background:#ffe3cf"></i><i style="background:#fdf4e9"></i><i style="background:#2a1c0f"></i>
+      </div>
+      <h3>Ember</h3>
+      <p>Golden hour. Burnt amber accent with the canvas warmed to match, so the colour never sits on a cold ground.</p>
+      <div class="row"><a class="btn btn-sm" href="index.html?theme=ember">Use Ember</a><span class="badge">#c2410c</span></div>
+    </article>
+
+    <article class="card theme-card">
+      <div class="swatch" aria-hidden="true">
+        <i style="background:#15803d"></i><i style="background:#dcefdf"></i><i style="background:#f1f2ea"></i><i style="background:#18241c"></i>
+      </div>
+      <h3>Moss</h3>
+      <p>Editorial. Deep forest green reads as ink rather than as a link, and the cards trade their curves for corners.</p>
+      <div class="row"><a class="btn btn-sm" href="index.html?theme=moss">Use Moss</a><span class="badge">#15803d</span></div>
+    </article>
+
+    <article class="card theme-card">
+      <div class="swatch" aria-hidden="true">
+        <i style="background:#7c3aed"></i><i style="background:#e9ddff"></i><i style="background:#f5f0fd"></i><i style="background:#241236"></i>
+      </div>
+      <h3>Plum</h3>
+      <p>The saturated one. Every surface leans toward the accent, so the page is violet rather than neutral-with-a-violet-button.</p>
+      <div class="row"><a class="btn btn-sm" href="index.html?theme=plum">Use Plum</a><span class="badge">#7c3aed</span></div>
+    </article>
+
+    <article class="card theme-card">
+      <div class="swatch" aria-hidden="true">
+        <i style="background:#22d3ee"></i><i style="background:#102a38"></i><i style="background:#121a27"></i><i style="background:#070b12"></i>
+      </div>
+      <h3>Midnight</h3>
+      <p>Inverted. Cyan carries the primary button, because a charcoal pill on a dark ground disappears.</p>
+      <div class="row"><a class="btn btn-sm" href="index.html?theme=midnight">Use Midnight</a><span class="badge">#22d3ee</span></div>
+    </article>
+
+    <article class="card theme-card">
+      <div class="swatch" aria-hidden="true">
+        <i style="background:#e11900"></i><i style="background:#ffe3df"></i><i style="background:#f2f2ef"></i><i style="background:#000000"></i>
+      </div>
+      <h3>Carbon</h3>
+      <p>Brutalist mono. Square everything, 2px rules, headings in the mono stack, and one alarm red used only where you should click.</p>
+      <div class="row"><a class="btn btn-sm" href="index.html?theme=carbon">Use Carbon</a><span class="badge">#e11900</span></div>
+    </article>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="tile tile-ink">
+      <h3>How the swap works</h3>
+      <p>Each palette is one small sheet of <code>:root</code> overrides loaded after the base stylesheet — roughly forty lines, no component rules duplicated. Midnight and Carbon add a handful of extra rules, because the base sheet hardcodes a few light values (divider rules, table borders, input outlines) that a full inversion has to restate.</p>
+      <div class="row"><a class="btn btn-light btn-sm" href="index.html?theme=default">Back to Daylight</a></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-base">
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span><a class="ink-link" href="index.html">Back to the site</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

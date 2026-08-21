@@ -1,0 +1,58 @@
+/* Midnight — the whole system inverted, accent moved to cyan.
+   Dark themes fail when only the canvas flips, so the tokens that were
+   hardcoded light in the base sheet (dividers, table rules, input borders,
+   inline code) are re-stated here. The accent, not charcoal, carries the
+   primary button: on a dark ground a charcoal pill disappears. */
+:root {
+  --sky-tint: #070b12;
+  --paper: #0e141f;
+  --bone: #121a27;
+  --bone-hover: #182231;
+  --hairline: rgba(255, 255, 255, 0.10);
+  --mist: #161e2b;
+
+  --ink: #eaf2ff;
+  --charcoal: #0a0f18;
+  --graphite: #9fb0c6;
+  --fog: #6c7c93;
+
+  --iris: #22d3ee;
+  --sky-blue: #67e8f9;
+  --iris-grad: linear-gradient(rgb(103, 232, 249) 11.43%, rgb(14, 165, 190) 78.2%);
+
+  --lavender: #1d2440;
+  --mint: #12302c;
+  --powder: #102a38;
+  --solar: linear-gradient(rgb(38, 34, 18) 0%, rgb(66, 55, 20) 100%);
+  --violet: linear-gradient(rgb(30, 26, 48) 0%, rgb(52, 40, 88) 100%);
+  --aqua: linear-gradient(rgb(14, 34, 46) 0%, rgb(15, 56, 74) 100%);
+  --peach: linear-gradient(rgb(42, 27, 24) 0%, rgb(74, 40, 32) 100%);
+
+  --term-prompt: #5eead4;
+  --term-cite: #7dd3fc;
+  --term-warn: #fcd34d;
+
+  --shadow-subtle: rgba(0, 0, 0, 0.5) 0 1px 2px 0, rgba(255, 255, 255, 0.08) 0 0 0 1px;
+  --shadow-large: rgba(0, 0, 0, 0.5) 0 14px 20px 4px;
+}
+body::before {
+  background:
+    radial-gradient(58% 44% at 50% -4%, rgba(34, 211, 238, 0.16), transparent 68%),
+    radial-gradient(34% 30% at 88% 10%, rgba(94, 234, 212, 0.10), transparent 72%);
+}
+.nav { background: rgba(7, 11, 18, 0.76); }
+/* accent-filled primary — charcoal-on-dark would vanish */
+.btn { background: var(--iris); color: #04141a; }
+.btn-ghost { color: var(--ink); border-color: rgba(255, 255, 255, 0.16); }
+.btn-light { background: var(--bone); color: var(--ink); }
+.divider, th, td { border-color: rgba(255, 255, 255, 0.09); }
+.divider { background: rgba(255, 255, 255, 0.09); }
+input, select, textarea { background: var(--bone); border-color: rgba(255, 255, 255, 0.14); }
+:not(pre) > code { background: var(--mist); }
+.terminal, pre, .install { background: #070c14; }
+.tile-ink { background: #0b1220; border: 1px solid rgba(255, 255, 255, 0.08); }
+.tile-ink h2, .tile-ink h3, .tile-ink h4 { color: var(--ink); }
+.cast-rail { background: rgba(255, 255, 255, 0.1); }
+.avatars span:nth-child(3n) { background: #12302c; color: #5eead4; }
+.avatars span:nth-child(5n) { background: #1d2440; color: #a5b4fc; }
+.logo-strip .marquee-track > * { color: var(--fog); }

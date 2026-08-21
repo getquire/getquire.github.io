@@ -1,0 +1,58 @@
+/* Carbon — brutalist mono. One signal colour, used sparingly.
+   Everything that curved is now square, every card is a ruled box, and the
+   accent is a single alarm red that only marks the thing you should click.
+   Display type drops to the mono stack so headings read as machine output. */
+:root {
+  --sky-tint: #f2f2ef;
+  --paper: #ffffff;
+  --bone: #ffffff;
+  --bone-hover: #f4f4f1;
+  --hairline: rgba(0, 0, 0, 0.9);
+  --mist: #ebebe7;
+
+  --ink: #000000;
+  --charcoal: #000000;
+  --graphite: #3d3d3a;
+  --fog: #77776f;
+
+  --iris: #e11900;
+  --sky-blue: #ff3b1f;
+  --iris-grad: linear-gradient(rgb(255, 59, 31) 11.43%, rgb(190, 20, 0) 78.2%);
+
+  --lavender: #ffffff;
+  --mint: #ffffff;
+  --powder: #ffe3df;
+  --solar: linear-gradient(#fff 0%, #fff 100%);
+  --violet: linear-gradient(#fff 0%, #fff 100%);
+  --aqua: linear-gradient(#fff 0%, #fff 100%);
+  --peach: linear-gradient(#ffe3df 0%, #ffe3df 100%);
+
+  --term-prompt: #ff3b1f;
+  --term-cite: #ffffff;
+  --term-warn: #ffd400;
+
+  --display: ui-monospace, "SF Mono", "Geist Mono", Menlo, Consolas, monospace;
+  --r-pill: 0px;
+  --r-card: 0px;
+  --r-card-sm: 0px;
+  --r-img: 0px;
+  --r-input: 0px;
+  --shadow-subtle: none;
+  --shadow-large: none;
+}
+body::before { background: none; }
+h1, h2, h3, h4, .display, .hero-type, .price, .stat b { letter-spacing: -0.04em; text-transform: uppercase; }
+.nav { background: var(--sky-tint); border-bottom: 2px solid #000; }
+.card, .tile, .faq-item, .table-wrap, .timeline-row { border: 2px solid #000; }
+.card-link:hover { transform: none; background: var(--powder); }
+.btn { border: 2px solid #000; }
+.btn-ghost { border: 2px solid #000; }
+.btn:hover { transform: none; background: var(--iris); color: #fff; border-color: var(--iris); }
+.pill, .badge { border: 1.5px solid #000; }
+.icon { border: 2px solid #000; background: var(--powder); }
+.footer { border-top: 2px solid #000; border-radius: 0; background: var(--sky-tint); }
+.brand-mark { border: 2px solid #000; }
+.avatars span { border: 1.5px solid #000; background: #fff; color: #000; }
+.avatars span:nth-child(3n), .avatars span:nth-child(5n) { background: #fff; color: #000; }
+.avatars span:hover { transform: none; background: var(--iris); color: #fff; }
+.install code::before { color: var(--iris); }
