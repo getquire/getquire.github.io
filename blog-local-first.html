@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Local-first isn't a feature, it's a default — Quire</title>
+<meta name="description" content="If the good path needs an API key, the local path is a demo. What it costs to keep offline as the configuration everything is tested against.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="docs.html">Docs</a>
+      <a href="product.html">How it works</a>
+      <a href="solutions.html">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html">Community</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="careers.html">Contribute</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+<article class="section">
+  <div class="wrap article stack">
+    <a class="small ink-link" href="blog.html">← All posts</a>
+    <span class="pill">Opinion · 5 min read</span>
+    <h1 style="font-size:clamp(36px,5.5vw,56px)">Local-first isn't a feature, it's a default</h1>
+    <p class="lede">If the good path needs an API key, the local path is a demo. Keeping offline as the configuration everything is tested against costs real quality, and it is the only version of this promise that survives contact with a release schedule.</p>
+    <div class="row"><span class="avatar">RB</span><span class="small">Rita Ben-Ari · Maintainer, core<br><span class="muted">10 June 2026</span></span></div>
+  </div>
+
+  <div class="wrap article">
+    <p>Plenty of tools describe themselves as local-first and mean it sincerely. Then the roadmap moves, the hosted path gets the new retriever first, the offline path keeps working but stops being the one anyone runs, and eighteen months later local-first means "there is a mode".</p>
+
+    <p>Nobody decided that. It is the natural drift of a project where the interesting work happens on the side that has more compute. The only defence we found is structural: make the offline configuration the one that everything is tested and benchmarked against, so that a regression there is a broken build rather than a note in an issue.</p>
+
+    <h2>What the default actually means here</h2>
+    <ul>
+      <li><b>The test suite has no network.</b> Not mocked — the runner has no route. A test that needs a network is a test that cannot run, which surfaces the dependency immediately rather than in someone's air-gapped deployment.</li>
+      <li><b>Benchmarks report the local models first.</b> Every number in <a class="ink-link" href="blog-rag-benchmark.html">the benchmark post</a> is from the default offline configuration. Hosted-model numbers are published too, second, in the same table.</li>
+      <li><b>No feature ships hosted-only.</b> If it cannot be done with local models, it waits. This has delayed things. It is the whole commitment; the alternative is a promise with an asterisk.</li>
+      <li><b>No telemetry, and nothing to opt out of.</b> There is no collection path in the code, which is a stronger statement than a setting and much easier to verify.</li>
+    </ul>
+
+    <blockquote>A local mode that the maintainers do not use daily is a mode that is already broken and has not been noticed yet.</blockquote>
+
+    <h2>The cost, since it is not zero</h2>
+    <p>Local models are worse than the best hosted models, and pretending otherwise is how people end up disappointed. On our own evaluation set the default offline configuration answers correctly 84% of the time against 91% for the strongest hosted model we tested. That gap is real and we publish it in the table rather than around it.</p>
+
+    <p>What closes most of the gap is not the model. It is parsing, chunking and retrieval quality — the unglamorous pipeline work that several other posts here are about. Moving from windowed chunking to layout chunking bought more accuracy than upgrading the model did, and it bought it for everybody including people running on a laptop with no network.</p>
+
+    <div class="table-wrap" style="margin:32px 0">
+      <table>
+        <thead><tr><th>Configuration</th><th>Answer accuracy</th><th>Span attribution</th><th>Runs offline</th></tr></thead>
+        <tbody>
+          <tr><td>Default local models</td><td>84%</td><td>96%</td><td>Yes</td></tr>
+          <tr><td>Larger local model, 24 GB machine</td><td>88%</td><td>97%</td><td>Yes</td></tr>
+          <tr><td>Strongest hosted model tested</td><td>91%</td><td>97%</td><td>No</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Note that attribution barely moves. Whether a claim is actually supported by the cited span is decided by the retrieval and the citation machinery, not by the model's fluency — which is the argument for spending effort on the pipeline and is also why the offline gap is narrower than the model gap suggests.</p>
+
+    <h2>Why it matters more for documents than for most things</h2>
+    <p>The corpora people point this at are contracts, invoices, mailboxes, HR files, medical letters. For a large number of users the question of whether the content leaves the machine is not a preference, it is the reason they can use a tool at all — and it is a question their compliance team will ask in exactly those terms.</p>
+
+    <p>"We do not send it anywhere" is a sentence that has to remain true under every configuration, including the default one someone installs in a hurry without reading the flags. A default that quietly requires a key is a promise that depends on the user's attention, which is not a promise.</p>
+
+    <h2>The honest caveat</h2>
+    <p>Hosted models are supported, documented, and used by plenty of people running this, including some of us on corpora where nothing sensitive is involved. This is not a position against them. It is a position about which configuration gets the tests, the benchmarks and the burden of proof — and once that is decided, everything downstream tends to decide itself.</p>
+
+    <p class="muted small" style="margin-top:48px">Model configuration is in <span class="mono">quire.toml</span>. The offline default requires no key, no account and no first-run download beyond the model weights you choose.</p>
+  </div>
+
+  <div class="wrap article">
+    <hr class="divider">
+    <div class="grid g2" style="margin-top:32px">
+      <a class="card card-link card-sm" href="blog-dependencies.html"><span class="pill">Read next</span><h4>The 31 dependencies we argued about</h4><p class="small">The five-question test, the four we removed, and the one that fails our own rules.</p></a>
+      <div class="tile tile-solar"><h4>The Quire Note</h4><p class="small">One email a month, engineering-first.</p><form class="row" data-demo><input type="email" placeholder="you@company.com" required><button class="btn btn-sm" type="submit">Subscribe</button></form><p class="small muted" data-note></p></div>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-cols">
+      <div class="stack" style="gap:16px">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
+      </div>
+      <div><h5>Project</h5><ul><li><a href="index.html">Overview</a></li><li><a href="product.html">How it works</a></li><li><a href="docs.html">Docs</a></li><li><a href="solutions.html">Recipes</a></li><li><a href="changelog.html">Releases</a></li><li><a href="styles.html">Palettes</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="careers.html">Contribute</a></li><li><a href="customers.html">Showcase</a></li><li><a href="contact.html">Discussions</a></li><li><a href="contact.html#discord">Discord</a></li><li><a href="careers.html#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="pricing.html">Why it's free</a></li><li><a href="about.html">Governance</a></li><li><a href="security.html">Security</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="terms.html">License</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html#trademark">Trademark</a></li><li><a href="https://github.com/getquire/getquire.github.io">Source on GitHub</a></li></ul></div>
+    </div>
+    <hr class="divider">
+    <div class="footer-base">
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>Maintained by 340 people across 41 countries</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

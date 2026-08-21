@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Every duplicate invoice is a near-duplicate — Quire</title>
+<meta name="description" content="Byte-identical files are the case nobody worries about. Blocking keys, an asymmetric cost function, and why we surface pairs instead of verdicts.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="docs.html">Docs</a>
+      <a href="product.html">How it works</a>
+      <a href="solutions.html">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html">Community</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="careers.html">Contribute</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+<article class="section">
+  <div class="wrap article stack">
+    <a class="small ink-link" href="blog.html">← All posts</a>
+    <span class="pill">Engineering · 10 min read</span>
+    <h1 style="font-size:clamp(36px,5.5vw,56px)">Every duplicate invoice is a near-duplicate</h1>
+    <p class="lede">Exact duplicates are rare and already handled by a hash. The ones that cost money are the same invoice arriving twice in different clothes, and finding those is a blocking-and-scoring problem with an asymmetric cost function.</p>
+    <div class="row"><span class="avatar">TW</span><span class="small">Tal Weiss · Maintainer, ingestion<br><span class="muted">15 July 2026</span></span></div>
+  </div>
+
+  <div class="wrap article">
+    <p>The first version of our duplicate detection hashed file bytes. It found 340 duplicates in a 40,000-document corpus and everyone was pleased for about a day, until someone pointed out that byte-identical files are the case nobody is worried about. They are the same attachment saved twice. They cost storage, not money.</p>
+
+    <p>The expensive case looks like this: an invoice arrives as a PDF in January, is paid, and arrives again in March as a scan of a printout, with a different filename, a reminder stamp across the top, and a slightly different total because a late fee was added. Two documents. Zero shared bytes. One obligation.</p>
+
+    <h2>What "same invoice" means</h2>
+    <p>There is no single definition, which is why this cannot be a boolean. The useful framing is a small set of relations, each of which a person handles differently:</p>
+
+    <div class="table-wrap" style="margin:32px 0">
+      <table>
+        <thead><tr><th>Relation</th><th>Typical signature</th><th>Share of flagged pairs</th></tr></thead>
+        <tbody>
+          <tr><td>Identical resend</td><td>Same vendor, number and total, different file</td><td>34%</td></tr>
+          <tr><td>Format variant</td><td>Same invoice as PDF and as a scan of the print</td><td>21%</td></tr>
+          <tr><td>Reminder or dunning copy</td><td>Same number and total, added stamp, later date</td><td>18%</td></tr>
+          <tr><td>Amended invoice</td><td>Same number with a suffix, adjusted lines, credit note nearby</td><td>12%</td></tr>
+          <tr><td>Split delivery</td><td>Same PO, different invoice numbers, amounts summing to the order</td><td>9%</td></tr>
+          <tr><td>Genuine coincidence</td><td>Same vendor, same recurring amount, different month</td><td>6%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>That last row is why a naive rule fails immediately. A monthly retainer produces twelve invoices a year from the same vendor for the same amount, and every one of them is legitimate. Any matcher that keys on vendor and amount without periodicity awareness produces a flood of false positives, gets ignored, and is then worse than nothing because people stop reading it.</p>
+
+    <h2>Blocking, then scoring</h2>
+    <p>Comparing every pair in a 40,000-invoice corpus is 800 million comparisons. So it is the standard two-stage shape: cheap blocking keys to generate candidate pairs, expensive scoring only inside blocks.</p>
+    <p>Our blocking keys, all of which run and are unioned:</p>
+    <ul>
+      <li><b>Normalised vendor plus rounded total.</b> Catches most resends and format variants.</li>
+      <li><b>Invoice number stem.</b> The number with separators stripped and suffixes removed, which links amendments to originals.</li>
+      <li><b>Total plus date window.</b> Amount equal within a cent, issue dates within 45 days, no vendor requirement — catches the case where the vendor name was recognised differently on a scan.</li>
+      <li><b>Purchase order reference.</b> Where present, the strongest key we have, and the only one that catches split deliveries.</li>
+    </ul>
+    <p>Scoring inside a block is deliberately simple: field-level similarity on vendor, number, dates, total and line-item structure, combined with fixed weights that live in a config file where someone can read them. We tried a learned scorer. It performed about the same on our corpora and nobody could explain any individual decision to a finance team, which turned out to be the deciding factor.</p>
+
+    <blockquote>A duplicate flag someone cannot justify to their auditor is not a feature, it is an argument waiting to happen.</blockquote>
+
+    <h2>The costs are not symmetric</h2>
+    <p>A false negative is a payment made twice. A false positive is thirty seconds of someone's attention. Those are not the same size, and the threshold should reflect that — but only up to the point where the reviewer's attention runs out, because a queue nobody works is exactly equivalent to no detection at all.</p>
+
+    <div class="table-wrap" style="margin:32px 0">
+      <table>
+        <thead><tr><th>Threshold</th><th>Recall</th><th>Precision</th><th>Pairs surfaced per 1,000 invoices</th></tr></thead>
+        <tbody>
+          <tr><td>0.90</td><td>71%</td><td>96%</td><td>4</td></tr>
+          <tr><td>0.80</td><td>88%</td><td>89%</td><td>7</td></tr>
+          <tr><td>0.70 (default)</td><td>96%</td><td>74%</td><td>13</td></tr>
+          <tr><td>0.60</td><td>98%</td><td>51%</td><td>25</td></tr>
+          <tr><td>0.50</td><td>99%</td><td>28%</td><td>48</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>We default to 0.70 because thirteen pairs per thousand invoices is a few minutes of review, and 96% recall is worth it. Below that, precision collapses faster than recall improves — the classic shape, and the reason the last percent of recall is usually not worth buying.</p>
+
+    <h2>Present pairs, not verdicts</h2>
+    <p>The output is not a list of duplicates. It is a list of pairs, each rendered side by side with the differing fields highlighted and both source regions visible, and a one-line statement of why they were matched: same vendor and total, invoice numbers differ by a suffix, 61 days apart.</p>
+    <p>Reviewers resolve those in a few seconds each, and the resolution is recorded so the pair never resurfaces. That record is also the only labelled data anyone has for this problem, which is what makes it possible to tune thresholds against a corpus rather than against a hunch.</p>
+
+    <p class="muted small" style="margin-top:48px">Matching lives in <span class="mono">quire/analysis/dedupe</span>. The weights are in <span class="mono">quire.toml</span> and are meant to be edited; the defaults come from three corpora and will not be right for yours.</p>
+  </div>
+
+  <div class="wrap article">
+    <hr class="divider">
+    <div class="grid g2" style="margin-top:32px">
+      <a class="card card-link card-sm" href="blog-three-way-match.html"><span class="pill">Read next</span><h4>Three-way match is a retrieval problem</h4><p class="small">Purchase order, goods receipt, invoice — joined by evidence rather than by a key.</p></a>
+      <div class="tile tile-solar"><h4>The Quire Note</h4><p class="small">One email a month, engineering-first.</p><form class="row" data-demo><input type="email" placeholder="you@company.com" required><button class="btn btn-sm" type="submit">Subscribe</button></form><p class="small muted" data-note></p></div>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-cols">
+      <div class="stack" style="gap:16px">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
+      </div>
+      <div><h5>Project</h5><ul><li><a href="index.html">Overview</a></li><li><a href="product.html">How it works</a></li><li><a href="docs.html">Docs</a></li><li><a href="solutions.html">Recipes</a></li><li><a href="changelog.html">Releases</a></li><li><a href="styles.html">Palettes</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="careers.html">Contribute</a></li><li><a href="customers.html">Showcase</a></li><li><a href="contact.html">Discussions</a></li><li><a href="contact.html#discord">Discord</a></li><li><a href="careers.html#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="pricing.html">Why it's free</a></li><li><a href="about.html">Governance</a></li><li><a href="security.html">Security</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="terms.html">License</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html#trademark">Trademark</a></li><li><a href="https://github.com/getquire/getquire.github.io">Source on GitHub</a></li></ul></div>
+    </div>
+    <hr class="divider">
+    <div class="footer-base">
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>Maintained by 340 people across 41 countries</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

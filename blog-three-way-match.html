@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Three-way match is a retrieval problem with a paper trail — Quire</title>
+<meta name="description" content="No join key in a folder of PDFs, so the join is made from evidence and then shown. Tolerances, the evidence sheet, and four places the recipe is wrong.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="docs.html">Docs</a>
+      <a href="product.html">How it works</a>
+      <a href="solutions.html">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html">Community</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="careers.html">Contribute</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+<article class="section">
+  <div class="wrap article stack">
+    <a class="small ink-link" href="blog.html">← All posts</a>
+    <span class="pill">Recipes · 9 min read</span>
+    <h1 style="font-size:clamp(36px,5.5vw,56px)">Three-way match is a retrieval problem with a paper trail</h1>
+    <p class="lede">Purchase order, goods receipt, invoice. In an ERP they are joined on a key. In a folder of PDFs there is no key, so the join has to be made from evidence — and then shown, because nobody approves a payment on the word of a program.</p>
+    <div class="row"><span class="avatar">AT</span><span class="small">Anaïs Tremblay · Maintainer, product<br><span class="muted">18 June 2026</span></span></div>
+  </div>
+
+  <div class="wrap article">
+    <p>A three-way match asks a simple question: did we order this, did we receive it, and is the invoice consistent with both. In a well-run procurement system it is a database join, and the interesting part is the tolerance rules. In the situation most small teams are actually in — a shared drive, some email threads, PDFs — there is no join key, and half the work is establishing that these three documents are about the same thing at all.</p>
+
+    <p>This is the most requested recipe in our tracker, so this post is what the community recipe does, why it stops where it stops, and where it will be wrong.</p>
+
+    <h2>Stage one: find the candidates</h2>
+    <p>Start from the invoice, because that is the document with a deadline attached. Retrieve candidate purchase orders and receipts using every signal available, in decreasing order of strength:</p>
+    <ul>
+      <li><b>An explicit PO reference on the invoice.</b> Present about 60% of the time in our sample corpora, and nearly always correct when present. Watch for references that are close but not exact — a truncated number, a missing prefix, a transposed pair of digits on a scan.</li>
+      <li><b>Vendor plus date window plus amount proximity.</b> The workhorse when there is no reference.</li>
+      <li><b>Line-item description similarity.</b> Slow, and the only signal that works for split deliveries where amounts do not match anything.</li>
+      <li><b>Delivery note numbers</b> appearing in both a receipt and the invoice text, which is common and almost never in a structured field.</li>
+    </ul>
+    <p>Candidates come back ranked, not resolved. A single-candidate result at high confidence is the common case and it still goes through the same path as a five-candidate result — because the moment a program starts treating high confidence as certainty, the failure mode changes from "a person picked wrong" to "nobody knows why this was approved".</p>
+
+    <h2>Stage two: compare, with tolerances</h2>
+    <p>Once a triple is proposed, the comparison is arithmetic. Ordered quantity against received against invoiced, unit price against agreed price, totals against each other, dates in a plausible sequence.</p>
+
+    <div class="table-wrap" style="margin:32px 0">
+      <table>
+        <thead><tr><th>Check</th><th>Default tolerance</th><th>Most common legitimate cause of a miss</th></tr></thead>
+        <tbody>
+          <tr><td>Invoiced quantity vs received</td><td>0</td><td>Partial delivery, later shipment against the same PO</td></tr>
+          <tr><td>Unit price vs PO price</td><td>2%</td><td>Agreed price change not reflected in an old PO</td></tr>
+          <tr><td>Invoice total vs PO total</td><td>2% or 25 units of currency</td><td>Shipping or handling not on the order</td></tr>
+          <tr><td>Invoice date vs receipt date</td><td>invoice not before receipt, 60 day window</td><td>Invoice issued on dispatch rather than delivery</td></tr>
+          <tr><td>Currency</td><td>exact</td><td>Almost never legitimate. Investigate every one</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Those defaults come from three donated corpora and will not be right for your vendors. They are configuration for exactly that reason. The one we would not loosen is currency: in the sample we studied, every currency mismatch was either an extraction error or a real problem, and none were benign.</p>
+
+    <h2>Stage three: show the work</h2>
+    <p>The output is not "matched" or "not matched". It is a small evidence sheet: the three documents, the fields compared, the values, the differences, and a citation for every value that points back at the region of the page it came from.</p>
+
+    <blockquote>Approval is a human act with a signature attached to it. The tool's job is to make that act take ninety seconds instead of twenty minutes, not to perform it.</blockquote>
+
+    <p>Groups who have run this report the time per exception dropping from roughly fifteen minutes to two, which is the whole value. The matching itself is not the hard part and never was — the hard part is assembling the evidence from three documents that live in three different places, which is precisely what a retrieval system with span-level citations is for.</p>
+
+    <h2>Where this recipe is wrong</h2>
+    <p>Stated plainly, because a recipe that only lists its successes is marketing:</p>
+    <ul>
+      <li><b>Split deliveries against one PO.</b> Handled poorly. Partial matching across several invoices summing to one order is a set-cover problem and the recipe currently proposes candidates rather than solving it.</li>
+      <li><b>Blanket orders.</b> A standing order drawn against for a year matches everything, weakly. Needs a running consumed-total the recipe does not maintain.</li>
+      <li><b>Services without receipts.</b> A two-way match with no delivery evidence at all. The recipe says so rather than pretending, but it is a real gap.</li>
+      <li><b>Credit notes.</b> Handled as ordinary negative-amount documents, which is wrong in enough edge cases that we would not rely on it for a period close.</li>
+    </ul>
+
+    <p>All four are open issues with a named file and a done condition, which is our standard for something we would like help with. The blanket-order one is a good first issue for anybody who has actually worked in procurement, because the hard part is knowing the rules rather than writing the code.</p>
+
+    <p class="muted small" style="margin-top:48px">Recipe and configuration live in <span class="mono">github.com/getquire/recipes</span> under <span class="mono">three-way-match</span>. It runs entirely offline, like everything else here.</p>
+  </div>
+
+  <div class="wrap article">
+    <hr class="divider">
+    <div class="grid g2" style="margin-top:32px">
+      <a class="card card-link card-sm" href="blog-duplicate-invoices.html"><span class="pill">Read next</span><h4>Every duplicate invoice is a near-duplicate</h4><p class="small">Blocking keys, an asymmetric cost function, and why the threshold sits at 0.70.</p></a>
+      <div class="tile tile-solar"><h4>The Quire Note</h4><p class="small">One email a month, engineering-first.</p><form class="row" data-demo><input type="email" placeholder="you@company.com" required><button class="btn btn-sm" type="submit">Subscribe</button></form><p class="small muted" data-note></p></div>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-cols">
+      <div class="stack" style="gap:16px">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
+      </div>
+      <div><h5>Project</h5><ul><li><a href="index.html">Overview</a></li><li><a href="product.html">How it works</a></li><li><a href="docs.html">Docs</a></li><li><a href="solutions.html">Recipes</a></li><li><a href="changelog.html">Releases</a></li><li><a href="styles.html">Palettes</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="careers.html">Contribute</a></li><li><a href="customers.html">Showcase</a></li><li><a href="contact.html">Discussions</a></li><li><a href="contact.html#discord">Discord</a></li><li><a href="careers.html#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="pricing.html">Why it's free</a></li><li><a href="about.html">Governance</a></li><li><a href="security.html">Security</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="terms.html">License</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html#trademark">Trademark</a></li><li><a href="https://github.com/getquire/getquire.github.io">Source on GitHub</a></li></ul></div>
+    </div>
+    <hr class="divider">
+    <div class="footer-base">
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>Maintained by 340 people across 41 countries</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

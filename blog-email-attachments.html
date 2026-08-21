@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The inbox is the ingestion pipeline — Quire</title>
+<meta name="description" content="Most documents that matter arrive as an attachment, forwarded twice, inside a zip. What mailbox ingestion has to do that directory ingestion does not.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="docs.html">Docs</a>
+      <a href="product.html">How it works</a>
+      <a href="solutions.html">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html">Community</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="careers.html">Contribute</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+<article class="section">
+  <div class="wrap article stack">
+    <a class="small ink-link" href="blog.html">← All posts</a>
+    <span class="pill">Engineering · 9 min read</span>
+    <h1 style="font-size:clamp(36px,5.5vw,56px)">The inbox is the ingestion pipeline</h1>
+    <p class="lede">Most documents that matter arrive as an email attachment, forwarded twice, inside a zip, alongside four copies of the same file and a signature image the parser thinks is a logo. Ingesting a mailbox is a document problem before it is a mail problem.</p>
+    <div class="row"><span class="avatar">AT</span><span class="small">Anaïs Tremblay · Maintainer, product<br><span class="muted">6 May 2026</span></span></div>
+  </div>
+
+  <div class="wrap article">
+    <p>Ask where a small team's invoices live and the honest answer is a mailbox. There may be a folder on a drive as well, and it will be incomplete, because the folder is a copy someone maintains by hand and the mailbox is where the documents actually arrive.</p>
+
+    <p>So mailbox ingestion is not a side feature. It is the main path for a lot of people, and it brings a specific set of problems that do not exist when you point a tool at a directory.</p>
+
+    <h2>Multiplicity is the default</h2>
+    <p>One invoice generates, in a typical thread: the original message with the attachment, a forward to accounts with the same attachment re-encoded, a reply with the attachment quoted back, a reminder with a fresh copy, and someone's copy saved to the drive and re-attached later. Five arrivals. One document.</p>
+
+    <p>Content hashing catches the identical ones and misses the rest, because re-encoding changes bytes without changing content. So attachments are deduplicated after extraction, on normalised text plus structure, and the surviving record keeps every arrival as provenance: which message, which sender, which date, which thread. That provenance is what answers "when did we first receive this", which is a question people ask constantly and no folder can answer.</p>
+
+    <h2>The body is a document too</h2>
+    <p>A lot of information exists only in the message body: the approval, the disputed line, the promise to pay next week, the correction that means the attached invoice is not the one to use. Ingesting only attachments loses all of it, and the loss is invisible.</p>
+    <p>Bodies are indexed as documents in their own right, linked to their thread and to any attachments in the same message. Quoted history is stripped — badly, because quoting has no standard and every client marks it differently, and the failure mode is either duplicating a whole thread into every reply or dropping something someone wrote inline in the quote.</p>
+
+    <blockquote>Every mail parser is a pile of heuristics standing in a trench coat. Ours is too. The difference is whether the heuristics are visible.</blockquote>
+
+    <h2>What the pipeline actually does</h2>
+    <ul>
+      <li><b>Walk containers to a bounded depth.</b> Zips inside zips, messages attached to messages. Depth-limited, size-limited, count-limited, because unbounded recursion over an untrusted attachment is a resource exhaustion bug waiting to be reported.</li>
+      <li><b>Type by content, never by extension.</b> A file named <span class="mono">invoice.pdf</span> that is actually a scanned image, or an <span class="mono">.xls</span> that is really HTML, are both common enough to be routine.</li>
+      <li><b>Drop signature and tracking images.</b> Logos, tracking pixels and signature images make up a large share of attachments by count and none by value. Filtered on size, dimensions and repetition across messages.</li>
+      <li><b>Never execute anything.</b> No macros, no external entity resolution, no network fetch for remote content, no following links found in message bodies. Parsers run with no network access, and that is not configurable.</li>
+      <li><b>Keep the thread.</b> Message identifiers give a real reply graph. Subject-line grouping is the fallback and it merges unrelated conversations that share a generic subject, which happens more than you would like.</li>
+    </ul>
+
+    <h2>Numbers from a real mailbox</h2>
+    <p>One contributor's accounts mailbox, five years, donated under a narrow agreement and used with permission:</p>
+
+    <div class="table-wrap" style="margin:32px 0">
+      <table>
+        <thead><tr><th>Stage</th><th>Count</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Messages</td><td>61,400</td><td></td>
+          </tr>
+          <tr><td>Attachments</td><td>38,900</td><td>Before any filtering</td></tr>
+          <tr><td>After dropping images and signatures</td><td>19,200</td><td>51% of attachments carried no content</td></tr>
+          <tr><td>After content deduplication</td><td>7,100</td><td>Average 2.7 arrivals per document</td></tr>
+          <tr><td>Identified as invoices</td><td>4,300</td><td></td></tr>
+          <tr><td>Needing OCR</td><td>510</td><td>12%, mostly older and mostly scans</td></tr>
+          <tr><td>Failing reconciliation</td><td>170</td><td>4%, split as described in the invoice posts</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The line worth staring at is 38,900 to 7,100. Over 80% of what arrives is noise or repetition, and a system that indexes it all does not just waste storage — it fills every retrieval result with five copies of the same thing and pushes the useful document off the page.</p>
+
+    <h2>Privacy, since this is a mailbox</h2>
+    <p>Everything here runs locally. Nothing leaves the machine, there is no telemetry, and the ingest process has no network access at all — a property that is easy to state, easy to verify with a packet capture, and worth verifying rather than believing. A mailbox is the most sensitive corpus most people own, and it is the one where "trust us" is least appropriate.</p>
+
+    <p>Deletion is honoured properly, too. Removing a source removes derived text, embeddings, thumbnails and cached regions, not just the row that points at them. Deletion that leaves derivatives behind is not deletion, and it is a surprisingly common bug in systems that grew an index before they grew a delete path.</p>
+
+    <p class="muted small" style="margin-top:48px">Mailbox connectors are in <span class="mono">quire/ingest/mail</span>. IMAP, Maildir, mbox and PST all work offline; there is no hosted component and there is not going to be one.</p>
+  </div>
+
+  <div class="wrap article">
+    <hr class="divider">
+    <div class="grid g2" style="margin-top:32px">
+      <a class="card card-link card-sm" href="blog-duplicate-invoices.html"><span class="pill">Read next</span><h4>Every duplicate invoice is a near-duplicate</h4><p class="small">Same invoice, different clothes. Blocking keys and an asymmetric cost function.</p></a>
+      <div class="tile tile-solar"><h4>The Quire Note</h4><p class="small">One email a month, engineering-first.</p><form class="row" data-demo><input type="email" placeholder="you@company.com" required><button class="btn btn-sm" type="submit">Subscribe</button></form><p class="small muted" data-note></p></div>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-cols">
+      <div class="stack" style="gap:16px">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
+      </div>
+      <div><h5>Project</h5><ul><li><a href="index.html">Overview</a></li><li><a href="product.html">How it works</a></li><li><a href="docs.html">Docs</a></li><li><a href="solutions.html">Recipes</a></li><li><a href="changelog.html">Releases</a></li><li><a href="styles.html">Palettes</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="careers.html">Contribute</a></li><li><a href="customers.html">Showcase</a></li><li><a href="contact.html">Discussions</a></li><li><a href="contact.html#discord">Discord</a></li><li><a href="careers.html#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="pricing.html">Why it's free</a></li><li><a href="about.html">Governance</a></li><li><a href="security.html">Security</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="terms.html">License</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html#trademark">Trademark</a></li><li><a href="https://github.com/getquire/getquire.github.io">Source on GitHub</a></li></ul></div>
+    </div>
+    <hr class="divider">
+    <div class="footer-base">
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>Maintained by 340 people across 41 countries</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>An invoice is a table wearing a document costume — Quire</title>
+<meta name="description" content="Header fields are easy and nobody cares. Line items are where the money is, and an invoice reconciles its own arithmetic, which is free labelled data.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="docs.html">Docs</a>
+      <a href="product.html">How it works</a>
+      <a href="solutions.html">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html">Community</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="careers.html">Contribute</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+<article class="section">
+  <div class="wrap article stack">
+    <a class="small ink-link" href="blog.html">← All posts</a>
+    <span class="pill">Engineering · 11 min read</span>
+    <h1 style="font-size:clamp(36px,5.5vw,56px)">An invoice is a table wearing a document costume</h1>
+    <p class="lede">The header fields are easy and nobody cares about them. The line items are where the money is, and the line items are the part every parser gets wrong. The good news: an invoice checks its own arithmetic, and almost no other document does.</p>
+    <div class="row"><span class="avatar">SD</span><span class="small">Sofia Duarte · Maintainer, document parsing<br><span class="muted">18 August 2026</span></span></div>
+  </div>
+
+  <div class="wrap article">
+    <p>Vendor name, invoice number, issue date, due date, total. Every extraction demo shows those five fields, because those five fields are easy — they sit in predictable places, they are short, and a regex plus a bit of layout sense gets you to 97% without much thought.</p>
+
+    <p>They are also the fields nobody had a problem with. The questions people actually bring to a pile of invoices are about the middle of the page: what did we pay for this line, how many of them, which of these charges is the recurring one, why is this month 12% higher than last month. All of that lives in the line-item table, which is the least reliably extracted structure in the entire document.</p>
+
+    <h2>Eight ways the line-item table lies</h2>
+    <ul>
+      <li><b>Wrapped descriptions.</b> A long description wraps to a second visual line with empty numeric columns. Naively, that is a line item with no quantity and no amount. It is not a line item at all.</li>
+      <li><b>Continuation across pages.</b> The table restarts on page two, sometimes with the header repeated, sometimes not, sometimes with slightly different column widths because the generator re-flowed it.</li>
+      <li><b>Subtotal rows inside the table.</b> Group subtotals sit in the same grid as items. Sum the amount column blindly and you double-count every grouped section.</li>
+      <li><b>Discount and credit rows.</b> Negative amounts, sometimes written with a leading minus, sometimes in parentheses, sometimes as a positive number under a column headed <em>Less</em>.</li>
+      <li><b>Column drift.</b> Unit price and amount swap positions between two vendors, and once, memorably, between page one and page two of the same invoice.</li>
+      <li><b>Merged and implied cells.</b> One quantity spanning three description rows. The quantity belongs to all three, or to the first, and the document does not say which.</li>
+      <li><b>Units hidden in text.</b> "3" in the quantity column and "per 100 units" in the description. Multiply and you are off by two orders of magnitude.</li>
+      <li><b>Tax per line.</b> Some invoices carry a rate column per line, some apply one rate at the bottom, some do both and expect you to notice that the bottom one only covers the untaxed lines.</li>
+    </ul>
+
+    <p>None of these are exotic. Across a sample of 40,000 invoices from three donated corpora, 31% contained at least one of them, and vendors are remarkably consistent — if a vendor's template does one of these, every invoice from that vendor does it.</p>
+
+    <h2>The arithmetic is free ground truth</h2>
+    <p>Here is the property that makes invoices better than almost every other document type: they carry their own check digit. The line amounts, the discounts, the tax and the total are supposed to agree. When your extraction is wrong, they usually stop agreeing.</p>
+
+    <p>So we do not trust an extracted table until it reconciles. Quantity times unit price should equal the line amount, per line. The line amounts, plus or minus adjustment rows, should equal the subtotal. Subtotal plus tax should equal the total. Three cheap equalities, run at ingestion, before anything is indexed.</p>
+
+    <blockquote>An invoice tells you when you parsed it wrong. Use that, or you are throwing away the only labelled data you get for free.</blockquote>
+
+    <p>The reconciliation catches most of the list above, and it catches them without anyone labelling anything:</p>
+
+    <div class="table-wrap" style="margin:32px 0">
+      <table>
+        <thead><tr><th>Failure</th><th>Caught by arithmetic</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Wrapped description counted as a row</td><td>Yes</td><td>Row contributes zero, harmless, but flagged as a shape anomaly</td></tr>
+          <tr><td>Subtotal row counted as an item</td><td>Yes</td><td>Sum overshoots by exactly a group subtotal, which is a recognisable signature</td></tr>
+          <tr><td>Discount sign lost</td><td>Yes</td><td>Overshoots by exactly twice the discount</td></tr>
+          <tr><td>Unit price and amount swapped</td><td>Usually</td><td>Not when quantity is 1, which is why quantity-1 invoices need column-header confidence</td></tr>
+          <tr><td>Missing continuation page</td><td>Yes</td><td>Sum undershoots. The most valuable single check we run</td></tr>
+          <tr><td>OCR digit error in a line amount</td><td>Usually</td><td>Unless the same error also appears in the total, which happens on regenerated scans</td></tr>
+          <tr><td>Per-100 unit pricing</td><td>No</td><td>Arithmetic is internally consistent, the meaning is still wrong. Needs the description read</td></tr>
+          <tr><td>Rate applied to the wrong lines</td><td>Sometimes</td><td>Only when the tax total is itemised rather than a single figure</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>What we do when it does not reconcile</h2>
+    <p>The tempting move is to repair the number — adjust the line that makes the sum work out. We do not do that, ever, and the reasoning is the same one that runs through everything here: a silently repaired invoice is indistinguishable from a correct one, and the day the repair is wrong nobody can tell.</p>
+    <p>Instead the document is indexed with an unreconciled flag, both the printed total and the computed total are stored, and any answer touching that invoice says so. In practice around 4% of invoices land in that state. Of those, roughly two thirds are our parsing and one third is a genuinely inconsistent invoice — which the finance people involved were, in every case we followed up on, quite pleased to be told about.</p>
+
+    <h2>Vendor templates are the cheap win</h2>
+    <p>Invoices are not arbitrary documents. They come from a small number of templates, repeatedly, for years. Once a vendor's layout has reconciled ten times, the column mapping for that vendor is known, and new invoices from it can be checked against the known shape rather than inferred from scratch.</p>
+    <p>This is not machine learning, it is a lookup table keyed on a layout fingerprint, and it moved line-item accuracy from 91% to 98.6% on repeat vendors. The remaining errors concentrate almost entirely in first-time vendors and in the month after a vendor changes their template — which is exactly the moment the reconciliation check starts failing and tells you to look.</p>
+
+    <p class="muted small" style="margin-top:48px">The reconciliation rules are in <span class="mono">quire/ingest/invoice/reconcile.py</span>, and they are about 200 lines. The tests are longer than the implementation, which is correct for money code.</p>
+  </div>
+
+  <div class="wrap article">
+    <hr class="divider">
+    <div class="grid g2" style="margin-top:32px">
+      <a class="card card-link card-sm" href="blog-money-math.html"><span class="pill">Read next</span><h4>Three ways your totals disagree</h4><p class="small">Rounding, currency and tax, and why we never repair a number to make it add up.</p></a>
+      <div class="tile tile-solar"><h4>The Quire Note</h4><p class="small">One email a month, engineering-first.</p><form class="row" data-demo><input type="email" placeholder="you@company.com" required><button class="btn btn-sm" type="submit">Subscribe</button></form><p class="small muted" data-note></p></div>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-cols">
+      <div class="stack" style="gap:16px">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
+      </div>
+      <div><h5>Project</h5><ul><li><a href="index.html">Overview</a></li><li><a href="product.html">How it works</a></li><li><a href="docs.html">Docs</a></li><li><a href="solutions.html">Recipes</a></li><li><a href="changelog.html">Releases</a></li><li><a href="styles.html">Palettes</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="careers.html">Contribute</a></li><li><a href="customers.html">Showcase</a></li><li><a href="contact.html">Discussions</a></li><li><a href="contact.html#discord">Discord</a></li><li><a href="careers.html#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="pricing.html">Why it's free</a></li><li><a href="about.html">Governance</a></li><li><a href="security.html">Security</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="terms.html">License</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html#trademark">Trademark</a></li><li><a href="https://github.com/getquire/getquire.github.io">Source on GitHub</a></li></ul></div>
+    </div>
+    <hr class="divider">
+    <div class="footer-base">
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>Maintained by 340 people across 41 countries</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

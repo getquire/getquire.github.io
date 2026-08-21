@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>We deleted our chat interface — Quire</title>
+<meta name="description" content="Usage tripled. A conversation is a bad container for work that has to be reviewed, cited and repeated. What we replaced it with, and what we lost.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="docs.html">Docs</a>
+      <a href="product.html">How it works</a>
+      <a href="solutions.html">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html">Community</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="careers.html">Contribute</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+<article class="section">
+  <div class="wrap article stack">
+    <a class="small ink-link" href="blog.html">← All posts</a>
+    <span class="pill">Product · 6 min read</span>
+    <h1 style="font-size:clamp(36px,5.5vw,56px)">We deleted our chat interface</h1>
+    <p class="lede">Usage tripled in the quarter after we removed it. A conversation is a bad container for work that has to be reviewed, cited and repeated — and a terminal turns out to be a very good one.</p>
+    <div class="row"><span class="avatar">AT</span><span class="small">Anaïs Tremblay · Maintainer, product<br><span class="muted">8 July 2026</span></span></div>
+  </div>
+
+  <div class="wrap article">
+    <p>For eighteen months the first thing you saw after indexing a corpus was a message box. It was the obvious design, it demoed beautifully, and the numbers underneath it were bad in a way that took us a long time to read correctly.</p>
+
+    <p>Sessions were short. Most were a single question, one answer, no follow-up — which we initially read as success. It was not. The follow-ups were happening; they were just happening in a fresh session, with the question retyped from scratch, because nobody could find the earlier one again.</p>
+
+    <h2>What a conversation is bad at</h2>
+    <ul>
+      <li><b>Re-running.</b> The most common real workflow is asking the same question every month against a changed corpus. In a chat log, that means scrolling to find what you asked in April and copying it. There is no other affordance.</li>
+      <li><b>Reviewing.</b> A colleague needs to check whether the answer is supported. A transcript containing eleven exchanges, four of which were dead ends, is a bad artefact to hand someone.</li>
+      <li><b>Diffing.</b> "Has this changed since last quarter" is the question underneath half of all the others, and two chat sessions cannot be compared.</li>
+      <li><b>Scripting.</b> Nobody can put a chat box in a Makefile.</li>
+      <li><b>Being wrong usefully.</b> When an answer is wrong, the useful next step is inspecting the retrieval, not rephrasing the question. A message box only offers rephrasing, so that is what people did — three times on average, and then they gave up.</li>
+    </ul>
+
+    <blockquote>The interface taught people that a bad answer was their fault for asking badly. It almost never was.</blockquote>
+
+    <h2>What replaced it</h2>
+    <p>A command. One question in, one answer out, with citations, exit code zero or non-zero depending on whether the system was willing to answer at all. Queries live in files. Files live in the repository next to everything else, get reviewed in pull requests, get run on a schedule, and produce output that can be diffed against the last run.</p>
+
+    <p>The change was not really about the terminal. It was about making a question a durable object rather than an event. Once the question is a file, everything people were trying to do awkwardly in chat becomes ordinary: version it, share it, parameterise it, run it over a different corpus, put it in CI and fail the build when the answer changes.</p>
+
+    <h2>Numbers</h2>
+    <div class="table-wrap" style="margin:32px 0">
+      <table>
+        <thead><tr><th>Measure</th><th>Chat</th><th>Command</th></tr></thead>
+        <tbody>
+          <tr><td>Questions run per active install, per week</td><td>9</td><td>31</td></tr>
+          <tr><td>Share of questions that are re-runs</td><td>unknown, invisible</td><td>63%</td></tr>
+          <tr><td>Median time to first answer after indexing</td><td>4 min</td><td>40 s</td></tr>
+          <tr><td>Questions abandoned after 3 rephrasings</td><td>18%</td><td>4%</td></tr>
+          <tr><td>Answers shared with a second person</td><td>rare</td><td>routine, it is a file</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The re-run figure is the one that mattered. Two thirds of all usage is asking a question that was asked before, which is a workload a conversation actively obstructs and a file makes trivial.</p>
+
+    <h2>What we lost</h2>
+    <p>Real costs, stated plainly. Exploration got worse: chat was better for poking at an unfamiliar corpus with vague questions, and we have not fully replaced that. Onboarding is harder, because a message box needs no explanation and a command has flags. And a small group of users left, which is the honest cost of removing something people were using.</p>
+
+    <p>We kept one piece of the old design: an interactive mode that is explicitly a scratchpad, and every question asked in it can be written out to a file with one key. Exploration happens there; anything worth keeping graduates into the repository.</p>
+
+    <h2>The general version</h2>
+    <p>Chat is a default rather than a decision. It is what an interface becomes when nobody has decided what the work actually is. For work that gets reviewed, repeated and cited, the durable artefact is the point, and the conversation was the wrapping paper we kept mistaking for the gift.</p>
+
+    <p class="muted small" style="margin-top:48px">The interactive scratchpad is <span class="mono">quire ask -i</span>. Everything it does, the non-interactive form does too, which is deliberate: nothing is reachable only by typing at a prompt.</p>
+  </div>
+
+  <div class="wrap article">
+    <hr class="divider">
+    <div class="grid g2" style="margin-top:32px">
+      <a class="card card-link card-sm" href="blog-local-first.html"><span class="pill">Read next</span><h4>Local-first isn't a feature, it's a default</h4><p class="small">If the good path needs an API key, the local path is a demo.</p></a>
+      <div class="tile tile-solar"><h4>The Quire Note</h4><p class="small">One email a month, engineering-first.</p><form class="row" data-demo><input type="email" placeholder="you@company.com" required><button class="btn btn-sm" type="submit">Subscribe</button></form><p class="small muted" data-note></p></div>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-cols">
+      <div class="stack" style="gap:16px">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
+      </div>
+      <div><h5>Project</h5><ul><li><a href="index.html">Overview</a></li><li><a href="product.html">How it works</a></li><li><a href="docs.html">Docs</a></li><li><a href="solutions.html">Recipes</a></li><li><a href="changelog.html">Releases</a></li><li><a href="styles.html">Palettes</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="careers.html">Contribute</a></li><li><a href="customers.html">Showcase</a></li><li><a href="contact.html">Discussions</a></li><li><a href="contact.html#discord">Discord</a></li><li><a href="careers.html#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="pricing.html">Why it's free</a></li><li><a href="about.html">Governance</a></li><li><a href="security.html">Security</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="terms.html">License</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html#trademark">Trademark</a></li><li><a href="https://github.com/getquire/getquire.github.io">Source on GitHub</a></li></ul></div>
+    </div>
+    <hr class="divider">
+    <div class="footer-base">
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>Maintained by 340 people across 41 countries</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chunking is a layout problem, not a token problem — Quire</title>
+<meta name="description" content="Fixed token windows cut tables in half and strip the context that made a fragment interpretable. Layout boundaries, heading paths, and removing overlap.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="docs.html">Docs</a>
+      <a href="product.html">How it works</a>
+      <a href="solutions.html">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html">Community</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="careers.html">Contribute</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+<article class="section">
+  <div class="wrap article stack">
+    <a class="small ink-link" href="blog.html">← All posts</a>
+    <span class="pill">Engineering · 8 min read</span>
+    <h1 style="font-size:clamp(36px,5.5vw,56px)">Chunking is a layout problem, not a token problem</h1>
+    <p class="lede">Almost every tutorial chunks by token count with an overlap. That is a reasonable default for prose and an actively bad one for documents with structure, which is most of the documents anyone cares about.</p>
+    <div class="row"><span class="avatar">JM</span><span class="small">Joel Mensah · Maintainer, retrieval<br><span class="muted">3 June 2026</span></span></div>
+  </div>
+
+  <div class="wrap article">
+    <p>The standard recipe is 512 tokens with 50 tokens of overlap. It is easy to implement, it is easy to reason about, and on continuous prose it is fine. Run it over a policy document with numbered clauses, or a contract, or anything containing a table, and it does two damaging things: it cuts structures in half, and it strips the context that made a fragment interpretable.</p>
+
+    <p>A window boundary landing in the middle of a table produces two chunks, neither of which contains both the header row and the number. The chunk with the number is retrievable and meaningless. The chunk with the header is meaningful and has no number. Overlap does not fix it, it just moves the boundary.</p>
+
+    <h2>Cut where the document already cuts</h2>
+    <p>Documents come with boundaries. Headings, clause numbers, list items, table row groups, page breaks in some formats, sections in others. Those boundaries were placed by the author to mark where one idea ends and another begins, which is exactly the judgement a chunker is trying to make and consistently worse at.</p>
+
+    <p>So the rule is: cut at the strongest structural boundary within a size band, never in the middle of a table or a numbered clause, and treat the token count as a constraint rather than an objective. Chunks come out uneven — some 90 tokens, some 800 — and that unevenness is the point. A three-line clause is a complete unit of meaning and padding it to 512 tokens with its neighbours makes it less retrievable, not more.</p>
+
+    <h2>Carry the path down</h2>
+    <p>Every chunk gets a prefix built from its position in the document: the title, the heading chain above it, the clause number, and for tables the column header path described in <a class="ink-link" href="blog-tables.html">the tables post</a>. The prefix is indexed and shown, not hidden metadata.</p>
+
+    <p>This is unglamorous and it is the single highest-value thing in this post. A fragment reading "must be submitted within 30 days" matches almost nothing useful. The same fragment prefixed with "Supplier Agreement 2026 &gt; 7. Invoicing &gt; 7.3 Late submission" matches the way people ask, and it makes the retrieved snippet interpretable on its own — which matters more, because the person reading the answer has to judge whether the citation supports the claim.</p>
+
+    <blockquote>A chunk that a person cannot evaluate without opening the document is not a citation, it is a promise.</blockquote>
+
+    <h2>Numbers</h2>
+    <p>Same corpora, same embeddings, same retriever, same evaluation set. Only the chunker changed.</p>
+
+    <div class="table-wrap" style="margin:32px 0">
+      <table>
+        <thead><tr><th>Strategy</th><th>Answer accuracy</th><th>Span attribution</th><th>Table questions</th></tr></thead>
+        <tbody>
+          <tr><td>512 tokens, 50 overlap</td><td>68%</td><td>81%</td><td>34%</td></tr>
+          <tr><td>512 tokens, sentence-aligned</td><td>71%</td><td>85%</td><td>36%</td></tr>
+          <tr><td>Layout boundaries, no prefix</td><td>76%</td><td>90%</td><td>72%</td></tr>
+          <tr><td>Layout boundaries with heading path</td><td>83%</td><td>96%</td><td>78%</td></tr>
+          <tr><td>The above, tables as row groups</td><td>84%</td><td>96%</td><td>91%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The table column is where the difference is dramatic, which makes sense — that is the failure the fixed window causes most directly. The heading path is worth seven points of overall accuracy for what is, in implementation terms, string concatenation.</p>
+
+    <h2>What it costs</h2>
+    <p>Honest list, because layout chunking is not free:</p>
+    <ul>
+      <li><b>It depends on parse quality.</b> If the structure extraction is wrong, the chunker inherits the error. On a badly parsed document, fixed windows degrade more gracefully. This is the real trade, and it is why parse confidence gates which chunker runs.</li>
+      <li><b>Chunk sizes are uneven,</b> which complicates batching and makes throughput less predictable.</li>
+      <li><b>Very long sections still need splitting</b> and the fallback inside them is, unavoidably, a windowed split. There is no boundary to use, so we use the boring thing.</li>
+      <li><b>Prefixes cost tokens</b> in both indexing and context. About 8% overhead on our corpora, and the cheapest eight percent we spend.</li>
+    </ul>
+
+    <h2>The thing we removed</h2>
+    <p>Overlap. Once chunks align with structure, overlap buys nothing measurable and costs index size and duplicate retrieval hits — the same passage arriving twice in the context under two chunk identities, which makes an answer look better supported than it is. Removing it shrank the index by 11% and improved deduplication of citations. It was in there because everyone else has it, which is a bad reason that survives a long time.</p>
+
+    <p class="muted small" style="margin-top:48px">Chunking is in <span class="mono">quire/index/chunk</span> and the strategy is selectable per source. If you index code or logs, the layout chunker is the wrong tool and there is a separate one.</p>
+  </div>
+
+  <div class="wrap article">
+    <hr class="divider">
+    <div class="grid g2" style="margin-top:32px">
+      <a class="card card-link card-sm" href="blog-rag-benchmark.html"><span class="pill">Read next</span><h4>Your RAG benchmark is measuring the wrong thing</h4><p class="small">What we measure instead of answer quality, and why the numbers got worse first.</p></a>
+      <div class="tile tile-solar"><h4>The Quire Note</h4><p class="small">One email a month, engineering-first.</p><form class="row" data-demo><input type="email" placeholder="you@company.com" required><button class="btn btn-sm" type="submit">Subscribe</button></form><p class="small muted" data-note></p></div>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-cols">
+      <div class="stack" style="gap:16px">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
+      </div>
+      <div><h5>Project</h5><ul><li><a href="index.html">Overview</a></li><li><a href="product.html">How it works</a></li><li><a href="docs.html">Docs</a></li><li><a href="solutions.html">Recipes</a></li><li><a href="changelog.html">Releases</a></li><li><a href="styles.html">Palettes</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="careers.html">Contribute</a></li><li><a href="customers.html">Showcase</a></li><li><a href="contact.html">Discussions</a></li><li><a href="contact.html#discord">Discord</a></li><li><a href="careers.html#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="pricing.html">Why it's free</a></li><li><a href="about.html">Governance</a></li><li><a href="security.html">Security</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="terms.html">License</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html#trademark">Trademark</a></li><li><a href="https://github.com/getquire/getquire.github.io">Source on GitHub</a></li></ul></div>
+    </div>
+    <hr class="divider">
+    <div class="footer-base">
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>Maintained by 340 people across 41 countries</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

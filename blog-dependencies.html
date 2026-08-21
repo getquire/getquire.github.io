@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The 31 dependencies we argued about — Quire</title>
+<meta name="description" content="A dependency is a permanent obligation, not free code. The five-question test, the four we removed, and the one that fails our own rules.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="docs.html">Docs</a>
+      <a href="product.html">How it works</a>
+      <a href="solutions.html">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html">Community</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="careers.html">Contribute</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+<article class="section">
+  <div class="wrap article stack">
+    <a class="small ink-link" href="blog.html">← All posts</a>
+    <span class="pill">Maintenance · 11 min read</span>
+    <h1 style="font-size:clamp(36px,5.5vw,56px)">The 31 dependencies we argued about</h1>
+    <p class="lede">Every dependency is a future security advisory, a future breaking change and a future licence question. Here is the test we apply, the four we removed last year, and the one we kept despite failing our own rules.</p>
+    <div class="row"><span class="avatar">TW</span><span class="small">Tal Weiss · Maintainer, ingestion<br><span class="muted">24 June 2026</span></span></div>
+  </div>
+
+  <div class="wrap article">
+    <p>Quire has 31 direct runtime dependencies. That number has been between 28 and 44 for two years, and every movement in it was an argument. This post is the argument, written down, so we stop having it from scratch every time.</p>
+
+    <p>The framing that helped most: a dependency is not free code, it is a permanent obligation. You inherit its security advisories, its release cadence, its maintainer's attention span, its transitive tree, and its licence. The question is never "does this library work". It is "are we willing to be responsible for this for the next five years".</p>
+
+    <h2>The test</h2>
+    <p>Five questions, in order. A no at any point does not end it, but it has to be answered out loud in the pull request.</p>
+    <ul>
+      <li><b>Is this the standard library's job?</b> A surprising share of proposed dependencies are a nicer interface over something already present. Nicer is not a sufficient reason.</li>
+      <li><b>How much of it would we use?</b> Pulling a framework for one function is the classic bad trade. If we use under 10% of the surface, we usually vendor the part we need, with attribution and the licence header intact.</li>
+      <li><b>What is the transitive tree?</b> One direct dependency with forty transitives is forty obligations. We count them, and the number goes in the pull request.</li>
+      <li><b>What happens if it is abandoned?</b> Could we fork and maintain it with the people we have? For a 500-line library, yes. For a numerical runtime, no — which is not disqualifying, but it does change what we are agreeing to.</li>
+      <li><b>Does it phone home?</b> Any network access at import or at runtime that is not the explicit purpose of the library is disqualifying, with no discussion. This has removed more candidates than every other rule combined.</li>
+    </ul>
+
+    <blockquote>Adding a dependency is a decision one person can make in a minute and everybody maintains for years. That asymmetry is the whole reason for the checklist.</blockquote>
+
+    <h2>The four we removed</h2>
+    <div class="table-wrap" style="margin:32px 0">
+      <table>
+        <thead><tr><th>Removed</th><th>Why</th><th>Replaced with</th><th>Net lines</th></tr></thead>
+        <tbody>
+          <tr><td>A date parsing library</td><td>Used for two formats out of hundreds it supports; 4 transitives</td><td>Explicit parsers per locale, which we needed anyway for <a class="ink-link" href="blog-document-versions.html">version dating</a></td><td>+180</td></tr>
+          <tr><td>An HTTP client</td><td>Ingest has no network access at all. It was there for one optional connector</td><td>Standard library, in the connector only</td><td>-40</td></tr>
+          <tr><td>A retry and backoff helper</td><td>Nine lines of logic, 1,100 lines of library, one CVE in the transitive tree</td><td>Nine lines</td><td>-1,100</td></tr>
+          <tr><td>A progress bar</td><td>Terminal handling conflicted with our own output; carried a colour library</td><td>Twelve lines writing to stderr</td><td>-2 transitives</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The date one is the interesting case, because we added code to remove a dependency and we would do it again. Explicit per-locale parsers are more code and they fail loudly on formats we have not handled, where the library silently guessed — and a silent guess about a date is exactly the class of bug that ends up in an answer nobody can trace.</p>
+
+    <h2>The one that fails our rules and stays</h2>
+    <p>The OCR engine. It is enormous, its transitive tree is not something we could maintain, and if it were abandoned tomorrow we would have a serious problem. It stays because 11% of user documents are scans and the alternative is telling those users the tool does not work on their corpus.</p>
+    <p>What we did instead of pretending the risk away: it is optional, the build works without it, the interface it sits behind is small enough to swap, and there is a second supported engine so that neither one is load-bearing alone. That is not risk elimination. It is risk with a stated plan, which is the most that is available here.</p>
+
+    <h2>Things we do not count as savings</h2>
+    <p>Two arguments that sound good and are not:</p>
+    <ul>
+      <li><b>"It is only one small dependency."</b> Small libraries have the worst abandonment rate and the highest chance of a single maintainer. Size is a weak predictor of obligation.</li>
+      <li><b>"We can always remove it later."</b> Removal costs proportional to how long it has been in and how deep its types leaked. In practice later means never, and the argument is really "let me not have this conversation now".</li>
+    </ul>
+
+    <h2>What this buys</h2>
+    <p>A full install is 31 direct and 58 transitive packages, and it audits clean at the time of writing. Median time from an advisory in a dependency to a released patch here is under two days, which is only possible because the tree is small enough for one person to hold in their head on a Saturday.</p>
+    <p>None of this is virtue. It is the cheapest way we found to keep a small maintainer group from drowning in other people's release notes.</p>
+
+    <p class="muted small" style="margin-top:48px">The dependency policy is in <span class="mono">CONTRIBUTING.md</span> and the checklist is a pull request template. If you propose an addition, filling it in honestly is most of the review.</p>
+  </div>
+
+  <div class="wrap article">
+    <hr class="divider">
+    <div class="grid g2" style="margin-top:32px">
+      <a class="card card-link card-sm" href="blog-local-first.html"><span class="pill">Read next</span><h4>Local-first isn't a feature, it's a default</h4><p class="small">What it costs to keep offline as the configuration everything is tested against.</p></a>
+      <div class="tile tile-solar"><h4>The Quire Note</h4><p class="small">One email a month, engineering-first.</p><form class="row" data-demo><input type="email" placeholder="you@company.com" required><button class="btn btn-sm" type="submit">Subscribe</button></form><p class="small muted" data-note></p></div>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-cols">
+      <div class="stack" style="gap:16px">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
+      </div>
+      <div><h5>Project</h5><ul><li><a href="index.html">Overview</a></li><li><a href="product.html">How it works</a></li><li><a href="docs.html">Docs</a></li><li><a href="solutions.html">Recipes</a></li><li><a href="changelog.html">Releases</a></li><li><a href="styles.html">Palettes</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="careers.html">Contribute</a></li><li><a href="customers.html">Showcase</a></li><li><a href="contact.html">Discussions</a></li><li><a href="contact.html#discord">Discord</a></li><li><a href="careers.html#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="pricing.html">Why it's free</a></li><li><a href="about.html">Governance</a></li><li><a href="security.html">Security</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="terms.html">License</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html#trademark">Trademark</a></li><li><a href="https://github.com/getquire/getquire.github.io">Source on GitHub</a></li></ul></div>
+    </div>
+    <hr class="divider">
+    <div class="footer-base">
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>Maintained by 340 people across 41 countries</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

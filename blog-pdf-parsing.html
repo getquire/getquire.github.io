@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parsing PDFs is still the hardest part — Quire</title>
+<meta name="description" content="A PDF contains glyph placements, not paragraphs. The failure taxonomy we keep, the three-extractor vote, and the heuristics we are not proud of.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="docs.html">Docs</a>
+      <a href="product.html">How it works</a>
+      <a href="solutions.html">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html">Community</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="careers.html">Contribute</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+<article class="section">
+  <div class="wrap article stack">
+    <a class="small ink-link" href="blog.html">← All posts</a>
+    <span class="pill">Engineering · 14 min read</span>
+    <h1 style="font-size:clamp(36px,5.5vw,56px)">Parsing PDFs is still the hardest part</h1>
+    <p class="lede">Three years of model progress, and a merged table cell still destroys an answer. What a PDF actually contains, why reading order is a guess, and the heuristics we are not proud of but ship anyway.</p>
+    <div class="row"><span class="avatar">SD</span><span class="small">Sofia Duarte · Maintainer, document parsing<br><span class="muted">27 May 2026</span></span></div>
+  </div>
+
+  <div class="wrap article">
+    <p>People assume the hard part of an answer engine is the retrieval, or the model, or the ranking. In our issue tracker, 46% of open bugs labelled <span class="mono">wrong-answer</span> resolve to a parsing defect. The retrieval worked. The model was fine. The text it was handed was already wrong two stages earlier.</p>
+
+    <p>The reason is structural. A PDF does not contain paragraphs, tables, headings or reading order. It contains instructions for placing glyphs at coordinates on a page, plus optional hints nobody is obliged to emit correctly. Everything above that — this run of glyphs is a word, these words are a sentence, this sentence belongs to the left column and not the right one, these numbers are a table — is inference we perform, and every inference has a failure rate.</p>
+
+    <h2>What actually goes wrong</h2>
+    <p>We keep a taxonomy because it stops arguments. Every parse bug gets a class, and every class gets a regression case. The percentages are the share of documents in our three donated corpora that trip each class at least once.</p>
+
+    <div class="table-wrap" style="margin:32px 0">
+      <table>
+        <thead><tr><th>Failure class</th><th>What it looks like downstream</th><th>Docs affected</th></tr></thead>
+        <tbody>
+          <tr><td>Header and footer bleed</td><td>Every chunk contaminated with a page number and a confidentiality notice</td><td>61%</td></tr>
+          <tr><td>Table structure loss</td><td>Numbers collapse into one line, cell alignment gone</td><td>29%</td></tr>
+          <tr><td>Hyphenation</td><td>Line-broken words indexed as two fragments, neither of which matches</td><td>24%</td></tr>
+          <tr><td>Reading order</td><td>Two columns interleaved line by line into nonsense</td><td>18%</td></tr>
+          <tr><td>Image-only pages inside a text PDF</td><td>A silently empty page. No error, no warning</td><td>11%</td></tr>
+          <tr><td>Rotated or mixed-orientation pages</td><td>A landscape financial appendix extracted as a vertical column of digits</td><td>9%</td></tr>
+          <tr><td>Ligature and glyph mapping</td><td>Words silently missing letters because the font has no usable ToUnicode map</td><td>7%</td></tr>
+          <tr><td>Watermarks and stamps</td><td>The word DRAFT inserted into the middle of every sentence</td><td>5%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Note which one is biggest. Header and footer bleed is not glamorous and it is not hard, and it caused more bad retrieval than table loss and reading order combined, because it poisons <em>every</em> chunk rather than a few. Boring bugs win on volume.</p>
+
+    <h2>Reading order is a guess</h2>
+    <p>A minority of PDFs carry structure tags describing logical order. Most carry nothing, and some carry tags worse than nothing, because a generator emitted them once and a later editing tool did not maintain them. So we reconstruct order geometrically: glyphs into lines, lines into blocks, blocks into columns, columns into a page sequence.</p>
+
+    <p>That holds until a document does something entirely reasonable that breaks the assumption — a pull quote spanning two columns, a sidebar that is visually adjacent but logically an aside, a table continuing across a page break with its header repeated. So we do not treat order as certain. Each block carries a confidence, and blocks under threshold are indexed but flagged, which means an answer depending on them arrives with a parse warning attached to the citation instead of silently.</p>
+
+    <blockquote>A parser that never says "I am unsure about this page" is not more accurate. It is less honest about the same accuracy.</blockquote>
+
+    <h2>Three extractors and a vote</h2>
+    <p>We run more than one extraction path over every document and compare. Character-level agreement between paths is a cheap and surprisingly well calibrated proxy for extraction quality — far better calibrated than any single extractor's own confidence, which is usually a fiction.</p>
+    <ul>
+      <li><b>Text layer extraction</b> where the PDF has a usable one. Fast, exact when it works.</li>
+      <li><b>Layout-aware extraction</b> that rebuilds blocks and tables geometrically. Slower, better on anything with structure.</li>
+      <li><b>OCR</b> for image-only pages, and for pages where the first two disagree badly enough to suggest the text layer is lying — which happens, especially with documents scanned and then given a bad text layer by an office scanner.</li>
+    </ul>
+    <p>When paths agree, we index and move on. When they disagree on prose, we take the layout path. When they disagree on a number, we pick no winner: the span is marked unreliable, and a question whose answer depends on it gets a refusal rather than a coin flip. Why that trade is worth making is the whole of <a class="ink-link" href="blog-refusal.html">the refusal post</a>.</p>
+
+    <h2>The heuristics we are not proud of</h2>
+    <p>Some of this is unprincipled and we will not pretend otherwise. It is in the repository, it is commented, and it beats the principled version we tried first.</p>
+    <ul>
+      <li><b>Repeated-line suppression.</b> A line appearing in the same vertical band on more than 60% of pages is a running header or footer and gets stripped. It occasionally eats a legitimate repeated heading, so it is disabled under four pages.</li>
+      <li><b>Hyphen rejoining with a dictionary check.</b> Join a trailing hyphen to the next line only if the joined form is a known word, or if neither half is. Wrong for compounds in some languages, hence per-language configuration.</li>
+      <li><b>Digit-run protection.</b> No normalisation step may touch a run of digits, separators and a currency symbol. Smart quotes, dash normalisation, whitespace collapsing — all of them skip numeric spans, because every one has silently altered an amount at least once.</li>
+      <li><b>Page-level bail-out.</b> A page producing almost no characters but containing a large image is a scan, not an empty page. Obvious. Was missing for a year, and every answer it lost looked like a retrieval bug.</li>
+    </ul>
+
+    <h2>Provenance is the part that pays off</h2>
+    <p>Every extracted span keeps the page and bounding box it came from. It costs storage, it complicates every intermediate structure, and it is the single change that did most for user trust, because a citation can highlight the exact region of the exact page.</p>
+    <p>It improved debugging more than we expected too. A user reporting "this number is wrong" now sends a citation that renders the source region. About a third of those turn out to be the parser reading the right region of the wrong table. Without coordinates that report is unactionable, and the bug lives forever.</p>
+
+    <h2>What we would do first</h2>
+    <p>If you are building this and want the most quality per hour spent: kill header and footer contamination, keep coordinates, stop normalising numbers. None of it is research. All three moved our attribution score more than any model change we made that year.</p>
+
+    <p class="muted small" style="margin-top:48px">The extraction pipeline is in <span class="mono">github.com/getquire/quire</span> under <span class="mono">quire/ingest/pdf</span>. The regression generators live in <span class="mono">refusal-bench</span>; the documents themselves are not ours to publish.</p>
+  </div>
+
+  <div class="wrap article">
+    <hr class="divider">
+    <div class="grid g2" style="margin-top:32px">
+      <a class="card card-link card-sm" href="blog-tables.html"><span class="pill">Read next</span><h4>One merged cell, one wrong number</h4><p class="small">Table structure recovery, and why a spanned cell is an ambiguity rather than a bug.</p></a>
+      <div class="tile tile-solar"><h4>The Quire Note</h4><p class="small">One email a month, engineering-first.</p><form class="row" data-demo><input type="email" placeholder="you@company.com" required><button class="btn btn-sm" type="submit">Subscribe</button></form><p class="small muted" data-note></p></div>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-cols">
+      <div class="stack" style="gap:16px">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
+      </div>
+      <div><h5>Project</h5><ul><li><a href="index.html">Overview</a></li><li><a href="product.html">How it works</a></li><li><a href="docs.html">Docs</a></li><li><a href="solutions.html">Recipes</a></li><li><a href="changelog.html">Releases</a></li><li><a href="styles.html">Palettes</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="careers.html">Contribute</a></li><li><a href="customers.html">Showcase</a></li><li><a href="contact.html">Discussions</a></li><li><a href="contact.html#discord">Discord</a></li><li><a href="careers.html#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="pricing.html">Why it's free</a></li><li><a href="about.html">Governance</a></li><li><a href="security.html">Security</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="terms.html">License</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html#trademark">Trademark</a></li><li><a href="https://github.com/getquire/getquire.github.io">Source on GitHub</a></li></ul></div>
+    </div>
+    <hr class="divider">
+    <div class="footer-base">
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>Maintained by 340 people across 41 countries</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

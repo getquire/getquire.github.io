@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Three ways your totals disagree: rounding, currency, tax — Quire</title>
+<meta name="description" content="When an extracted invoice does not add up, the parser is the likely culprit but not the only one. Tolerances, decimals, and never repairing a number.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%230069e0'/><rect x='8' y='8' width='16' height='3' rx='1.5' fill='%23ffffff'/><rect x='8' y='15' width='9' height='3' rx='1.5' fill='%237fd7a8'/><rect x='8' y='22' width='16' height='3' rx='1.5' fill='%23ffffff' fill-opacity='.55'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="docs.html">Docs</a>
+      <a href="product.html">How it works</a>
+      <a href="solutions.html">Recipes</a>
+      <a href="customers.html">Showcase</a>
+      <a href="contact.html">Community</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="careers.html">Contribute</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+<article class="section">
+  <div class="wrap article stack">
+    <a class="small ink-link" href="blog.html">← All posts</a>
+    <span class="pill">Engineering · 8 min read</span>
+    <h1 style="font-size:clamp(36px,5.5vw,56px)">Three ways your totals disagree: rounding, currency, tax</h1>
+    <p class="lede">When an extracted invoice does not add up, the parser is the most likely culprit but not the only one. Some invoices genuinely do not add up, and the difference between those two cases is worth more than a repaired number.</p>
+    <div class="row"><span class="avatar">RB</span><span class="small">Rita Ben-Ari · Maintainer, core<br><span class="muted">2 July 2026</span></span></div>
+  </div>
+
+  <div class="wrap article">
+    <p>About 4% of the invoices we ingest fail the reconciliation check described in <a class="ink-link" href="blog-invoice-line-items.html">the line-item post</a>. Roughly two thirds of those are our extraction being wrong. The remaining third are documents where the arithmetic on the page is genuinely inconsistent, and understanding why matters, because those cases are the ones a person actually needs to see.</p>
+
+    <h2>Rounding, and where it was applied</h2>
+    <p>A line of 3 units at 4.995 each is 14.985. Printed, it is 14.99 or 14.98 depending on the rule, and the invoice total may be built from the rounded line values or from the unrounded ones. Both are defensible. They differ by a cent per line, and on a 200-line invoice they differ by enough to fail an exact-match check.</p>
+    <p>Add to that the rounding mode itself. Half-up is the common default. Half-even shows up in anything built on certain accounting libraries. Some jurisdictions specify rounding direction for tax specifically, in a way that does not match the rounding used everywhere else on the same document.</p>
+    <p>So the reconciliation is not an equality, it is an equality with a tolerance derived from the line count — a few cents on a short invoice, more on a long one. A discrepancy inside tolerance is recorded and not flagged. A discrepancy outside it is flagged and never silently corrected.</p>
+
+    <h2>Currency, and the rate that is not on the page</h2>
+    <p>Multi-currency invoices carry at least two failure modes. The first is representational: the same symbol means different currencies in different countries, a bare dollar sign being the obvious case, and the disambiguating information is usually in the vendor address rather than next to the number.</p>
+    <p>The second is that a converted total depends on a rate and a date that may not be printed anywhere. An invoice showing a foreign-currency subtotal and a local-currency total implies a rate; that rate is derivable by division, but which date it corresponds to — invoice date, delivery date, payment date — is a policy question the document does not answer.</p>
+    <p>We store the currency as extracted, per amount, never converted. Conversion is a query-time concern with an explicit rate source, and an answer involving conversion states the rate it used. An indexed amount that has been silently converted is a number with no provenance, and it is very hard to get that back.</p>
+
+    <blockquote>Store what the document says. Compute the rest at question time, where the assumptions can be stated out loud.</blockquote>
+
+    <h2>Tax, which is where the real disagreements live</h2>
+    <p>Tax is the largest single source of legitimate mismatch. Common shapes:</p>
+    <ul>
+      <li><b>Mixed rates.</b> Some lines standard-rated, some reduced, some exempt, with a single tax figure at the bottom that only reconciles if you know which line is which.</li>
+      <li><b>Reverse charge.</b> Tax shown as zero with a note in the text, and a total that is correct precisely because the tax is the recipient's problem.</li>
+      <li><b>Tax on shipping, sometimes.</b> Depends on jurisdiction and on whether shipping is a separate supply, and the invoice rarely explains its choice.</li>
+      <li><b>Rounding at the tax-code level.</b> Tax computed per rate group and rounded per group, rather than per line or per invoice, which produces small differences from every other method.</li>
+      <li><b>Withholding.</b> An amount deducted at the bottom so that the payable total is intentionally less than the sum plus tax.</li>
+    </ul>
+    <p>Across the flagged set, tax accounts for 46% of genuine mismatches, rounding 31%, currency 12%, and the remainder are invoices with an actual mistake on them — a line that does not belong, a total typed rather than computed, a discount applied twice.</p>
+
+    <h2>Implementation notes that are not optional</h2>
+    <ul>
+      <li><b>Never a binary float for money.</b> Decimal arithmetic with explicit scale, or integer minor units. This is old advice and it is still routinely ignored.</li>
+      <li><b>Keep both numbers.</b> The value as printed, and the value as computed. Never overwrite one with the other. The pair is the evidence.</li>
+      <li><b>Attach a currency to every amount at parse time.</b> An amount without a currency is not a number, it is half of one, and the missing half gets guessed later by something with less context.</li>
+      <li><b>Tolerances are configuration, not constants.</b> Different finance teams have different thresholds for caring, and the difference between them is a config value, not a code change.</li>
+    </ul>
+
+    <h2>What the user sees</h2>
+    <p>An unreconciled invoice answers questions normally, with one addition: the answer says the document does not reconcile, by how much, and which of the three categories the difference most resembles. That last part is a heuristic and is labelled as one.</p>
+    <p>The alternative — repairing the total so everything looks clean — was in an early prototype for exactly one week. It made the demo better. It also meant that a document with a real error on it became indistinguishable from a correct one, which is the specific outcome an answer engine over financial documents exists to prevent.</p>
+
+    <p class="muted small" style="margin-top:48px">Money handling is in <span class="mono">quire/money.py</span>, roughly 300 lines with a property-based test suite that is considerably longer. If you find a rounding case it gets wrong, that is a bug report we will act on quickly.</p>
+  </div>
+
+  <div class="wrap article">
+    <hr class="divider">
+    <div class="grid g2" style="margin-top:32px">
+      <a class="card card-link card-sm" href="blog-invoice-line-items.html"><span class="pill">Read next</span><h4>An invoice is a table wearing a document costume</h4><p class="small">The line-item table, eight ways it lies, and the arithmetic that catches most of them.</p></a>
+      <div class="tile tile-solar"><h4>The Quire Note</h4><p class="small">One email a month, engineering-first.</p><form class="row" data-demo><input type="email" placeholder="you@company.com" required><button class="btn btn-sm" type="submit">Subscribe</button></form><p class="small muted" data-note></p></div>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-cols">
+      <div class="stack" style="gap:16px">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
+      </div>
+      <div><h5>Project</h5><ul><li><a href="index.html">Overview</a></li><li><a href="product.html">How it works</a></li><li><a href="docs.html">Docs</a></li><li><a href="solutions.html">Recipes</a></li><li><a href="changelog.html">Releases</a></li><li><a href="styles.html">Palettes</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="careers.html">Contribute</a></li><li><a href="customers.html">Showcase</a></li><li><a href="contact.html">Discussions</a></li><li><a href="contact.html#discord">Discord</a></li><li><a href="careers.html#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="pricing.html">Why it's free</a></li><li><a href="about.html">Governance</a></li><li><a href="security.html">Security</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="terms.html">License</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html#trademark">Trademark</a></li><li><a href="https://github.com/getquire/getquire.github.io">Source on GitHub</a></li></ul></div>
+    </div>
+    <hr class="divider">
+    <div class="footer-base">
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>Maintained by 340 people across 41 countries</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>
