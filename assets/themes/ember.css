@@ -1,0 +1,41 @@
+/* Ember — the daylight notebook at golden hour.
+   Blue accent swapped for burnt amber; the canvas warms with it so the
+   accent never sits on a cold ground. Same shapes, different temperature. */
+:root {
+  --sky-tint: #fffdf9;
+  --paper: #ffffff;
+  --bone: #fdf4e9;
+  --bone-hover: #f9e9d6;
+  --hairline: rgba(60, 30, 8, 0.08);
+  --mist: #faf5ef;
+
+  --ink: #17110a;
+  --charcoal: #2a1c0f;
+  --graphite: #6b5844;
+  --fog: #a5947f;
+
+  --iris: #c2410c;
+  --sky-blue: #ea580c;
+  --iris-grad: linear-gradient(rgb(251, 146, 60) 11.43%, rgb(194, 65, 12) 78.2%);
+
+  --lavender: #ffe9d5;
+  --mint: #fdecc8;
+  --powder: #ffe3cf;
+  --solar: linear-gradient(rgb(255, 246, 224) 0%, rgb(255, 219, 158) 100%);
+  --violet: linear-gradient(rgb(255, 238, 226) 0%, rgb(255, 205, 170) 100%);
+  --aqua: linear-gradient(rgb(255, 243, 232) 0%, rgb(253, 214, 180) 100%);
+  --peach: linear-gradient(rgb(255, 236, 226) 0%, rgb(255, 190, 158) 100%);
+
+  --term-prompt: #fbbf24;
+  --term-cite: #fdba74;
+  --term-warn: #fde68a;
+}
+body::before {
+  background:
+    radial-gradient(58% 44% at 50% -4%, rgba(194, 65, 12, 0.10), transparent 68%),
+    radial-gradient(34% 30% at 88% 10%, rgba(253, 224, 71, 0.42), transparent 72%);
+}
+.nav { background: rgba(255, 253, 249, 0.8); }
+.avatars span:nth-child(3n) { background: #fdecc8; color: #9a5b06; }
+.avatars span:nth-child(5n) { background: #ffe9d5; color: #b04a10; }
+.install code::before { color: #fbbf24; }

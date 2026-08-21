@@ -4,7 +4,7 @@ A complete 17-page website for a developer tool that does not exist. Built as a
 design and copywriting exercise. MIT licensed — take the whole thing, swap the
 name, ship your own.
 
-**Live:** https://tomerdamari.github.io/quire/
+**Live:** https://getquire.github.io
 
 ## What this is
 

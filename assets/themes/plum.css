@@ -1,0 +1,46 @@
+/* Plum — violet accent, cool lilac washes.
+   The most saturated of the set: the main colour carries the page and the
+   surfaces tint toward it, so the whole canvas leans purple rather than
+   sitting neutral under one purple button. */
+:root {
+  --sky-tint: #fdfbff;
+  --paper: #ffffff;
+  --bone: #f5f0fd;
+  --bone-hover: #ebe2fb;
+  --hairline: rgba(43, 15, 70, 0.09);
+  --mist: #f8f5fc;
+
+  --ink: #14081f;
+  --charcoal: #241236;
+  --graphite: #5c4d70;
+  --fog: #9b8fae;
+
+  --iris: #7c3aed;
+  --sky-blue: #a855f7;
+  --iris-grad: linear-gradient(rgb(167, 139, 250) 11.43%, rgb(109, 40, 217) 78.2%);
+
+  --lavender: #ece2ff;
+  --mint: #e6dcfb;
+  --powder: #e9ddff;
+  --solar: linear-gradient(rgb(255, 240, 250) 0%, rgb(250, 205, 232) 100%);
+  --violet: linear-gradient(rgb(243, 235, 255) 0%, rgb(220, 196, 255) 100%);
+  --aqua: linear-gradient(rgb(238, 236, 255) 0%, rgb(205, 202, 255) 100%);
+  --peach: linear-gradient(rgb(255, 236, 248) 0%, rgb(248, 193, 226) 100%);
+
+  --term-prompt: #d8b4fe;
+  --term-cite: #c4b5fd;
+  --term-warn: #fbcfe8;
+
+  --r-card: 24px;
+  --r-card-sm: 14px;
+}
+body::before {
+  height: 1100px;
+  background:
+    radial-gradient(62% 48% at 50% -6%, rgba(124, 58, 237, 0.14), transparent 70%),
+    radial-gradient(38% 32% at 86% 12%, rgba(244, 168, 226, 0.38), transparent 72%);
+}
+.nav { background: rgba(253, 251, 255, 0.78); }
+.avatars span:nth-child(3n) { background: #f8dcf0; color: #a01e7f; }
+.avatars span:nth-child(5n) { background: #ded9ff; color: #4c35c9; }
+.install code::before { color: #d8b4fe; }
