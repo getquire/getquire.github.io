@@ -371,25 +371,30 @@ pre code { color: inherit; }
 .install button[data-copied="true"] { background: var(--term-prompt); color: var(--charcoal); }
 
 /* Hero ribbon — the licence claim gets stated before the headline, because on
-   an open-source page it is the headline for a good share of readers. */
+   an open-source page it is the headline for a good share of readers. Built on
+   the charcoal pill so it stays the page's single dense element, with the
+   terminal's prompt green as a live dot. */
 .ribbon {
   display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap;
   justify-content: center;
-  background: var(--bone); border: 1px solid var(--hairline);
-  border-radius: var(--r-pill); padding: 5px 16px 5px 6px;
-  font-size: 14px; color: var(--graphite);
-  transition: background-color .3s var(--ease-out), transform .3s var(--ease-out);
+  background: var(--charcoal); color: #fff;
+  border-radius: var(--r-pill); padding: 8px 20px;
+  font-size: 14px; box-shadow: var(--shadow-subtle);
+  transition: transform .3s var(--ease-out), opacity .3s var(--ease-out);
 }
-.ribbon:hover { background: var(--bone-hover); transform: translateY(-1px); }
-.ribbon b {
-  background: var(--iris-grad); color: #fff; font-weight: 500; font-size: 13px;
-  border-radius: var(--r-pill); padding: 4px 12px;
+.ribbon:hover { transform: translateY(-2px); opacity: .95; }
+.ribbon i {
+  width: 7px; height: 7px; border-radius: 50%; flex: none;
+  background: var(--term-prompt);
+  box-shadow: 0 0 0 4px rgba(127, 215, 168, 0.16);
 }
-.ribbon svg { flex: none; transition: transform .3s var(--ease-out); }
-.ribbon:hover svg { transform: translateX(3px); }
+.ribbon b { font-weight: 500; }
+.ribbon span { color: rgba(255, 255, 255, 0.5); }
+.ribbon svg { flex: none; color: rgba(255, 255, 255, 0.5); transition: transform .3s var(--ease-out); }
+.ribbon:hover svg { transform: translateX(3px); color: #fff; }
 @media (max-width: 520px) {
-  .ribbon { padding: 6px 14px 6px 6px; font-size: 13px; }
-  .ribbon svg { display: none; }
+  .ribbon { padding: 8px 16px; font-size: 13px; gap: 8px; }
+  .ribbon span, .ribbon svg { display: none; }
 }
 
 /* Mono chips for versions, licenses, languages */
