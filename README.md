@@ -122,6 +122,7 @@ All of it is CSS except the stat counters, and all of it is disabled under
 | Links | Underline grows from 0 to full width |
 | Stat numbers | Count up from zero when scrolled into view |
 | Install bar | Copy button confirms inline, reverts after 1.6s |
+| Demo cast | Terminal session replays line by line, typing the commands |
 | Sections | Fade and rise on scroll, via IntersectionObserver |
 | Logos | Continuous marquee, pauses on hover |
 | FAQ | `grid-template-rows` expansion over 0.65s |

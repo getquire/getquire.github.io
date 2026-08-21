@@ -119,23 +119,7 @@
           <span>~/work/handbook</span>
           <button class="cast-btn" data-cast-toggle type="button">Replay</button>
         </div>
-        <pre class="cast-screen" data-cast-screen><code><span class="cast-line"><span class="t-prompt">$</span> <b>quire index ./docs</b></span>
-<span class="cast-line t-dim">  scanning ./docs</span>
-<span class="cast-line t-dim">  parsed 1,204 files · skipped 0 · 18,332 spans</span>
-<span class="cast-line t-dim">  index  .quire/index.db (14.2 MB) · 6.2s</span><span class="cast-line"> </span><span class="cast-line"><span class="t-prompt">$</span> <b>quire ask "why did we drop the v2 migration?"</b></span><span class="cast-line"> </span>
-<span class="cast-line t-out">Two reasons, and they were recorded separately. The rollback</span>
-<span class="cast-line t-out">plan was never finished<span class="t-cite">[1]</span>, and the team that owned</span>
-<span class="cast-line t-out">the write path moved to billing in March<span class="t-cite">[2]</span>.</span><span class="cast-line"> </span><span class="cast-line"><span class="t-cite">  [1]</span> <span class="t-dim">docs/rfc/012-v2-migration.md:88   (2026-02-11)</span></span><span class="cast-line"><span class="t-cite">  [2]</span> <span class="t-dim">notes/planning/q1-retro.md:14     (2026-03-02)</span></span><span class="cast-line"> </span>
-<span class="cast-line t-dim">  2 sources · grounded · 0.9s · llama3.1:8b via ollama</span><span class="cast-line"> </span><span class="cast-line"><span class="t-prompt">$</span> <b>quire ask "what was Q3 2019 headcount?" --strict</b></span><span class="cast-line"> </span>
-<span class="cast-line t-warn">  insufficient evidence</span>
-<span class="cast-line t-dim">  Nothing in this corpus supports an answer.</span>
-<span class="cast-line t-dim">  The index starts at 2021-04.</span><span class="cast-line"> </span>
-<span class="cast-line t-out">  Closest matches:</span>
-<span class="cast-line t-cite">    docs/people/headcount-2021.csv</span><span class="cast-line"> </span>
-<span class="cast-line t-dim">  exit 2</span><span class="cast-line"> </span><span class="cast-line"><span class="t-prompt">$</span> <b>quire serve</b></span>
-<span class="cast-line t-dim">  ui     http://127.0.0.1:7777</span>
-<span class="cast-line t-dim">  api    http://127.0.0.1:7777/v1</span>
-<span class="cast-line t-dim">  ready · 18,332 spans · nothing leaves this machine</span></code></pre>
+        <pre class="cast-screen" data-cast-screen><code><span class="cast-line"><span class="t-prompt">$</span> <b>quire index ./docs</b></span><span class="cast-line t-dim">  scanning ./docs</span><span class="cast-line t-dim">  parsed 1,204 files · skipped 0 · 18,332 spans</span><span class="cast-line t-dim">  index  .quire/index.db (14.2 MB) · 6.2s</span><span class="cast-line"> </span><span class="cast-line"><span class="t-prompt">$</span> <b>quire ask "why did we drop the v2 migration?"</b></span><span class="cast-line"> </span><span class="cast-line t-out">Two reasons, and they were recorded separately. The rollback</span><span class="cast-line t-out">plan was never finished<span class="t-cite">[1]</span>, and the team that owned</span><span class="cast-line t-out">the write path moved to billing in March<span class="t-cite">[2]</span>.</span><span class="cast-line"> </span><span class="cast-line"><span class="t-cite">  [1]</span> <span class="t-dim">docs/rfc/012-v2-migration.md:88   (2026-02-11)</span></span><span class="cast-line"><span class="t-cite">  [2]</span> <span class="t-dim">notes/planning/q1-retro.md:14     (2026-03-02)</span></span><span class="cast-line"> </span><span class="cast-line t-dim">  2 sources · grounded · 0.9s · llama3.1:8b via ollama</span><span class="cast-line"> </span><span class="cast-line"><span class="t-prompt">$</span> <b>quire ask "what was Q3 2019 headcount?" --strict</b></span><span class="cast-line"> </span><span class="cast-line t-warn">  insufficient evidence</span><span class="cast-line t-dim">  Nothing in this corpus supports an answer.</span><span class="cast-line t-dim">  The index starts at 2021-04.</span><span class="cast-line"> </span><span class="cast-line t-out">  Closest matches:</span><span class="cast-line t-cite">    docs/people/headcount-2021.csv</span><span class="cast-line"> </span><span class="cast-line t-dim">  exit 2</span><span class="cast-line"> </span><span class="cast-line"><span class="t-prompt">$</span> <b>quire serve</b></span><span class="cast-line t-dim">  ui     http://127.0.0.1:7777</span><span class="cast-line t-dim">  api    http://127.0.0.1:7777/v1</span><span class="cast-line t-dim">  ready · 18,332 spans · nothing leaves this machine</span></code></pre>
       </div>
       <div class="cast-rail"><i data-cast-progress></i></div>
     </div>
@@ -374,7 +358,7 @@ strict   = <span class="t-out">true</span>   <span class="t-dim"># refuse rather
       </div>
       <div class="card">
         <h4>How it's built</h4>
-        <p>Static HTML. One stylesheet. Under 120 lines of JavaScript for the mobile nav, the accordion, scroll reveals, the copy button and the counting statistics. No framework, no build step, no dependencies.</p>
+        <p>Static HTML. One stylesheet. Under 200 lines of JavaScript for the mobile nav, the accordion, scroll reveals, the copy button, the counting statistics and the terminal cast. No framework, no build step, no dependencies.</p>
         <p>Seventeen pages, including a 404 styled as the tool's own refusal state.</p>
       </div>
     </div>
