@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ten ways to turn HTML into a PDF, ranked by what they cost you — Quire</title>
+<meta name="description" content="Our export service launched a fresh Chromium per request and fell over at nine concurrent users. The ten options we looked at, the four we measured, and the boring one we shipped.">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/logo-512.png">
+<link rel="apple-touch-icon" href="/assets/img/logo-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/docs">Docs</a>
+      <a href="/product">How it works</a>
+      <a href="/solutions">Recipes</a>
+      <a href="/customers">Showcase</a>
+      <a href="/contact">Community</a>
+      <a href="/blog">Blog</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="/careers">Contribute</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+<article class="section">
+  <div class="wrap article stack">
+    <a class="small ink-link" href="/blog">← All posts</a>
+    <span class="pill">Engineering · 12 min read</span>
+    <h1 style="font-size:clamp(36px,5.5vw,56px)">Ten ways to turn HTML into a PDF, ranked by what they cost you</h1>
+    <p class="lede">Our export service launched a fresh Chromium for every request. It survived nine concurrent users and then took the host with it. The ten options we wrote on the whiteboard, the four we actually measured, and the unexciting one we shipped.</p>
+    <div class="row"><span class="avatar">RB</span><span class="small">Rita Ben-Ari · Maintainer, core<br><span class="muted">25 August 2026</span></span></div>
+  </div>
+
+  <div class="wrap article">
+    <p>An answer with citations is only useful inside Quire. The moment somebody has to send it to a colleague who does not run Quire, to an auditor, or to a regulator, it has to become a file, and the file is always a PDF. So <span class="mono">quire export</span> renders the evidence sheet — the answer, every cited span, the page images those spans came from — as HTML, and then something has to convert that HTML into a paginated document.</p>
+
+    <p>The first version of that something was four lines long. Launch Chromium, open a page, <span class="mono">page.pdf()</span>, close Chromium. It is the code every tutorial shows you, it worked on every laptop it was written on, and it is a memory bomb. Each launch is a fresh browser process tree: 90–140&nbsp;MB resident before it has rendered anything, several hundred milliseconds of startup, and no upper bound on how many of them exist at once. A user on a 4&nbsp;GB VM exported a batch of thirty evidence sheets from a shell loop, and the OOM killer took the whole <span class="mono">quire serve</span> process with it, index and all.</p>
+
+    <p>That was issue #2841. It stayed open five weeks. This is what reading the alternatives taught us.</p>
+
+    <h2>First: does it need a browser at all</h2>
+    <p>This is the fork that decides everything downstream, and it is worth being honest about which side of it you are on.</p>
+
+    <p>A browser engine is enormous, and you pull it in for exactly one reason: it is the only renderer that agrees with the browser your users previewed the document in. Evidence sheets are not simple. They carry a heading path, a two-column citation layout, page-image crops with highlight overlays positioned by bounding box, footnotes that must not split, and a repeated table header when a line-item table runs across a page break. All of that is print CSS — <span class="mono">break-inside</span>, <span class="mono">@page</span> margin boxes, running headers — and print CSS support is precisely where the lightweight renderers diverge.</p>
+
+    <p>We tested the fork instead of arguing about it. Our export template rendered through a browser engine and through <span class="mono">wkhtmltopdf</span> produced visually identical output on 31 of 40 fixture documents. The nine failures were the same two problems every time: highlight overlays offset by a few points, because the older engine positions absolutely positioned children of a transformed parent differently, and table headers not repeating across page breaks. Both are cosmetic. Neither is acceptable on a document whose entire purpose is showing someone which region of which page a number came from.</p>
+
+    <blockquote>A renderer that is right 78% of the time is fine for a report and useless for evidence, because the 22% is invisible until somebody relies on it.</blockquote>
+
+    <p>So: browser. That decision costs roughly 300&nbsp;MB of container image and a real operational burden, and if your documents are invoices with a simple flow layout, do not copy it. Options 7 and 8 below will serve you better and cost almost nothing to run.</p>
+
+    <h2>The ten options</h2>
+    <p>Everything we considered, in the order we considered it. Memory is the column that matters, because in self-hosted software memory is the resource that fails hardest — CPU contention makes you slow, memory exhaustion makes you dead.</p>
+
+    <div class="table-wrap" style="margin:32px 0">
+      <table>
+        <thead><tr><th>#</th><th>Option</th><th>How it works</th><th>Memory</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><b>Playwright + shared browser</b></td><td>Launch one Chromium and reuse it. Create and close a page per job.</td><td>Medium</td><td>Most applications</td></tr>
+          <tr><td>2</td><td><b>Playwright + browser pool</b></td><td>A fixed pool of browsers or contexts with a hard cap on concurrent renders. No unbounded process count.</td><td>Medium, bounded</td><td>Simultaneous requests</td></tr>
+          <tr><td>3</td><td><b>Playwright + queue (BullMQ/Redis)</b></td><td>The HTTP handler enqueues a job; a fixed number of workers drain the queue.</td><td>Low in the API, medium in workers</td><td>Traffic spikes</td></tr>
+          <tr><td>4</td><td><b>Dedicated PDF microservice</b></td><td>The browser lives in its own container. The main service only posts HTML to it.</td><td>Very low in the API</td><td>Production systems</td></tr>
+          <tr><td>5</td><td><b>Remote Chrome / Browserless</b></td><td>Connect over CDP to a Chromium you do not run in-process.</td><td>Very low locally</td><td>Serverless, elastic apps</td></tr>
+          <tr><td>6</td><td><b>Puppeteer + cluster</b></td><td>A managed cluster of browser workers, strict concurrency, automatic worker recycling.</td><td>High but controlled</td><td>High PDF volume</td></tr>
+          <tr><td>7</td><td><b>wkhtmltopdf</b></td><td>An external one-shot binary. Old WebKit, effectively no JavaScript, very cheap.</td><td>Low to medium</td><td>Invoices, simple documents</td></tr>
+          <tr><td>8</td><td><b>PrinceXML or similar</b></td><td>A commercial print engine with the best print-CSS support available. Runs as its own process.</td><td>Low</td><td>Complex print layouts</td></tr>
+          <tr><td>9</td><td><b>HTML-to-PDF API</b></td><td>Post HTML to a vendor, receive a PDF. No browsers on your infrastructure at all.</td><td>Very low</td><td>When simplicity beats cost</td></tr>
+          <tr><td>10</td><td><b>Serverless PDF workers</b></td><td>Isolated functions or containers with per-invocation memory and concurrency limits.</td><td>Very low in the API</td><td>Bursty load</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Three we could not use, for a reason that is not technical</h2>
+    <p>Options 5, 9 and 10 are the cheapest to operate, and we would probably have picked one of them if Quire were a hosted product. All three are disqualified by the same sentence on the front page: your documents do not leave your machine.</p>
+
+    <p>An evidence sheet is the most concentrated possible extract of a private corpus. It holds the answer, the cited spans, and cropped images of the source pages. Posting that to a rendering vendor moves the confidential part of the document to a third party at the exact moment the user believes they are producing a local file. It does not matter that the vendor is reputable or that the payload is transient. The guarantee is <em>does not leave</em>, and a guarantee with an exception is a marketing claim. Same reasoning as <a class="ink-link" href="/blog-local-first">the local-first post</a>, and this is the least convenient place we have had to apply it.</p>
+
+    <p>Option 5 survives in a narrower form. Connecting over CDP to a browser you run yourself — a sidecar container on the same host — is fine, and it is how the Kubernetes configuration in <a class="ink-link" href="/solutions">Recipes</a> works. It is the remote <em>vendor</em> that is out, not the remote protocol.</p>
+
+    <h2>What we measured</h2>
+    <p>Four candidates, our 40-document fixture set, a 2&nbsp;vCPU / 4&nbsp;GB container, because that is the smallest machine we tell people to run <span class="mono">quire serve</span> on. Load is 20 export requests arriving over 10 seconds, which is not much traffic and was enough to separate them decisively. RSS is peak resident set of the whole container.</p>
+
+    <div class="table-wrap" style="margin:32px 0">
+      <table>
+        <thead><tr><th>Approach</th><th>Peak RSS</th><th>p50 render</th><th>p95 render</th><th>Failures of 20</th></tr></thead>
+        <tbody>
+          <tr><td>Browser per request (the bug)</td><td>3.9&nbsp;GB, then OOM</td><td>1.9&nbsp;s</td><td>—</td><td>11</td></tr>
+          <tr><td>Shared browser, unbounded pages</td><td>2.1&nbsp;GB</td><td>0.7&nbsp;s</td><td>4.8&nbsp;s</td><td>2</td></tr>
+          <tr><td>Shared browser, 4 concurrent</td><td>780&nbsp;MB</td><td>0.7&nbsp;s</td><td>2.6&nbsp;s</td><td>0</td></tr>
+          <tr><td>Sidecar container, 4 concurrent</td><td>190&nbsp;MB API + 810&nbsp;MB sidecar</td><td>0.8&nbsp;s</td><td>2.7&nbsp;s</td><td>0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Two rows in that table were not obvious to us beforehand.</p>
+
+    <p>The first is that a shared browser with no concurrency limit is <em>not</em> a fix. It removes the process-per-request cost and leaves the actual problem untouched, because twenty pages rendering at once in one browser is still twenty live renderer processes — Chromium isolates per page regardless. It looks like a fix in single-user testing, which is exactly why it is the version people ship. The limit is the fix. The shared browser is only what makes the limit cheap.</p>
+
+    <p>The second is that the sidecar bought no performance at all: 190&nbsp;MB against 780&nbsp;MB in one process, identical latency. What it buys is a blast radius. When the renderer wedges, and it does, the container restarts and the index does not. That is worth a lot in software other people operate, and nothing whatsoever on a laptop.</p>
+
+    <h2>What we shipped</h2>
+    <p>Option 1 with option 2 bolted on, in-process by default, with option 4 available as configuration. Concretely:</p>
+    <ul>
+      <li><b>One browser instance</b>, launched lazily on the first export and never at startup. Most installs never export anything, and they should not pay 120&nbsp;MB for the possibility.</li>
+      <li><b>A semaphore of four</b> concurrent renders, configurable, defaulting to <span class="mono">min(4, cpu_count)</span>. Everything past it waits. Waiting is a feature: a queued export finishes, a rejected one does not.</li>
+      <li><b>A page per job, closed in a <span class="mono">finally</span></b>, with a per-render timeout that closes the page whether or not the render finished. The most important line in the file, for reasons in the next section.</li>
+      <li><b>Recycling every 200 renders</b> or 30 minutes idle, whichever comes first. The browser is torn down and the next request relaunches it.</li>
+      <li><b>An optional sidecar</b>, one environment variable, for anyone running <span class="mono">quire serve</span> for a team. Same code path, connected over CDP instead of in-process.</li>
+    </ul>
+
+    <p>No Redis, no BullMQ, no cluster manager. Option 3 is the right answer for real spike traffic and the wrong answer for a self-hosted tool, because it adds a service the operator has to run, monitor and back up in order to solve a queueing problem that a semaphore and an in-memory wait queue already solve at our volumes. If somebody turns up rendering thousands of documents an hour, the queue is where they should go — and the sidecar boundary is deliberately the place they would plug it in.</p>
+
+    <h2>The failures that were not about memory</h2>
+    <p>Every one of these cost more time than choosing between the ten options did.</p>
+    <ul>
+      <li><b>Leaked pages.</b> A render that threw between opening a page and closing it left the page alive. Memory grew about 8&nbsp;MB per failed export and nothing in the metrics pointed at it, because the browser count stayed at one. It presented as a slow leak in the API process. It was a missing <span class="mono">finally</span>.</li>
+      <li><b>Zombie Chromium on shutdown.</b> Killing the parent does not reliably kill the browser tree. On a host where <span class="mono">quire serve</span> was restarted nightly by a supervisor, orphaned Chromium processes accumulated for eleven days before anyone noticed the machine had no memory left. Fixed with an explicit close on <span class="mono">SIGTERM</span> and <span class="mono">SIGINT</span>, and by running an init process in the container so that reaping is somebody's job.</li>
+      <li><b>The 64&nbsp;MB <span class="mono">/dev/shm</span> default.</b> Chromium in a default Docker container crashes on large pages with an error mentioning neither shared memory nor the page. Two days. The fix is one flag on the container.</li>
+      <li><b>Fonts.</b> The image had none. Every exported PDF rendered in a fallback face, and no reviewer caught it because they all tested locally, where fonts exist. Digits in a tabular column stopped lining up. The fixture comparison is pixel-based now, and it fails the build.</li>
+      <li><b><span class="mono">--single-process</span>.</b> Somebody found it, it halved memory in a test, and it produced silently truncated PDFs on documents over roughly 40 pages. Do not.</li>
+      <li><b>Waiting on the wrong signal.</b> Network idle is not the same as fonts loaded and layout settled. We wait on <span class="mono">document.fonts.ready</span> plus an explicit flag the template sets once it has positioned the highlight overlays. Before that, about one export in fifty had overlays a few pixels off — the exact defect the browser engine was chosen to avoid.</li>
+    </ul>
+
+    <h2>What we would do first</h2>
+    <p>If you are about to build this: cap concurrency before anything else, because the cap is what stops the crash and the shared browser is only an optimisation on top of it. Close the page in a <span class="mono">finally</span>. Recycle the browser on a counter. Then, when it is other people operating your software, move the whole thing into its own container so its failures stay its own.</p>
+
+    <p>And check whether you need the browser at all. We do, and it is the most expensive dependency in the project by an order of magnitude. If your document is an invoice rather than a piece of evidence, options 7 and 8 will render it correctly for a fraction of the cost, and this entire post describes a problem you can decline to have.</p>
+
+    <p class="muted small" style="margin-top:48px">The export service lives in <span class="mono">github.com/getquire/quire</span> under <span class="mono">services/export</span>; the pixel-comparison fixtures are in <span class="mono">tests/export/fixtures</span>. Container flags are documented in <a class="ink-link" href="/docs">Docs</a> under Deployment.</p>
+  </div>
+
+  <div class="wrap article">
+    <hr class="divider">
+    <div class="grid g2" style="margin-top:32px">
+      <a class="card card-link card-sm" href="/blog-dependencies"><span class="pill">Read next</span><h4>The 31 dependencies we argued about</h4><p class="small">Every dependency is a future security advisory and a future breaking change. How we decide, and the four we removed.</p></a>
+      <div class="tile tile-solar"><h4>The Quire Note</h4><p class="small">One email a month, engineering-first.</p><form class="row" data-demo><input type="email" placeholder="you@company.com" required><button class="btn btn-sm" type="submit">Subscribe</button></form><p class="small muted" data-note></p></div>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-cols">
+      <div class="stack" style="gap:16px">
+        <a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span>Quire</a>
+        <p class="small" style="max-width:34ch">An open-source answer engine for your own documents. Apache-2.0, no telemetry, community maintained.</p>
+        <div class="badge-row"><span class="badge">Apache-2.0</span><span class="badge">v3.0.1</span></div>
+      </div>
+      <div><h5>Project</h5><ul><li><a href="/">Overview</a></li><li><a href="/product">How it works</a></li><li><a href="/docs">Docs</a></li><li><a href="/solutions">Recipes</a></li><li><a href="/changelog">Releases</a></li><li><a href="/styles">Palettes</a></li></ul></div>
+      <div><h5>Community</h5><ul><li><a href="/careers">Contribute</a></li><li><a href="/customers">Showcase</a></li><li><a href="/contact">Discussions</a></li><li><a href="/contact#discord">Discord</a></li><li><a href="/careers#conduct">Code of conduct</a></li></ul></div>
+      <div><h5>Project health</h5><ul><li><a href="/pricing">Why it's free</a></li><li><a href="/about">Governance</a></li><li><a href="/security">Security</a></li><li><a href="/blog">Blog</a></li></ul></div>
+      <div><h5>Legal</h5><ul><li><a href="/terms">License</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/terms#trademark">Trademark</a></li><li><a href="https://github.com/getquire/getquire.github.io">Source on GitHub</a></li></ul></div>
+    </div>
+    <hr class="divider">
+    <div class="footer-base">
+      <span>Quire is free software under Apache-2.0. A fictional project, for design purposes.</span>
+      <span>Maintained by 340 people across 41 countries</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>
